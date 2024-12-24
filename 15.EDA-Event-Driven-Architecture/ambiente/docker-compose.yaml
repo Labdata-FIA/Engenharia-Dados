@@ -1,0 +1,499 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements. See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+version: '2.4'
+services:
+  grafana:
+    image: "grafana/grafana:${GRAFANA_VERSION}"
+    ports:
+     - "3000:3000"
+    environment:
+      GF_PATHS_DATA : /var/lib/grafana
+      GF_SECURITY_ADMIN_PASSWORD : kafka
+    volumes:
+     - ./grafana/provisioning:/etc/grafana/provisioning
+     - ./grafana/dashboards:/var/lib/grafana/dashboards
+    container_name: grafana
+    depends_on:
+     - prometheus
+     - tempo
+     - loki    
+    networks:
+      otel:
+
+  prometheus:
+    image: "prom/prometheus:${PROMETHEUS_VERSION}"
+    ports:
+     - "9090:9090"
+    volumes:
+     - ./etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+    container_name: prometheus
+    networks:
+      otel:
+
+  jmx-kafka-broker:
+    image: "sscaling/jmx-prometheus-exporter"
+    ports:
+     - "5556:5556"
+    environment:
+     CONFIG_YML : "/etc/jmx_exporter/config.yml"
+     JVM_OPTS: ${PROMETHEUS_JMX_AGENT_JVM_OPTS}
+    volumes:
+     - ./etc/jmx_exporter/config_kafka101.yml:/etc/jmx_exporter/config.yml
+    container_name: jmx-kafka-broker
+    depends_on:
+     - kafka-broker
+    networks:
+      otel:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:${CONFLUENT_VERSION}
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+    ports:
+     - "2181:2181"
+    container_name: zookeeper
+    networks:
+      otel:
+
+  kafka-broker:
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "9991:9991"
+
+    container_name: kafka-broker
+    environment:
+      KAFKA_BROKER_ID: 101
+      KAFKA_JMX_PORT: 9991
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka-broker:29092
+      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: 'false'
+      KAFKA_HEAP_OPTS: ${KAFKA_BROKER_HEAP_OPTS}
+    mem_limit: ${KAFKA_BROKER_MEM_LIMIT}
+    networks:
+      otel:
+
+  zoonavigator:
+    image: elkozmon/zoonavigator:${ZOONAVIGATOR_VERSION}
+    container_name: zoonavigator
+    ports:
+      - "8000:8000"
+    environment:
+      HTTP_PORT: 8000
+      AUTO_CONNECT_CONNECTION_STRING: zookeeper:2181
+    depends_on:
+      - zookeeper
+    networks:
+      otel:
+
+  akhq:
+    image: tchiotludo/akhq:${AKHQ_VERSION}
+    container_name: akhq
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka-server:
+              properties:
+                bootstrap.servers: "kafka-broker:29092"       
+              connect:
+                - name: "connect"
+                  url: "http://connect:8083"
+            docker-kafka-server-prd:
+              properties:
+                bootstrap.servers: "kafka-broker:29092"       
+              connect:
+                - name: "connect"
+                  url: "http://connect:8083"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka-broker    
+      - connect
+    networks:
+      otel:
+
+  kafka-net:
+      image: fernandos/kafka-net:v0
+      container_name: kafkanet    
+      environment:
+          ASPNETCORE_ENVIRONMENT: Development
+      depends_on:
+          - kafka-broker       
+      ports:
+        - "5000:80"
+      networks:
+        otel:
+
+  kafka-net-api-obs:
+      image: fernandos/kafka-net-api-obs:v1
+      container_name: kafka-net-api-obs      
+      depends_on:
+          - kafka-broker     
+          - otel-collector                
+      ports:
+        - "5000:80"
+      networks:
+        otel:
+
+  kafka-net-worker-obs:
+      image: fernandos/kafka-net-worker-obs:v1
+      container_name: kafka-net-worker-obs 
+      depends_on:
+          - kafka-broker     
+          - otel-collector   
+          - kafka-net-api-obs        
+      networks:
+        otel:
+
+  mongo:
+    image: mongo:3.4.23
+    container_name: microcks-db
+    volumes:
+      - "~/tmp/microcks-data:/data/db"
+    networks:
+      otel:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.2
+    container_name: microcks-sso
+    ports:
+      - "18080:8080"
+    environment:
+      KEYCLOAK_ADMIN: "admin"
+      KEYCLOAK_ADMIN_PASSWORD: "admin"
+      KC_HOSTNAME_ADMIN_URL: "http://localhost:18080"
+      KC_HOSTNAME_URL: "http://localhost:18080"
+    volumes:
+      - "./keycloak-realm/microcks-realm-sample.json:/opt/keycloak/data/import/microcks-realm.json"
+    command:
+      - start-dev --import-realm
+    networks:
+      otel:
+
+  postman:
+    image: quay.io/microcks/microcks-postman-runtime:latest
+    container_name: microcks-postman-runtime
+    networks:
+      otel:
+
+  app:
+    depends_on:
+      - mongo
+      - keycloak
+      - postman
+      - kafka-broker
+    image: quay.io/microcks/microcks:1.7.1
+    container_name: microcks
+    volumes:
+      - "./config:/deployments/config"
+    ports:
+      - "8080:8080"
+      - "9090:9090"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017
+      - SPRING_DATA_MONGODB_DATABASE=microcks
+      - POSTMAN_RUNNER_URL=http://postman:3000
+      - TEST_CALLBACK_URL=http://microcks:8080
+      - SERVICES_UPDATE_INTERVAL=0 0 0/2 * * *
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_PUBLIC_URL=http://localhost:18080
+      - ASYNC_MINION_URL=http://microcks-async-minion:8081
+      - KAFKA_BOOTSTRAP_SERVER=kafka-broker:29092
+    networks:
+      otel:
+
+  async-minion:
+    depends_on:
+      - app
+      - kafka-broker
+    ports:
+      - "8081:8081"
+    image: quay.io/microcks/microcks-async-minion:1.7.1
+    container_name: microcks-async-minion
+    restart: on-failure
+    volumes:
+      - "./config:/deployments/config"
+    environment:
+      - QUARKUS_PROFILE=docker-compose
+    networks:
+      otel:
+
+  connect:
+        image: fernandos/kafka-connet-debezium-lab:v215
+        container_name: kafkaConect
+        ports:
+        - 8083:8083
+        depends_on:      
+         - kafka-broker      
+        environment:
+        - KAFKA_LOG4J_OPTS=-Dlog4j.configuration=file:/opt/kafka/config/connect-log4j.properties
+        - KAFKA_CONNECT_BOOTSTRAP_SERVERS=kafka-broker:29092
+        - |
+            KAFKA_CONNECT_CONFIGURATION=
+            key.converter=org.apache.kafka.connect.json.JsonConverter
+            value.converter=org.apache.kafka.connect.json.JsonConverter
+            key.converter.schemas.enable=false
+            value.converter.schemas.enable=false
+            group.id=connect
+            offset.storage.topic=connect-offsets
+            offset.storage.replication.factor=1
+            config.storage.topic=connect-configs
+            config.storage.replication.factor=1
+            status.storage.topic=connect-status
+            status.storage.replication.factor=1  
+            CONNECT_REST_ADVERTISED_HOST_NAME: 'connect'  
+            producer.interceptor.classes=io.debezium.tracing.DebeziumTracingProducerInterceptor  
+        - OTEL_SERVICE_NAME=kafka-connect
+        - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+        - OTEL_TRACES_SAMPLER=always_on
+        - OTEL_TRACES_EXPORTER=otlp
+        - OTEL_METRICS_EXPORTER=none
+        - STRIMZI_TRACING=opentelemetry      
+        command: /opt/kafka/kafka_connect_run.sh
+        networks:
+          otel:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-CU28-GDR1-ubuntu-20.04
+    container_name: sqlserver
+    ports:
+     - 1433:1433
+    environment:
+     - ACCEPT_EULA=Y
+     - MSSQL_PID=Standard
+     - SA_PASSWORD=Password!
+     - MSSQL_AGENT_ENABLED=true
+    stdin_open: true
+    volumes:
+      - /sql/init.sql:/opt/sql_scripts/init.sql
+    networks:
+      otel:
+
+  sqlserver2:
+    image: mcr.microsoft.com/mssql/server:2019-CU27-ubuntu-20.04
+    container_name: sqlserver2
+    ports:
+     - 1432:1433
+    environment:
+     - ACCEPT_EULA=Y
+     - MSSQL_PID=Standard
+     - SA_PASSWORD=Password!
+     - MSSQL_AGENT_ENABLED=true
+    stdin_open: true
+    volumes:
+      - /sql/init.sql:/opt/sql_scripts/init.sql
+    networks:
+      otel:
+
+  postgres:
+    image: quay.io/debezium/example-postgres:${POSTGRES_DEBEZIUM}
+    container_name: postgres
+    ports:
+     - 5432:5432
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+    networks:
+      otel:
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: lab-pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: postgres    
+    ports:
+      - "5433:80"
+    depends_on:
+      - postgres    
+    networks:
+      otel:
+
+  mongo-connect:
+    image: mongo:3.4.23
+    container_name: mongo-connect
+    volumes:
+      - "~/tmp/mongodbdata:/data/db"
+    networks:
+      otel:
+
+  ksqldb-server:
+    image: confluentinc/cp-ksqldb-server:${KSQLDB_VER}
+    hostname: ksqldb-server
+    container_name: ksqldb-server
+    depends_on:
+      - kafka-broker        
+    ports:
+      - "8088:8088"
+    environment:
+      KSQL_LISTENERS: http://0.0.0.0:8088
+      KSQL_BOOTSTRAP_SERVERS: kafka-broker:29092      
+      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+      KSQL_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"        
+    volumes:
+      - ./scripts:/scripts
+    networks:
+      otel: 
+
+  minio:
+    image:  quay.io/minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_storage:/data
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: minioadmin      
+      MINIO_NOTIFY_KAFKA_ENABLE_EventKafka: "on"
+      MINIO_NOTIFY_KAFKA_BROKERS_EventKafka: "kafka-broker:29092"
+      MINIO_NOTIFY_KAFKA_TOPIC_EventKafka: "sink-products"
+      MINIO_NOTIFY_KAFKA_QUEUE_LIMIT_EventKafka: "10000"
+      MINIO_NOTIFY_KAFKA_TLS_EventKafka: "off"
+    command: server --console-address ":9001" /data
+    networks:
+      otel:
+
+  mc:
+    image: minio/mc:latest
+    container_name: mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc alias set myminio http://minio:9000 admin minioadmin) do sleep 1; done;     
+      
+      /usr/bin/mc mb myminio/bronze;    
+      
+      /usr/bin/mc event add  myminio/bronze arn:minio:sqs::EventKafka:kafka --event put --suffix .json;      
+     
+      sleep 3000 "
+    networks:
+      otel:    
+
+
+  ksqldb-cli:
+    image: confluentinc/cp-ksqldb-cli:${KSQLDB_VER}
+    container_name: ksqldb-cli
+    depends_on:
+      - kafka-broker
+      - ksqldb-server
+    volumes:
+      - ./scripts:/scripts
+    entrypoint: /bin/sh
+    tty: true
+    networks:
+      otel:
+
+  schema-registry:
+    image: "confluentinc/cp-schema-registry:${CONFLUENT_VERSION}"
+    container_name: schema-registry
+    ports:
+      - 8081:8081  
+    depends_on:
+      - zookeeper
+      - kafka-broker 
+    environment:     
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "PLAINTEXT://kafka-broker:9092"
+      SCHEMA_REGISTRY_AVRO_COMPATIBILITY_LEVEL: "none"
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: "WARN"
+    networks:
+      otel:
+
+  tempo:
+    image: grafana/tempo:2.0.1
+    container_name: tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:   
+      - /etc/localtime:/etc/localtime:ro   
+      - ./etc/tempo/tempo.yml:/etc/tempo.yaml    
+      - tempo:/tmp/tempo
+    restart: unless-stopped
+    ports:
+      - 3200:3200  # tempo
+      - 4007:4317  # otlp grpc
+    depends_on:
+      - otel-collector
+    networks:
+      otel:
+
+  loki:
+    image: grafana/loki:2.8.0
+    container_name: loki
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - /etc/localtime:/etc/localtime:ro      
+      - ./etc/loki/loki.yml:/etc/loki/local-config.yaml
+      - loki:/data/loki
+    restart: unless-stopped
+    ports:
+      - 3100:3100
+    networks:
+      otel:
+
+  otel-collector:    
+    container_name: otel
+    hostname: otel
+    image: otel/opentelemetry-collector-contrib:0.75.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel/otel.yml:/etc/otel-collector-config.yaml
+    restart: unless-stopped
+    ports:
+      - 8888:8888   # Prometheus metrics exposed by the collector
+      - 8889:8889   # Prometheus exporter metrics
+      - 4317:4317   # OTLP gRPC receiver
+      - 9201:55679  # zpages
+      - 13133:13133 # Health check
+    networks:
+      otel:
+  
+  jaeger-all-in-one:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+    networks:
+      otel:
+
+networks:
+  otel:
+
+volumes:
+  minio_storage: {}
+  loki:
+  prometheus:
+  tempo:
+  grafana-data:
