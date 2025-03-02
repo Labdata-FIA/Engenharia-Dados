@@ -177,3 +177,66 @@ Na pasta 19.Data-Flow-Nifi\util tem o a arquivo usuarios.csv, copie e cole para 
 
 
 ![Lab](/content/nifi22-5.png)
+
+
+## Criando Input e OutPut Port
+
+
+### Crie um Process Group chamado Nifi
+
+![Lab](/content/nifi23.png)
+
+
+### Crie o Input Port
+
+![Lab](/content/nifi-input.png)
+
+### Crie o Output Port
+
+![Lab](/content/nifi-output.png.png)
+
+
+### Lingando os dois process Group
+
+![Lab](/content/nifi-in-out.png)
+
+
+
+## Versionando seus Templates com o Registry no Apache NiFi
+
+O NiFi Registry é um serviço que permite versão, armazenamento e compartilhamento de fluxos de dados do Apache NiFi. Com ele, é possível salvar versões dos fluxos, acompanhar mudanças, restaurar versões anteriores e compartilhar pipelines entre diferentes ambientes (desenvolvimento, teste e produção).
+
+Isso facilita a governança dos fluxos, permitindo controle de mudanças, rollback e colaboração entre equipes.
+
+![Lab](/content/nifi-registry.png)
+
+
+
+### Crie um Acess Token no github
+
+>https://github.com/settings/tokens/new
+
+
+![Lab](/content/nifi-git.png)
+
+
+|Property|Value|
+|------------------|--------------|
+|GitHub API URL|https://api.github.com/|
+|Repository Owner|<<perfil do seu repositorio>>|
+|Repository Name|<<nome do seu repositorio>>|
+
+![Lab](/content/nifi-git-config.png.png)
+
+
+### Dentro do seu process group, botão direto...
+
+![Lab](/content/nifi-git-1.png)
+
+
+
+![Lab](/content/nifi-git-flow.png)
+
+### Faça uma alteração dentro do process grou
+
+![Lab](/content/nifi-flow-git-2.png)
