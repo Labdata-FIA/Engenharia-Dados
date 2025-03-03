@@ -225,7 +225,7 @@ Isso facilita a governança dos fluxos, permitindo controle de mudanças, rollba
 |Repository Owner|<<perfil do seu repositorio>>|
 |Repository Name|<<nome do seu repositorio>>|
 
-![Lab](/content/nifi-git-config.png.png)
+![Lab](/content/nifi-git-config.png)
 
 
 ### Dentro do seu process group, botão direto...
