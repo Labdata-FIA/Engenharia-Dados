@@ -1,5 +1,5 @@
 
-# LAB Mongodb Kafka e Nifi
+# LAB  Nifi
 
 ---
 ## Disclaimer
@@ -27,27 +27,26 @@
 |------------------|--------------|
 |admin|fia@2024@ladata@laboratorio|
 
-https://random-data-api.com/api/v2/users?size=10
 
 ## Criando o Process Group
 
 Process Group (Grupo de Processos) é um agrupador lógico que organiza um conjunto de processadores e outros componentes do fluxo de dados
 
-![Lab](/content/nifi0.png)
+![Lab](/content/nifi-0.png)
 
 
-## Criando o Process 
+## Criando o Processor
 
 Os Processors são os principais componentes do Apache NiFi responsáveis por manipular, transformar e mover dados dentro de um fluxo. Cada Processor tem uma função específica, como ler arquivos, fazer requisições HTTP, converter formatos, filtrar registros, gravar em banco de dados, entre outras.
 
-### Criando nosso primeiro GetFile
+### Criando nosso primeiro processor com o  GetFile
 
 Crie um Process do tipo GetFile 
 
-![Lab](/content/nifi2-0.png)
+![Lab](/content/nifi-2-0.png)
 
 
-### Configurando nosso GetFile
+### Configurando GetFile
 
 |Property|Value|
 |------------------|--------------|
@@ -58,10 +57,10 @@ Crie um Process do tipo GetFile
 > [!IMPORTANT]
 > Configura os dados da aba Scheduling
 
-![Lab](/content/nifi3-0.png)
+![Lab](/content/nifi-3.0.0.png)
 
 
-
+---
 
 ### Parameter Context
 
@@ -71,9 +70,9 @@ No Apache NiFi, Contexto de Parâmetros é um recurso que permite centralizar e 
 
 
 ### Os principais benefícios incluem:
-* ✅ Reutilização – Um único conjunto de parâmetros pode ser aplicado a vários componentes.
-* ✅ Segurança – Parâmetros sensíveis, como credenciais, podem ser protegidos.
-* ✅ Facilidade de Alteração – Ajustes podem ser feitos sem modificar diretamente os fluxos.
+* Reutilização – Um único conjunto de parâmetros pode ser aplicado a vários componentes.
+* Segurança – Parâmetros sensíveis, como credenciais, podem ser protegidos.
+* Facilidade de Alteração – Ajustes podem ser feitos sem modificar diretamente os fluxos.
 
 
 
@@ -93,16 +92,13 @@ No Apache NiFi, Contexto de Parâmetros é um recurso que permite centralizar e 
 |EndPoint-Minio|http://minio:9000|
 
 
-![Lab](/content/nifi5.png)
-
-
 Para atribuir um Contexto de Parâmetro a um Grupo de Processos, clique em Configurar, na Paleta de Operação ou no menu de contexto do Grupo de Processos.
 
 ![Lab](/content/nifi6.png)
 
-### Como usar ??
+### Como usar os parametros nos Processor??
 
-Edita o GetFile
+Edita o GetFile, botão direito, Configure >> Properties
 |Property|Value|
 |------------------|--------------|
 |Input Directory|#{DirectoryCSV}|
@@ -124,7 +120,7 @@ Acesso para o MinIO http://localhost:9001/login
 ### Configurando o MinIO
 
 > [!IMPORTANT]
-> Crie a camada Raw caso não tenha ainda
+> Crie a camada Raw ou Bronze caso não tenha ainda
 
 
 ![MinIO](../content/minio-04.png)
@@ -134,19 +130,22 @@ Acesso para o MinIO http://localhost:9001/login
 
 ![MinIO](../content/minio-07.png)
 
+---
 
 ## Controller Services
 No Apache NiFi, os Controller Services são componentes compartilháveis que fornecem funcionalidades comuns a vários processadores dentro de um fluxo de dados. Eles permitem centralizar configurações e melhorar a eficiência do processamento.
 
 Exemplos de Controller Services:
-* 🔹 DBCPConnectionPool – Gerencia conexões com bancos de dados.
-* 🔹 SSLContextService – Configura SSL/TLS para comunicação segura.
-* 🔹 AvroSchemaRegistry – Define esquemas de dados Avro para validação.
+* DBCPConnectionPool – Gerencia conexões com bancos de dados.
+* SSLContextService – Configura SSL/TLS para comunicação segura.
+* AvroSchemaRegistry – Define esquemas de dados Avro para validação.
 
 ![Lab](/content/nifi7.png)
 
 
-### Criando Controller Services `AWSCredentialsProviderControllerService` para autenticação 
+### Criando Controller Services `AWSCredentialsProviderControllerService` para autenticação do MinIO.
+
+Botão direito, Controller Services.
 
 ![Lab](/content/nifi22-0.png)
 
@@ -161,7 +160,7 @@ Exemplos de Controller Services:
 
 ![Lab](/content/nifi22-2.png)
 
-### Criando o Process `PutS3Object`
+### Criando o Processor `PutS3Object`
 
 
 |Property|Value|
@@ -182,7 +181,7 @@ Na pasta 19.Data-Flow-Nifi\util tem o a arquivo usuarios.csv, copie e cole para 
 ## Criando Input e OutPut Port
 
 
-### Crie um Process Group chamado Nifi
+### Crie um Process Group
 
 ![Lab](/content/nifi23.png)
 
@@ -237,6 +236,6 @@ Isso facilita a governança dos fluxos, permitindo controle de mudanças, rollba
 
 ![Lab](/content/nifi-git-flow.png)
 
-### Faça uma alteração dentro do process grou
+### Faça uma alteração dentro do process group
 
 ![Lab](/content/nifi-flow-git-2.png)
