@@ -17,7 +17,7 @@
 
 
 ```bash
- docker compose up -d nifi  docker compose up -d nifi minio
+docker compose up -d nifi minio
 ```
 
 > https://localhost:9443/nifi/#/login
