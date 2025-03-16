@@ -522,6 +522,23 @@ services:
     networks:
       otel:
 
+  duckdb:
+    build: ./27.SmallData
+    user: root
+    container_name: duckdb
+    hostname: duckdb
+    stdin_open: true
+    tty: true
+    depends_on:
+      - minio
+    ports:
+      - 8085:8085       
+    volumes:
+      - ./jupyter/docker-entrypoint.sh:/jupyter/docker-entrypoint.sh
+      - ./27.SmallData:/home/src/  
+    command: jupyter notebook --ip 0.0.0.0 --port 8085 --allow-root 
+    networks:
+      otel:
 
 
 networks:
