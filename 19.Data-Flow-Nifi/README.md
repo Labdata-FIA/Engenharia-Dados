@@ -106,7 +106,7 @@ Edita o GetFile, botão direito, Configure >> Properties
 ![Lab](/content/nifi-edit-getfile.png)
 
 
-## Fazendo a ingestão com Mnio, mas antes...
+## Fazendo a ingestão com MinIO, mas antes...
 
 
 ### Configurando MinIO
@@ -192,7 +192,7 @@ Na pasta 19.Data-Flow-Nifi\util tem o a arquivo usuarios.csv, copie e cole para 
 
 ### Crie o Output Port
 
-![Lab](/content/nifi-output.png.png)
+![Lab](/content/nifi-output.png)
 
 
 ### Lingando os dois process Group

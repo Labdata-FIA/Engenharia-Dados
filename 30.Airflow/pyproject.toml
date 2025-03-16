@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "laboratorio-airflow"
+version = "0.1.0"
+description = ""
+authors = ["rafael-negrao <rafael.negrao@adelfo.com.br>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+apache-airflow = "2.7.2"
+requests = "^2.32.3"
+psycopg2-binary = "^2.9.9"
+apache-airflow-providers-jdbc = "^4.3.1"
+mysql-connector-python = "^9.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
