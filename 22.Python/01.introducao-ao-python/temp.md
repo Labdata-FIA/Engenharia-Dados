@@ -1,0 +1,956 @@
+# Variáveis, tipos de dados, estruturas de controle e estruturas de repetição
+
+## Aprendendo a trabalhar com variáveis
+
+Vamos explorar detalhadamente os conceitos fundamentais de Python, incluindo a criação de variáveis, tipos de dados, estruturas de dados como listas, conjuntos e dicionários, operadores, estruturas de controle, estruturas de repetição e funções.
+
+### 1. Criação de Variáveis e Tipos de Dados
+
+**Variáveis** são usadas para armazenar dados em um programa. Em Python, você não precisa declarar explicitamente o tipo de uma variável, pois a linguagem é dinamicamente tipada. Basta atribuir um valor a uma variável, e Python determinará automaticamente o tipo de dado.
+
+- Exemplo de código em Python
+
+```python
+# Criação de variáveis
+numero = 10       # Inteiro
+texto = "Olá"     # String
+preco = 99.99     # Float
+is_valido = True  # Booleano
+
+# Imprimindo os valores e tipos
+print(numero, type(numero))   # Saída: 10 <class 'int'>
+print(texto, type(texto))     # Saída: Olá <class 'str'>
+print(preco, type(preco))     # Saída: 99.99 <class 'float'>
+print(is_valido, type(is_valido))  # Saída: True <class 'bool'>
+```
+
+## String
+
+Strings são sequências de caracteres usadas para representar texto em Python. Elas são um dos tipos de dados mais comuns e fundamentais em Python, e a linguagem oferece uma variedade de operações e métodos para manipulá-las.
+
+### Criação de Strings
+
+Você pode criar strings em Python usando aspas simples (`'`) ou duplas (`"`).
+
+```python
+# Usando aspas simples
+string1 = 'Hello, World!'
+
+# Usando aspas duplas
+string2 = "Hello, World!"
+```
+
+Para criar strings de múltiplas linhas, você pode usar aspas triplas (`'''` ou `"""`).
+
+```python
+multiline_string = """Esta é uma string
+de múltiplas linhas"""
+```
+
+### Acessando Caracteres em Strings
+
+Você pode acessar caracteres individuais em uma string usando índices, começando do zero. Índices negativos acessam caracteres a partir do final da string.
+
+```python
+string = "Python"
+print(string[0])  # Saída: P
+print(string[5])  # Saída: n
+print(string[-1]) # Saída: n
+```
+
+### Fatiamento (Slicing)
+
+Você pode extrair substrings (subsequências) de uma string usando a sintaxe de fatiamento.
+
+```python
+string = "Hello, World!"
+print(string[0:5])  # Saída: Hello
+print(string[7:])   # Saída: World!
+print(string[:5])   # Saída: Hello
+print(string[::2])  # Saída: Hlo ol!
+```
+
+### Métodos Comuns de Strings
+
+Python fornece vários métodos embutidos para manipulação de strings.
+
+- `len()`: Retorna o comprimento da string.
+
+```python
+print(len("Python"))  # Saída: 6
+```
+
+- `str.lower()`: Converte todos os caracteres da string para minúsculas.
+
+```python
+print("PYTHON".lower())  # Saída: python
+```
+
+- `str.upper()`: Converte todos os caracteres da string para maiúsculas.
+
+```python
+print("python".upper())  # Saída: PYTHON
+```
+
+- `str.strip()`: Remove espaços em branco do início e do fim da string.
+
+```python
+print("   Hello, World!   ".strip())  # Saída: Hello, World!
+```
+
+- `str.replace(old, new)`: Substitui todas as ocorrências da substring `old` por `new`.
+
+```python
+print("Hello, World!".replace("World", "Python"))  # Saída: Hello, Python!
+```
+
+- `str.split(separator)`: Divide a string em uma lista de substrings, usando `separator` como delimitador.
+
+```python
+print("Hello, World!".split(", "))  # Saída: ['Hello', 'World!']
+```
+
+- `str.join(iterable)`: Junta uma sequência de strings em uma única string, separadas por uma string delimitadora.
+
+```python
+print(", ".join(["Hello", "World"]))  # Saída: Hello, World
+```
+
+- `str.find(sub)`: Retorna o índice da primeira ocorrência de `sub` na string, ou -1 se não encontrada.
+
+```python
+print("Hello, World!".find("World"))  # Saída: 7
+```
+
+- `str.count(sub)`: Retorna o número de ocorrências de `sub` na string.
+
+```python
+print("Hello, World! Hello, Python!".count("Hello"))  # Saída: 2
+```
+
+- `str.startswith(prefix)`: Retorna `True` se a string começar com `prefix`.
+
+```python
+print("Hello, World!".startswith("Hello"))  # Saída: True
+```
+
+- `str.endswith(suffix)`: Retorna `True` se a string terminar com `suffix`.
+
+```python
+print("Hello, World!".endswith("World!"))  # Saída: True
+```
+
+### Concatenação de Strings
+
+Você pode concatenar (juntar) strings usando o operador `+`.
+
+```python
+str1 = "Hello, "
+str2 = "World!"
+result = str1 + str2
+print(result)  # Saída: Hello, World!
+```
+
+### Formatação de Strings
+
+Python oferece várias maneiras de formatar strings para incluir variáveis e expressões.
+
+- Operador `%`: Um método antigo de formatação de strings.
+
+```python
+name = "Alice"
+age = 30
+print("Name: %s, Age: %d" % (name, age))  # Saída: Name: Alice, Age: 30
+```
+
+- Método `str.format()`: Um método mais recente e poderoso.
+
+```python
+print("Name: {}, Age: {}".format(name, age))  # Saída: Name: Alice, Age: 30
+print("Name: {0}, Age: {1}".format(name, age))  # Saída: Name: Alice, Age: 30
+print("Name: {name}, Age: {age}".format(name=name, age=age))  # Saída: Name: Alice, Age: 30
+```
+
+- F-strings (a partir do Python 3.6): A maneira mais moderna e concisa.
+
+```python
+print(f"Name: {name}, Age: {age}")  # Saída: Name: Alice, Age: 30
+```
+
+### Verificação e Manipulação de Substrings
+
+- `in` e `not in`: Verificam se uma substring está presente em uma string.
+
+```python
+print("Python" in "Hello, Python!")  # Saída: True
+print("Java" not in "Hello, Python!")  # Saída: True
+```
+
+- `str.index(sub)`: Retorna o índice da primeira ocorrência de `sub` na string, ou levanta um `ValueError` se não encontrada.
+
+```python
+print("Hello, World!".index("World"))  # Saída: 7
+```
+
+- `str.startswith(prefix)`: Verifica se a string começa com `prefix`.
+
+```python
+print("Hello, World!".startswith("Hello"))  # Saída: True
+```
+
+- `str.endswith(suffix)`: Verifica se a string termina com `suffix`.
+
+```python
+print("Hello, World!".endswith("World!"))  # Saída: True
+```
+
+### Exemplos Práticos
+
+#### Reverter uma String
+
+```python
+string = "Python"
+reversed_string = string[::-1]
+print(reversed_string)  # Saída: nohtyP
+```
+
+#### Verificar se uma String é Palíndromo
+
+```python
+def is_palindrome(s):
+    s = s.lower().replace(" ", "")
+    return s == s[::-1]
+
+print(is_palindrome("A man a plan a canal Panama"))  # Saída: True
+```
+
+#### Contagem de Palavras em uma String
+
+```python
+def word_count(s):
+    words = s.split()
+    return len(words)
+
+print(word_count("Hello, World! This is Python."))  # Saída: 5
+```
+
+## Integer
+
+Os inteiros são um dos tipos de dados fundamentais em Python, usados para representar números inteiros sem partes fracionárias. Aqui está uma explicação teórica e detalhada sobre como trabalhar com inteiros em Python e as possíveis operações que você pode realizar com eles.
+
+### Definição e Criação de Inteiros
+
+Em Python, inteiros são definidos automaticamente quando você atribui um valor inteiro a uma variável. Não há necessidade de declarar o tipo da variável explicitamente.
+
+```python
+# Definindo inteiros
+a = 10
+b = -5
+c = 0
+```
+
+### Operações Aritméticas
+
+Python oferece uma gama de operações aritméticas básicas que podem ser realizadas em inteiros.
+
+#### Adição (`+`)
+
+Adiciona dois números.
+
+```python
+x = 5
+y = 3
+soma = x + y
+print(soma)  # Saída: 8
+```
+
+#### Subtração (`-`)
+
+Subtrai um número de outro.
+
+```python
+diferenca = x - y
+print(diferenca)  # Saída: 2
+```
+
+#### Multiplicação (`*`)
+
+Multiplica dois números.
+
+```python
+produto = x * y
+print(produto)  # Saída: 15
+```
+
+#### Divisão (`/`)
+
+Divide um número pelo outro, retornando um número de ponto flutuante.
+
+```python
+divisao = x / y
+print(divisao)  # Saída: 1.6666666666666667
+```
+
+#### Divisão Inteira (`//`)
+
+Divide um número pelo outro, retornando apenas a parte inteira do quociente.
+
+```python
+divisao_inteira = x // y
+print(divisao_inteira)  # Saída: 1
+```
+
+#### Módulo (`%`)
+
+Retorna o restante da divisão de um número pelo outro.
+
+```python
+resto = x % y
+print(resto)  # Saída: 2
+```
+
+#### Exponenciação (`**`)
+
+Eleva um número à potência de outro.
+
+```python
+potencia = x ** y
+print(potencia)  # Saída: 125
+```
+
+### Operações de Atribuição
+
+Python oferece operadores de atribuição que combinam uma operação aritmética com a atribuição.
+
+```python
+a = 10
+a += 5  # Equivalente a a = a + 5
+print(a)  # Saída: 15
+
+a -= 3  # Equivalente a a = a - 3
+print(a)  # Saída: 12
+
+a *= 2  # Equivalente a a = a * 2
+print(a)  # Saída: 24
+
+a /= 4  # Equivalente a a = a / 4
+print(a)  # Saída: 6.0
+
+a //= 2  # Equivalente a a = a // 2
+print(a)  # Saída: 3.0
+
+a %= 2  # Equivalente a a = a % 2
+print(a)  # Saída: 1.0
+
+a **= 3  # Equivalente a a = a ** 3
+print(a)  # Saída: 1.0
+```
+
+### Operações de Comparação
+
+Python permite comparar inteiros usando operadores de comparação. Esses operadores retornam valores booleanos (`True` ou `False`).
+
+```python
+x = 5
+y = 3
+
+print(x == y)  # Igual a (==), Saída: False
+print(x != y)  # Diferente de (!=), Saída: True
+print(x > y)   # Maior que (>), Saída: True
+print(x < y)   # Menor que (<), Saída: False
+print(x >= y)  # Maior ou igual a (>=), Saída: True
+print(x <= y)  # Menor ou igual a (<=), Saída: False
+```
+
+### Funções Matemáticas Embutidas
+
+Python fornece várias funções embutidas para operações matemáticas comuns.
+
+#### `abs()`
+
+Retorna o valor absoluto de um número.
+
+```python
+a = -10
+print(abs(a))  # Saída: 10
+```
+
+#### `pow()`
+
+Eleva um número a uma potência. Equivalente ao operador `**`.
+
+```python
+print(pow(2, 3))  # Saída: 8
+```
+
+#### `divmod()`
+
+Retorna uma tupla contendo o quociente e o resto da divisão.
+
+```python
+print(divmod(10, 3))  # Saída: (3, 1)
+```
+
+### Conversão de Tipos
+
+Você pode converter outros tipos de dados para inteiros usando a função `int()`.
+
+```python
+print(int(3.14))    # Converte float para int, Saída: 3
+print(int("10"))    # Converte string para int, Saída: 10
+print(int(True))    # Converte booleano para int, Saída: 1
+print(int(False))   # Converte booleano para int, Saída: 0
+```
+
+### Representação Binária, Octal e Hexadecimal
+
+Você pode representar inteiros em diferentes bases numéricas.
+
+#### Binário
+
+```python
+binario = bin(10)
+print(binario)  # Saída: 0b1010
+```
+
+#### Octal
+
+```python
+octal = oct(10)
+print(octal)  # Saída: 0o12
+```
+
+#### Hexadecimal
+
+```python
+hexadecimal = hex(10)
+print(hexadecimal)  # Saída: 0xa
+```
+
+### Geração de Números Aleatórios
+
+Para gerar números inteiros aleatórios, você pode usar o módulo `random`.
+
+```python
+import random
+
+aleatorio = random.randint(1, 100)  # Gera um número inteiro aleatório entre 1 e 100
+print(aleatorio)
+```
+
+## Float
+
+Floats, ou números de ponto flutuante, são usados para representar números com partes fracionárias em Python. Eles são uma parte essencial da linguagem e permitem uma ampla variedade de operações matemáticas e científicas. Aqui está uma explicação teórica e detalhada sobre como trabalhar com floats em Python e as possíveis operações que você pode realizar com eles.
+
+### Definição e Criação de Floats
+
+Em Python, floats são definidos automaticamente quando você atribui um valor decimal a uma variável. Não há necessidade de declarar o tipo da variável explicitamente.
+
+```python
+# Definindo floats
+a = 10.5
+b = -3.14
+c = 0.0
+```
+
+Você também pode criar floats usando a notação científica (ou notação exponencial).
+
+```python
+d = 1.23e4  # Equivalente a 1.23 * 10^4
+e = 4.56e-3 # Equivalente a 4.56 * 10^-3
+```
+
+### Operações Aritméticas
+
+Python oferece uma gama de operações aritméticas básicas que podem ser realizadas em floats.
+
+#### Adição (`+`)
+
+Adiciona dois números.
+
+```python
+x = 5.5
+y = 3.2
+soma = x + y
+print(soma)  # Saída: 8.7
+```
+
+#### Subtração (`-`)
+
+Subtrai um número de outro.
+
+```python
+diferenca = x - y
+print(diferenca)  # Saída: 2.3
+```
+
+#### Multiplicação (`*`)
+
+Multiplica dois números.
+
+```python
+produto = x * y
+print(produto)  # Saída: 17.6
+```
+
+#### Divisão (`/`)
+
+Divide um número pelo outro.
+
+```python
+divisao = x / y
+print(divisao)  # Saída: 1.71875
+```
+
+#### Divisão Inteira (`//`)
+
+Divide um número pelo outro, retornando apenas a parte inteira do quociente.
+
+```python
+divisao_inteira = x // y
+print(divisao_inteira)  # Saída: 1.0
+```
+
+#### Módulo (`%`)
+
+Retorna o restante da divisão de um número pelo outro.
+
+```python
+resto = x % y
+print(resto)  # Saída: 2.3
+```
+
+#### Exponenciação (`**`)
+
+Eleva um número à potência de outro.
+
+```python
+potencia = x ** y
+print(potencia)  # Saída: 279.8416377442883
+```
+
+### Operações de Atribuição
+
+Python oferece operadores de atribuição que combinam uma operação aritmética com a atribuição.
+
+```python
+a = 10.5
+a += 2.5  # Equivalente a a = a + 2.5
+print(a)  # Saída: 13.0
+
+a -= 1.5  # Equivalente a a = a - 1.5
+print(a)  # Saída: 11.5
+
+a *= 2  # Equivalente a a = a * 2
+print(a)  # Saída: 23.0
+
+a /= 2  # Equivalente a a = a / 2
+print(a)  # Saída: 11.5
+
+a //= 2  # Equivalente a a = a // 2
+print(a)  # Saída: 5.0
+
+a %= 2  # Equivalente a a = a % 2
+print(a)  # Saída: 1.0
+
+a **= 2  # Equivalente a a = a ** 2
+print(a)  # Saída: 1.0
+```
+
+### Operações de Comparação
+
+Python permite comparar floats usando operadores de comparação. Esses operadores retornam valores booleanos (`True` ou `False`).
+
+```python
+x = 5.5
+y = 3.2
+
+print(x == y)  # Igual a (==), Saída: False
+print(x != y)  # Diferente de (!=), Saída: True
+print(x > y)   # Maior que (>), Saída: True
+print(x < y)   # Menor que (<), Saída: False
+print(x >= y)  # Maior ou igual a (>=), Saída: True
+print(x <= y)  # Menor ou igual a (<=), Saída: False
+```
+
+### Funções Matemáticas Embutidas
+
+Python fornece várias funções embutidas e no módulo `math` para operações matemáticas comuns com floats.
+
+#### `abs()`
+
+Retorna o valor absoluto de um número.
+
+```python
+a = -10.5
+print(abs(a))  # Saída: 10.5
+```
+
+#### `round()`
+
+Arredonda um número para um número específico de dígitos.
+
+```python
+a = 5.678
+print(round(a, 2))  # Saída: 5.68
+```
+
+#### `math.floor()`
+
+Arredonda um número para baixo para o inteiro mais próximo.
+
+```python
+import math
+print(math.floor(3.7))  # Saída: 3
+```
+
+#### `math.ceil()`
+
+Arredonda um número para cima para o inteiro mais próximo.
+
+```python
+print(math.ceil(3.2))  # Saída: 4
+```
+
+#### `math.sqrt()`
+
+Retorna a raiz quadrada de um número.
+
+```python
+print(math.sqrt(16))  # Saída: 4.0
+```
+
+### Conversão de Tipos
+
+Você pode converter outros tipos de dados para floats usando a função `float()`.
+
+```python
+print(float(5))      # Converte int para float, Saída: 5.0
+print(float("3.14")) # Converte string para float, Saída: 3.14
+```
+
+### Geração de Números Aleatórios
+
+Para gerar números de ponto flutuante aleatórios, você pode usar o módulo `random`.
+
+```python
+import random
+
+aleatorio = random.uniform(1.0, 10.0)  # Gera um número float aleatório entre 1.0 e 10.0
+print(aleatorio)
+```
+
+### Tratamento de Erros em Operações com Floats
+
+Floats podem introduzir erros de precisão devido à sua representação interna em binário. É importante estar ciente dessas limitações ao trabalhar com floats.
+
+#### Comparação com Tolerância
+
+Ao comparar floats, é recomendável usar uma tolerância para considerar pequenas diferenças.
+
+```python
+a = 0.1 + 0.2
+b = 0.3
+tolerancia = 1e-9
+
+print(abs(a - b) < tolerancia)  # Saída: True
+```
+
+## Boolean
+
+Os booleanos são um tipo de dado fundamental em Python, representando valores de verdade: `True` e `False`. Eles são essenciais para controle de fluxo em programas, como condicionais e loops, e para expressar resultados de comparações lógicas. Aqui está uma explicação teórica e detalhada sobre como trabalhar com booleanos em Python e as possíveis operações que você pode realizar com eles.
+
+### Definição e Criação de Booleanos
+
+Em Python, os valores booleanos são representados pelas palavras-chave `True` e `False`. Eles podem ser atribuídos a variáveis da seguinte forma:
+
+```python
+verdadeiro = True
+falso = False
+```
+
+Os booleanos são frequentemente o resultado de expressões de comparação ou operações lógicas.
+
+### Operações de Comparação
+
+Python permite comparar valores usando operadores de comparação, que retornam booleanos.
+
+#### Igualdade (`==`)
+
+Verifica se dois valores são iguais.
+
+```python
+a = 5
+b = 3
+print(a == b)  # Saída: False
+print(a == 5)  # Saída: True
+```
+
+#### Diferença (`!=`)
+
+Verifica se dois valores são diferentes.
+
+```python
+print(a != b)  # Saída: True
+print(a != 5)  # Saída: False
+```
+
+#### Maior que (`>`)
+
+Verifica se um valor é maior que o outro.
+
+```python
+print(a > b)   # Saída: True
+print(a > 5)   # Saída: False
+```
+
+#### Menor que (`<`)
+
+Verifica se um valor é menor que o outro.
+
+```python
+print(a < b)   # Saída: False
+print(a < 10)  # Saída: True
+```
+
+#### Maior ou igual a (`>=`)
+
+Verifica se um valor é maior ou igual ao outro.
+
+```python
+print(a >= b)  # Saída: True
+print(a >= 5)  # Saída: True
+```
+
+#### Menor ou igual a (`<=`)
+
+Verifica se um valor é menor ou igual ao outro.
+
+```python
+print(a <= b)  # Saída: False
+print(a <= 5)  # Saída: True
+```
+
+### Operações Lógicas
+
+Python oferece operadores lógicos para combinar expressões booleanas.
+
+#### E (`and`)
+
+Retorna `True` se ambas as expressões forem verdadeiras.
+
+```python
+x = True
+y = False
+print(x and y)  # Saída: False
+print(x and not y)  # Saída: True
+```
+
+#### Ou (`or`)
+
+Retorna `True` se pelo menos uma das expressões for verdadeira.
+
+```python
+print(x or y)  # Saída: True
+print(y or y)  # Saída: False
+```
+
+#### Não (`not`)
+
+Inverte o valor de verdade de uma expressão.
+
+```python
+print(not x)  # Saída: False
+print(not y)  # Saída: True
+```
+
+### Funções Booleanas Embutidas
+
+Python fornece algumas funções embutidas úteis para trabalhar com booleanos.
+
+#### `bool()`
+
+Converte um valor para seu equivalente booleano.
+
+```python
+print(bool(0))      # Saída: False
+print(bool(1))      # Saída: True
+print(bool(""))     # Saída: False
+print(bool("Python"))  # Saída: True
+```
+
+#### `any()`
+
+Retorna `True` se pelo menos um dos elementos do iterável for verdadeiro.
+
+```python
+print(any([False, False, True]))  # Saída: True
+print(any([False, False, False]))  # Saída: False
+```
+
+#### `all()`
+
+Retorna `True` se todos os elementos do iterável forem verdadeiros.
+
+```python
+print(all([True, True, True]))  # Saída: True
+print(all([True, False, True]))  # Saída: False
+```
+
+### Uso de Booleanos em Condicionais
+
+Os booleanos são fundamentais para estruturas de controle de fluxo, como condicionais e loops.
+
+#### `if` e `else`
+
+```python
+a = 10
+b = 5
+
+if a > b:
+    print("a é maior que b")
+else:
+    print("a não é maior que b")
+```
+
+#### `elif`
+
+```python
+a = 10
+b = 10
+
+if a > b:
+    print("a é maior que b")
+elif a == b:
+    print("a é igual a b")
+else:
+    print("a é menor que b")
+```
+
+### Uso de Booleanos em Loops
+
+#### `while`
+
+```python
+count = 0
+
+while count < 5:
+    print(count)
+    count += 1
+```
+
+### Booleanos e Estruturas de Dados
+
+Python considera vários valores como `False` em um contexto booleano, incluindo:
+
+- `None`
+- `False`
+- Zero de qualquer tipo: `0`, `0.0`, `0j`
+- Sequências e coleções vazias: `''`, `()`, `[]`, `{}`, `set()`
+
+Todos os outros valores são considerados `True`.
+
+### Comparações Múltiplas
+
+Python permite encadear comparações para expressões mais concisas.
+
+```python
+a = 5
+print(1 < a < 10)  # Saída: True
+print(10 < a < 20)  # Saída: False
+```
+
+## Estruturas de Repetição
+
+Estruturas de repetição são fundamentais em qualquer linguagem de programação, permitindo que trechos de código sejam executados múltiplas vezes com base em uma condição ou em uma sequência de valores.
+
+### `for` Loop
+
+O `for` loop em Python é usado para iterar sobre uma sequência (como uma lista, tupla ou string) ou outro objeto iterável.
+
+#### Exemplo de `for` Loop
+
+```python
+# Iterando sobre uma lista
+frutas = ["maçã", "banana", "cereja"]
+for fruta in frutas:
+    print(fruta)
+```
+
+#### Usando `range()`
+
+A função `range()` é frequentemente usada com `for` para gerar uma sequência de números.
+
+```python
+# Iterando de 0 a 4
+for i in range(5):
+    print(i)
+```
+
+Você também pode especificar um início e um fim, e um passo.
+
+```python
+# Iterando de 1 a 9 com passo 2
+for i in range(1, 10, 2):
+    print(i)
+```
+
+### `while` Loop
+
+O `while` loop repete um bloco de código enquanto uma condição for verdadeira.
+
+#### Exemplo de `while` Loop
+
+```python
+count = 0
+while count < 5:
+    print(count)
+    count += 1
+```
+
+### Controle de Loop
+
+#### `break`
+
+O `break` é usado para sair imediatamente de um loop.
+
+```python
+for i in range(10):
+    if i == 5:
+        break
+    print(i)
+```
+
+#### `continue`
+
+O `continue` é usado para pular para a próxima iteração do loop.
+
+```python
+for i in range(10):
+    if i % 2 == 0:
+        continue
+    print(i)
+```
+
+### Loops Aninhados
+
+Você pode aninhar loops, ou seja, ter um loop dentro de outro.
+
+```python
+for i in range(3):
+    for j in range(3):
+        print(f"i: {i}, j: {j}")
+```
+
+### `else` em Loops
+
+Python permite usar uma cláusula `else` com loops. O bloco `else` é executado quando o loop termina naturalmente, ou seja, sem encontrar um `break`.
+
+```python
+for i in range(5):
+    print(i)
+else:
+    print("Loop concluído sem interrupção")
+```
+
+

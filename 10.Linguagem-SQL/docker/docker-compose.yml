@@ -1,0 +1,40 @@
+services:
+  database-dev-mysql:
+    image: library/mysql:8.0.31
+    container_name: database-dev-mysql
+    hostname: database-dev-mysql
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=database-dev-mysql
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_USER=user_app
+      - MYSQL_PASSWORD=user_app
+    volumes:
+      - ./data:/var/lib/mysql
+    networks:
+      - database-dev-tier
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:24.0.3
+    container_name: cloudbeaver
+    ports:
+      - "8978:8978"
+    volumes:
+      - ./cloudbeaver_workspace:/opt/cloudbeaver/workspace # Persiste os dados da workspace
+    restart: unless-stopped
+    networks:
+      - database-dev-tier
+
+networks:
+  database-dev-tier:
+    driver: bridge

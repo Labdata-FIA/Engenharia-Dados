@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: airflow
+      MYSQL_DATABASE: airflow
+      MYSQL_USER: airflow
+      MYSQL_PASSWORD: airflow
+    ports:
+      - "3306:3306"
+    networks:
+      - laboratorio-airflow-tier
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    ports:
+      - "5432:5432"
+    networks:
+      - laboratorio-airflow-tier
+
+  webserver:
+    build: .
+#    image: apache/airflow:2.7.2-python3.11
+    restart: always
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__FERNET_KEY: ${FERNET_KEY}
+      AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY}2'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'True'
+    volumes:
+      - ../dags:/opt/airflow/dags
+      - ../requirements.txt:/requirements.txt
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - laboratorio-airflow-tier
+    command: >
+      bash -c "pip install -r /requirements.txt && airflow db init && airflow webserver"
+
+  scheduler:
+    build: .
+#    image: apache/airflow:2.7.2-python3.11
+    restart: always
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__FERNET_KEY: ${FERNET_KEY}
+      AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY}2'
+    volumes:
+      - ../dags:/opt/airflow/dags
+      - ../requirements.txt:/requirements.txt
+    depends_on:
+      - postgres
+    networks:
+      - laboratorio-airflow-tier
+    command: >
+      bash -c "pip install -r /requirements.txt && airflow scheduler"
+
+networks:
+  laboratorio-airflow-tier:
+    driver: bridge
+
