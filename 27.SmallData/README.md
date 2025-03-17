@@ -105,6 +105,33 @@ Extensions no DuckDB são pacotes adicionais que expandem as capacidades do banc
 SELECT * FROM duckdb_extensions();
 ```
 
+
+### Utilizando CTE (Common Table Expressions)
+
+As CTEs permitem estruturar consultas complexas de maneira mais legível e organizada.
+
+#### Exemplo 1: Filtrando clientes com mais de 25 anos
+
+```sql
+WITH clientes_filtrados AS (
+    SELECT * FROM clientes WHERE idade > 25
+)
+SELECT * FROM clientes_filtrados;
+```
+
+#### Exemplo 2: Calculando total de vendas por cliente
+
+```sql
+WITH vendas_por_cliente AS (
+    SELECT cliente_id, SUM(valor) AS total_vendas 
+    FROM vendas 
+    GROUP BY cliente_id
+)
+SELECT c.nome, v.total_vendas 
+FROM clientes c
+JOIN vendas_por_cliente v ON c.id = v.cliente_id;
+```
+
 ## Ingestão de Dados no MinIO e Exportação para Parquet
 
 ```sql
