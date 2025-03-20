@@ -1,6 +1,4 @@
 
-version: '3.8'
-
 services:
   mongo1:
     container_name: mongo1
@@ -8,7 +6,7 @@ services:
     volumes:
       - ./scripts/:/scripts/
       - ./import/:/import/
-      
+
     networks:
       - mongo-network
     ports:
