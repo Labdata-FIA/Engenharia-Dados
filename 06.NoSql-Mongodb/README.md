@@ -371,7 +371,9 @@ db.produtos.find({ _id: 101})
 
 ## Excluindo documentos
 
+```
 db.produtos.remove({_id: 101})
+```
 
 ## Cluster
 
