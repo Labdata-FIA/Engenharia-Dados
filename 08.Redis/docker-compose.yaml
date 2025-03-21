@@ -1,13 +1,11 @@
-version: '3'
-
 services:
   redis-stack:
-    image: redis/redis-stack
+    image: redis/redis-stack:7.4.0-v3
     container_name: redis
     hostname: redis
     ports:
       - "6379:6379"
-      - "8001:8001" 
+      - "8001:8001"
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
     - ./redis.conf:/usr/local/etc/redis/redis.conf
@@ -17,7 +15,7 @@ services:
       - redis-net
 
   redisinsight:
-    image: redislabs/redisinsight  
+    image: redislabs/redisinsight:2.66.0
     container_name: redisinsight
     hostname: redislabs
     ports:
