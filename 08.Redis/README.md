@@ -210,7 +210,7 @@ hget aluno-10 idade
 hget aluno-10 bairro
 
 //A cada ano o Fabio faz aniversário
- HINCRBY aluno-10 idade 1
+HINCRBY aluno-10 idade 1
 
 HDEL aluno-10 rua
 
@@ -388,5 +388,11 @@ redis-cli -h 127.0.0.1 -p 6379 -a "labdata"
 publish ConcessionariaBMW-B-TemX1 nao
 
 
+```
+
+# Remover os containers
+
+```
+docker-compose down
 ```
 
