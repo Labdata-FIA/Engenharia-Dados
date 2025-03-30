@@ -540,6 +540,27 @@ services:
     networks:
       otel:
 
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    depends_on:
+      - minio
+    platform: linux/amd64
+    container_name: clickhouse
+    hostname: clickhouse
+    ports:
+      - "18123:8123"
+      - "29000:9000"
+    environment:
+      CLICKHOUSE_DB: "datalab"
+      CLICKHOUSE_USER: "admin"
+      CLICKHOUSE_PASSWORD: "admin"
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
+    volumes:
+      - ./25.Olap/s3.xml:/etc/clickhouse-server/config.d/config.xml
+      - ./25.Olap/data:/data  
+    networks:
+      otel:
+
 
 networks:
   otel:
