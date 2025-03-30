@@ -8,6 +8,8 @@
 ## Pré-requisitos?
 * Docker
 * Docker-Compose
+* https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv
+* https://raw.githubusercontent.com/plotly/datasets/refs/heads/master/2015_flights.parquet
 
 # Introdução ao OLAP
 
