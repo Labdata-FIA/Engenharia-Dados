@@ -14,7 +14,7 @@
 
 # Instalação Kafka 
 
-[LAB EDA](lab-eda//README.md)
+[LAB EDA](..//README.md)
 
 
 # Criando um arquiro AsynAPI
