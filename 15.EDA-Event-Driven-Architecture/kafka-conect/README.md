@@ -12,7 +12,7 @@
 
 # Instalação Kafka 
 
-[LAB EDA](lab-eda//README.md)
+[LAB EDA](..//README.md)
 
 
 ## Kafka Connect
@@ -55,7 +55,7 @@ docker image push <<conta>>/kafka-connet-debezium-lab
 ```
 cd ..
 cd ambiente
-docker-compose up -d kafka-broker zookeeper connect 
+docker compose up -d kafka-broker zookeeper connect 
 ```
 
 Container  criado? Vamos ver!
@@ -79,7 +79,7 @@ Será utilizado o connector debezium para sql server, ele faz a leitura do banco
 > Para nossa exemplo iremos subir um banco de dados, caso já tenha um banco habilitado o CDC pode-se usar ele. Mais detalhes do que é Sql Server CDC, https://docs.microsoft.com/pt-br/sql/relational-databases/track-changes/about-change-data-capture-sql-server?view=sql-server-ver15
 
 ```
-docker-compose up -d sqlserver
+docker compose up -d sqlserver
 ```
 
 Para esse tutorial vamos utilizar a imagem sql server da Microsoft `mcr.microsoft.com/mssql/server:2019-latest`. Para criar a estrutura dos dados estou utilizando o próprio container criado.
@@ -101,7 +101,7 @@ docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd -U sa -P $SA_PASSWORD -C 
 ### Provisionando Banco de dados Postgres e PgAdmin
 
 ```
-docker-compose up -d postgres pgadmin
+docker compose up -d postgres pgadmin
 ```
 
 Acesso o PgAdmin http://localhost:5433/

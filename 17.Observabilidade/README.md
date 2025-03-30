@@ -115,7 +115,7 @@ docker exec -it kafkaConect curl  http://localhost:8083/connectors/connector-sql
 Vamos tirar o comentario do conector no serviço akhq do arquivo docker-compose caso ainda o tenha.
 
 ```
-docker-compose up -d akhq
+docker compose up -d akhq
 ```
 
 * AKHQ http://localhost:8080/ui
@@ -193,7 +193,7 @@ Executando a aplicação Net para leitura das mensagens em Kafka
 
 
 ```
-docker-compose up -d kafka-net-api-obs kafka-net-worker-obs
+docker compose up -d kafka-net-api-obs kafka-net-worker-obs
 
 ```
 

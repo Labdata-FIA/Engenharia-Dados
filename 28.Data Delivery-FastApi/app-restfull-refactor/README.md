@@ -267,7 +267,7 @@ docker container rm  fast-api-fia -f
 
 docker image rm fia_fastapi
 
-docker compose down api && docker-compose build api --no-cache && docker-compose up -d api
+docker compose down api && docker-compose build api --no-cache && docker compose up -d api
 
 docker image ls
 
@@ -284,7 +284,7 @@ docker image rm fia_fastapi
 
 docker compose down 
 docker-compose build --no-cache 
-docker-compose up -d
+docker compose up -d
 
 docker image ls
 

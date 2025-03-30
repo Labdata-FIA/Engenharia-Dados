@@ -11,7 +11,7 @@
 
 ## Instalação Kafka 
 
-[LAB EDA](lab-eda//README.md)
+[LAB EDA](..//README.md)
 
 
 ## Deploy Aplicação Net Producer
@@ -56,7 +56,7 @@ Provisionando o container da imagem criada anteriormente.
 
 cd ambiente
 
-docker-compose up -d kafka-net
+docker compose up -d kafka-net
 
 docker container ls
 

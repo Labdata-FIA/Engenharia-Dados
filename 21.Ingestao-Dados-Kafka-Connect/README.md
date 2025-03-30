@@ -58,7 +58,7 @@ No diretório `/lab-eda/ambiente` execute o comando abaixo
 ```
 cd ../lab-eda/ambiente/
 
-docker-compose up -d grafana prometheus jmx-kafka-broker zookeeper kafka-broker zoonavigator akhq connect postgres pgadmin minio mc
+docker compose up -d grafana prometheus jmx-kafka-broker zookeeper kafka-broker zoonavigator akhq connect postgres pgadmin minio mc
 
 docker container ls
 ```
@@ -154,7 +154,7 @@ Vamos tirar o comentario do conector no serviço akhq do arquivo docker-compose 
 
 ```
 cd ../lab-eda/ambiente/
-docker-compose up -d akhq
+docker compose up -d akhq
 ```
 
 
