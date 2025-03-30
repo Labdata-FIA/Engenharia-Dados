@@ -24,7 +24,7 @@ O arquivo `docker-compose.yml` configura dois serviços em um ambiente Docker Co
 
 - **Iniciar todos os serviços**:
   ```bash
-  docker-compose up -d
+  docker compose up -d
   ```
   O `-d` significa "desanexado" e executa os contêineres em segundo plano.
 

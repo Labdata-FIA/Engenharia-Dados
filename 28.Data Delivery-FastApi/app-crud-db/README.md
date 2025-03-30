@@ -378,7 +378,7 @@ docker container rm  fast-api-fia -f
 
 docker image rm fia_fastapi
 
-docker-compose up -d api
+docker compose up -d api
 
 docker image ls
 
@@ -393,7 +393,7 @@ docker container rm  fast-api-fia -f
 
 docker image rm fia_fastapi
 
-docker-compose up -d api
+docker compose up -d api
 
 docker image ls
 
