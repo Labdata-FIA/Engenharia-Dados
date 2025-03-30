@@ -1,3 +1,14 @@
+# Lab DuckDB
+
+
+## Disclaimer
+> **As configurações dos Laboratórios é puramente para fins de desenvolvimento local e estudos**
+
+
+## Pré-requisitos?
+* Docker
+* Docker-Compose
+
 # Introdução ao DuckDB
 
 DuckDB é um banco de dados OLAP embutido, projetado para consultas analíticas de alto desempenho em tabelas de colunas. Ele é eficiente para trabalhar com arquivos de dados locais como CSV, Parquet e JSON, sendo uma ótima alternativa para workloads analíticos em notebooks e pipelines de dados.
@@ -27,6 +38,9 @@ DuckDB é um banco de dados OLAP embutido, projetado para consultas analíticas 
 ### Criando um banco de dados e uma tabela
 
 ```sh
+
+docker compose up -d duckdb
+
 docker exec -it duckdb bash
 
 duckdb
