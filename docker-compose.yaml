@@ -561,7 +561,42 @@ services:
     networks:
       otel:
 
-
+  cassandra:
+    image: cassandra:latest
+    platform: linux/amd64
+    container_name: cassandra
+    hostname: cassandra
+    environment:
+      CQLSH_HOST: cassandra 
+      CQLSH_PORT: 9042 
+      CQLVERSION: 3.4.6
+      CASSANDRA_CLUSTER_NAME: datalab
+    ports:
+      - "9042:9042"
+      - "17000:7000"
+      - "10001:10000"
+    volumes:
+      - ./util:/util
+      - ./cassandra/data/:/var/lib/cassandra
+    networks:
+      otel:
+ 
+  cassandra-web:
+    image: ipushc/cassandra-web
+    platform: linux/amd64
+    container_name: cassandra-web
+    depends_on:
+      - cassandra
+    ports:
+      - 13000:80
+    environment:
+      CASSANDRA_HOST: cassandra
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USER: cassandra
+      CASSANDRA_PASSWORD: cassandra 
+      HOST_PORT: ":80"  
+    networks:
+      otel:
 networks:
   otel:
 
