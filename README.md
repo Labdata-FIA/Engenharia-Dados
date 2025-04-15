@@ -1,5 +1,5 @@
 
-# Laboratórios do curso Arquitetura de DADOS
+# Laboratórios MBA Big Data Engineering
 
 ---
 ## Disclaimer
