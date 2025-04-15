@@ -1,18 +1,4 @@
-# Licensed to the Apache Software Foundation (ASF) under one or more
-# contributor license agreements. See the NOTICE file distributed with
-# this work for additional information regarding copyright ownership.
-# The ASF licenses this file to You under the Apache License, Version 2.0
-# (the "License"); you may not use this file except in compliance with
-# the License. You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-version: '2.4'
+version: '3.7'
 services:
   grafana:
     image: "grafana/grafana:${GRAFANA_VERSION}"
@@ -30,7 +16,7 @@ services:
      - tempo
      - loki    
     networks:
-      otel:
+      rede_fia:
 
   prometheus:
     image: "prom/prometheus:${PROMETHEUS_VERSION}"
@@ -41,10 +27,10 @@ services:
     command: "--config.file=/etc/prometheus/prometheus.yml"
     container_name: prometheus
     networks:
-      otel:
+      rede_fia:
 
   jmx-kafka-broker:
-    image: "sscaling/jmx-prometheus-exporter"
+    image: "sscaling/jmx-prometheus-exporter:${PROMETHEUS_EXPORTER_VERSION}"
     ports:
      - "5556:5556"
     environment:
@@ -56,7 +42,7 @@ services:
     depends_on:
      - kafka-broker
     networks:
-      otel:
+      rede_fia:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:${CONFLUENT_VERSION}
@@ -69,7 +55,7 @@ services:
      - "2181:2181"
     container_name: zookeeper
     networks:
-      otel:
+      orede_fiatel:
 
   kafka-broker:
     image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
@@ -78,7 +64,6 @@ services:
     ports:
       - "9092:9092"
       - "9991:9991"
-
     container_name: kafka-broker
     environment:
       KAFKA_BROKER_ID: 101
@@ -97,7 +82,7 @@ services:
       KAFKA_HEAP_OPTS: ${KAFKA_BROKER_HEAP_OPTS}
     mem_limit: ${KAFKA_BROKER_MEM_LIMIT}
     networks:
-      otel:
+      rede_fia:
 
   zoonavigator:
     image: elkozmon/zoonavigator:${ZOONAVIGATOR_VERSION}
@@ -110,7 +95,7 @@ services:
     depends_on:
       - zookeeper
     networks:
-      otel:
+      rede_fia:
 
   akhq:
     image: tchiotludo/akhq:${AKHQ_VERSION}
@@ -137,7 +122,7 @@ services:
       - kafka-broker    
       - connect
     networks:
-      otel:
+      rede_fia:
 
   kafka-net:
       image: fernandos/kafka-net:v0
@@ -149,7 +134,7 @@ services:
       ports:
         - "5000:80"
       networks:
-        otel:
+        rede_fia:
 
   kafka-net-api-obs:
       image: fernandos/kafka-net-api-obs:v1
@@ -160,7 +145,7 @@ services:
       ports:
         - "5000:80"
       networks:
-        otel:
+        rede_fia:
 
   kafka-net-worker-obs:
       image: fernandos/kafka-net-worker-obs:v1
@@ -170,18 +155,18 @@ services:
           - otel-collector   
           - kafka-net-api-obs        
       networks:
-        otel:
+        rede_fia:
 
   mongo:
-    image: mongo:3.4.23
+    image: mongo:${MONGO_VERSION}
     container_name: microcks-db
     volumes:
       - "~/tmp/microcks-data:/data/db"
     networks:
-      otel:
+      rede_fia:
 
   keycloak:
-    image: quay.io/keycloak/keycloak:20.0.2
+    image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
     container_name: microcks-sso
     ports:
       - "18080:8080"
@@ -195,13 +180,13 @@ services:
     command:
       - start-dev --import-realm
     networks:
-      otel:
+      rede_fia:
 
   postman:
-    image: quay.io/microcks/microcks-postman-runtime:latest
+    image: quay.io/microcks/microcks-postman-runtime:${MICROCKS_POSTMAN_RUNTIME_VERSION}
     container_name: microcks-postman-runtime
     networks:
-      otel:
+      rede_fia:
 
   app:
     depends_on:
@@ -209,7 +194,7 @@ services:
       - keycloak
       - postman
       - kafka-broker
-    image: quay.io/microcks/microcks:1.7.1
+    image: quay.io/microcks/microcks:${MICROCKS_VERSION}
     container_name: microcks
     volumes:
       - "./config:/deployments/config"
@@ -228,7 +213,7 @@ services:
       - ASYNC_MINION_URL=http://microcks-async-minion:8081
       - KAFKA_BOOTSTRAP_SERVER=kafka-broker:29092
     networks:
-      otel:
+      rede_fia:
 
   async-minion:
     depends_on:
@@ -236,7 +221,7 @@ services:
       - kafka-broker
     ports:
       - "8081:8081"
-    image: quay.io/microcks/microcks-async-minion:1.7.1
+    image: quay.io/microcks/microcks-async-minion:${MICROCKS_ASYNC_MINIO_VERSION}
     container_name: microcks-async-minion
     restart: on-failure
     volumes:
@@ -244,7 +229,7 @@ services:
     environment:
       - QUARKUS_PROFILE=docker-compose
     networks:
-      otel:
+      rede_fia:
 
   connect:
         image: fernandos/kafka-connet-debezium-lab:v215
@@ -279,10 +264,10 @@ services:
         - STRIMZI_TRACING=opentelemetry      
         command: /opt/kafka/kafka_connect_run.sh
         networks:
-          otel:
+          rede_fia:
 
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-CU28-GDR1-ubuntu-20.04
+    image: mcr.microsoft.com/mssql/server:${SQL_VERSION}
     container_name: sqlserver
     ports:
      - 1433:1433
@@ -295,7 +280,7 @@ services:
     volumes:
       - /sql/init.sql:/opt/sql_scripts/init.sql
     networks:
-      otel:
+      rede_fia:
 
   sqlserver2:
     image: mcr.microsoft.com/mssql/server:2019-CU27-ubuntu-20.04
@@ -311,7 +296,7 @@ services:
     volumes:
       - /sql/init.sql:/opt/sql_scripts/init.sql
     networks:
-      otel:
+      rede_fia:
 
   postgres:
     image: quay.io/debezium/example-postgres:${POSTGRES_DEBEZIUM}
@@ -322,11 +307,11 @@ services:
      - POSTGRES_USER=postgres
      - POSTGRES_PASSWORD=postgres
     networks:
-      otel:
+      rede_fia:
 
   pgadmin:
     container_name: pgadmin_container
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:${PAGADMIN_VERSION}
     environment:
       PGADMIN_DEFAULT_EMAIL: lab-pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: postgres    
@@ -335,15 +320,15 @@ services:
     depends_on:
       - postgres    
     networks:
-      otel:
+      rede_fia:
 
   mongo-connect:
-    image: mongo:3.4.23
+    image: mongo:${MONGO_VERSION}
     container_name: mongo-connect
     volumes:
       - "~/tmp/mongodbdata:/data/db"
     networks:
-      otel:
+      rede_fia:
 
   ksqldb-server:
     image: confluentinc/cp-ksqldb-server:${KSQLDB_VER}
@@ -362,7 +347,7 @@ services:
     volumes:
       - ./scripts:/scripts
     networks:
-      otel: 
+      rede_fia: 
 
 
   minio-nifi:
@@ -376,10 +361,10 @@ services:
       MINIO_ROOT_PASSWORD: minioadmin
     command: server --console-address ":9001" /data
     networks:
-      otel:
+      rede_fia:
 
   minio:
-    image:  quay.io/minio/minio
+    image:  quay.io/minio/minio:${MINIO_VERSION}
     container_name: minio
     ports:
       - "9000:9000"
@@ -396,10 +381,10 @@ services:
       MINIO_NOTIFY_KAFKA_TLS_EventKafka: "off"
     command: server --console-address ":9001" /data
     networks:
-      otel:
+      rede_fia:
 
   mc:
-    image: minio/mc:latest
+    image: minio/mc:${MINIO_MC_VERSION}
     container_name: mc
     depends_on:
       - minio
@@ -413,7 +398,7 @@ services:
      
       sleep 3000 "
     networks:
-      otel:    
+      rede_fia:    
 
 
   ksqldb-cli:
@@ -427,7 +412,7 @@ services:
     entrypoint: /bin/sh
     tty: true
     networks:
-      otel:
+      rede_fia:
 
   schema-registry:
     image: "confluentinc/cp-schema-registry:${CONFLUENT_VERSION}"
@@ -444,10 +429,10 @@ services:
       SCHEMA_REGISTRY_AVRO_COMPATIBILITY_LEVEL: "none"
       SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: "WARN"
     networks:
-      otel:
+      rede_fia:
 
   tempo:
-    image: grafana/tempo:2.0.1
+    image: grafana/tempo:${TEMPO_VERSION}
     container_name: tempo
     command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:   
@@ -461,10 +446,10 @@ services:
     depends_on:
       - otel-collector
     networks:
-      otel:
+      rede_fia:
 
   loki:
-    image: grafana/loki:2.8.0
+    image: grafana/loki:${LOKI_VERSION}
     container_name: loki
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
@@ -475,12 +460,12 @@ services:
     ports:
       - 3100:3100
     networks:
-      otel:
+      rede_fia:
 
   otel-collector:    
     container_name: otel
     hostname: otel
-    image: otel/opentelemetry-collector-contrib:0.75.0
+    image: otel/opentelemetry-collector-contrib:${OPEN_TELEMETRY_VESION}
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
       - ./otel/otel.yml:/etc/otel-collector-config.yaml
@@ -492,15 +477,15 @@ services:
       - 9201:55679  # zpages
       - 13133:13133 # Health check
     networks:
-      otel:
+      rede_fia:
   
   jaeger-all-in-one:
     container_name: jaeger
-    image: jaegertracing/all-in-one:latest
+    image: jaegertracing/all-in-one:${JAEGER_VERSION}
     ports:
       - "16686:16686"
     networks:
-      otel:
+      rede_fia:
 
 
 
@@ -520,7 +505,7 @@ services:
     ports:
       - 9443:9443        
     networks:
-      otel:
+      rede_fia:
 
   duckdb:
     build: ./27.SmallData
@@ -538,10 +523,10 @@ services:
       - ./27.SmallData:/home/src/  
     command: jupyter notebook --ip 0.0.0.0 --port 8085 --allow-root 
     networks:
-      otel:
+      rede_fia:
 
   clickhouse:
-    image: clickhouse/clickhouse-server
+    image: clickhouse/clickhouse-server${CLICK_HOUSE_VERSION}
     depends_on:
       - minio
     platform: linux/amd64
@@ -559,10 +544,10 @@ services:
       - ./25.Olap/s3.xml:/etc/clickhouse-server/config.d/config.xml
       - ./25.Olap/data:/data  
     networks:
-      otel:
+      rede_fia:
 
   cassandra:
-    image: cassandra:latest
+    image: cassandra:${CASSANDRA_VERSION}
     platform: linux/amd64
     container_name: cassandra
     hostname: cassandra
@@ -579,10 +564,10 @@ services:
       - ./util:/util
       - ./cassandra/data/:/var/lib/cassandra
     networks:
-      otel:
+      rede_fia:
  
   cassandra-web:
-    image: ipushc/cassandra-web
+    image: ipushc/cassandra-web:${CASSANDRA_WEB_VERSION}
     platform: linux/amd64
     container_name: cassandra-web
     depends_on:
@@ -596,9 +581,10 @@ services:
       CASSANDRA_PASSWORD: cassandra 
       HOST_PORT: ":80"  
     networks:
-      otel:
+      rede_fia:
+
 networks:
-  otel:
+  rede_fia:
 
 volumes:
   minio_storage: {}
