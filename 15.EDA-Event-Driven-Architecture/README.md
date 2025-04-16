@@ -9,5 +9,5 @@
 * Docker
 * Docker-Compose
 
- [LAB EDA - Microcks](microcks/README.md)
- [LAB EDA - Ksqldb](ksqldb/README.md)
+* [LAB EDA - Microcks](microcks/README.md)
+* [LAB EDA - Ksqldb](ksqldb/README.md)
