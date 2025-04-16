@@ -176,7 +176,7 @@ services:
       KC_HOSTNAME_ADMIN_URL: "http://localhost:18080"
       KC_HOSTNAME_URL: "http://localhost:18080"
     volumes:
-      - "./keycloak-realm/microcks-realm-sample.json:/opt/keycloak/data/import/microcks-realm.json"
+      - "./15.EDA-Event-Driven-Architecture/microcks/keycloak-realm/microcks-realm-sample.json:/opt/keycloak/data/import/microcks-realm.json"
     command:
       - start-dev --import-realm
     networks:
@@ -197,7 +197,7 @@ services:
     image: quay.io/microcks/microcks:${MICROCKS_VERSION}
     container_name: microcks
     volumes:
-      - "./config:/deployments/config"
+      - "./15.EDA-Event-Driven-Architecture/microcks/config:/deployments/config"
     ports:
       - "8080:8080"
       - "9090:9090"
@@ -582,6 +582,7 @@ services:
       HOST_PORT: ":80"  
     networks:
       rede_fia:
+
 
 networks:
   rede_fia:
