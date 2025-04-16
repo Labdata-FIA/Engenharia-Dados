@@ -26,7 +26,6 @@
 ## Iniciando seus ambientes `kafka-broker`, `zookeeper`, `connect` e  `ksqldb-server ksqldb-cli`.
 
 ```bash
- cd lab-eda/ambiente/
 docker compose up -d kafka-broker zookeeper  connect ksqldb-server ksqldb-cli 
 ```
 

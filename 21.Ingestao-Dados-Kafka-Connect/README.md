@@ -53,10 +53,8 @@ Imagem criada? ...mas antes
 Altere o arquivo ambiente/docker-compose.yaml da imagem criada no serviço `connect`
 
 
-No diretório `/lab-eda/ambiente` execute o comando abaixo
 
 ```
-cd ../lab-eda/ambiente/
 
 docker compose up -d grafana prometheus jmx-kafka-broker zookeeper kafka-broker zoonavigator akhq connect postgres pgadmin minio mc
 

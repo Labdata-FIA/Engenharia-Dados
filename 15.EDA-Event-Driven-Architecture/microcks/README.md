@@ -18,15 +18,10 @@
 ## Instalando o Microcks
 
 
-```bash
-//Entrar na pasta lab-eda
-cd lab-eda 
-```
-
 Execute o docke-compose no Terminal
 
 ```bash
-docker compose -f ambiente/docker-compose.yaml  up -d zookeeper kafka-broker mongo keycloak postman app async-minion 
+docker compose up -d zookeeper kafka-broker mongo keycloak postman app async-minion 
 
 ```
 
