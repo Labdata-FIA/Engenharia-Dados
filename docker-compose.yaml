@@ -526,7 +526,7 @@ services:
       rede_fia:
 
   clickhouse:
-    image: clickhouse/clickhouse-server${CLICK_HOUSE_VERSION}
+    image: clickhouse/clickhouse-server:${CLICK_HOUSE_VERSION}
     depends_on:
       - minio
     platform: linux/amd64
