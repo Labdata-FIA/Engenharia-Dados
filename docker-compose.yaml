@@ -55,7 +55,7 @@ services:
      - "2181:2181"
     container_name: zookeeper
     networks:
-      orede_fiatel:
+      rede_fia:
 
   kafka-broker:
     image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
