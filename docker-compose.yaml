@@ -627,6 +627,32 @@ services:
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "db-replica-set" ]
 
 
+  redis-stack:
+    image: redis/redis-stack:${REDIS_VERSION}
+    container_name: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+    - ./08.Redis/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+     REDIS_ARGS: --requirepass labdata
+    networks:
+      - rede_fia
+
+  redisinsight:
+    image: redislabs/redisinsight:${REDIS_INSIGHT_VERSION}
+    container_name: redisinsight
+    hostname: redislabs
+    ports:
+       - "8002:8001"  # Porta do RedisInsight (note que está exposta na porta 8002 no host)
+    depends_on:
+     - redis-stack
+    networks:
+      - rede_fia
+
 networks:
   rede_fia:
 
