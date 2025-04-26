@@ -583,6 +583,49 @@ services:
     networks:
       rede_fia:
 
+  mongo1:
+    container_name: mongo1
+    image: mongo:${MONGO_REPLICASET_VERSION}
+    volumes:
+      - ./06.NoSql-Mongodb/scripts/:/scripts/
+      - ./06.NoSql-Mongodb/import/:/import/
+    networks:
+      - rede_fia
+    ports:
+      - 27017:27017
+    depends_on:
+      - mongo2
+      - mongo3
+    links:
+      - mongo2
+      - mongo3
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "db-replica-set" ]
+
+  mongo2:
+    container_name: mongo2
+    image: mongo:${MONGO_REPLICASET_VERSION}
+    volumes:
+       - ./06.NoSql-Mongodb/import/:/import/
+    networks:
+      - rede_fia
+    ports:
+      - 27018:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "db-replica-set" ]
+
+  mongo3:
+    container_name: mongo3
+    image: mongo:${MONGO_REPLICASET_VERSION}
+    volumes:
+       - ./06.NoSql-Mongodb/import/:/import/
+    networks:
+      - rede_fia
+    ports:
+      - 27019:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "db-replica-set" ]
+
 
 networks:
   rede_fia:
