@@ -28,7 +28,7 @@ O Arquivo `docker-compose` provisiona cluster de mongodb com replica set de 3 in
 ## Executando réplica set Monogodb
 
 ```
-docker compose up -d
+docker compose up -d mongo1 mongo2 mongo3
 ```
 Verificando se os containers foram criados com sucesso
 
