@@ -44,64 +44,54 @@ Verificando as imagens que foram feitas download do docker-hub
 
 > Os nomes da replica-set foi definido dentro do arquivo docker-compose.yml
 
-```
+```JavaScript
 
 docker exec -it mongo1 /bin/bash
 
 
-mongo --port 27017
+mongosh
 
 rs.initiate(
   {
     _id: "db-replica-set",
     members: [
-      { _id: 0, host: "mongo1:27017" } ,
-      { _id: 1, host: "mongo2:27017" } ,
-      { _id: 2, host: "mongo3:27017" } 
+      { _id: 0, host: "mongo1:27017",  priority: 2} ,
+      { _id: 1, host: "mongo2:27017" , priority: 1} ,
+      { _id: 2, host: "mongo3:27017" , priority: 1} 
     ]
   }
 )
 
-
 rs.config()
 
+rs.status()
 
 ```
 Vamos executar alguns comandos de dentro do cluster mongo1 para configurar as tags
 
-Acessar o Shell do container mongo1
-
-```
-//Se tiver fora do container
-docker exec -it mongo1 sh -c "mongo --port 27017"
-```
-ou
-```
-//dentro do container
-mongo --port 27017
-```
-
 
 Verificando os bancos de dados existentes
-```
+
+```JavaScript
 show dbs
 ```
 
 Apontando ou criando um banco no mongodb
-```
+
+```JavaScript
 use dbcursofia
 ```
 
 Criando um documento simples
 
 
-```
+```JavaScript
 db.lab.insert({produto: "lapis", categoria: "papelaria"})
-
 ```
 
 Lista as collections do banco local selecionado
-```
+
+```JavaScript
 show collections
 ```
 
@@ -109,14 +99,13 @@ show collections
 Outra forma de inserir um documento simples
 
 
-```
+```JavaScript
  db.getCollection("lab").insert({produto: "lapis", categoria: "papelaria"})
-
 ```
 
 Criado as tags para organização das réplicas:
 
-```
+```JavaScript
 conf = rs.conf()
 conf.members[0].tags = { "dc": "SP"}
 conf.members[1].tags = { "dc": "SP"}
@@ -131,13 +120,13 @@ rs.config().members;
 
 Verificando status do server
 
-```
+```JavaScript
 db.serverStatus()
 ```
 
 ## Inserindo documentos
 
-```
+```JavaScript
 for (var i = 1; i <= 100; i++) db.lab.insert({produto: "produto-" + i , categoria: "papelaria"})
 DBQuery.shellBatchSize = 300
 db.lab.find()
@@ -145,18 +134,18 @@ db.lab.count()
 ```
 
 Inserindo sem o ID
-```
+```JavaScript
 db.produtos.insert( { Produto: "Celular", Preco: 10 } )
 ```
 
 Inserindo com o ID (_id)
-```
+```JavaScript
 db.produtos.insert( {_id: 1,  Produto: "Celular", Preco: 10 } )
 db.produtos.find()
 ```
 
 Inserindo multiplos documentos
-```
+```JavaScript
 db.produtos.insert(
    [
      { _id: 10, Produto: "TV", preco: 1.99 },
@@ -176,23 +165,24 @@ db.produtos.insert(
 ## Consultando documentos
 
 Busca todos os documentos
-```
+```JavaScript
 db.produtos.find()
 ```
+
 Buscando com o operador `igual`
-```
+```JavaScript
 db.produtos.find( { Produto: "Geladeira" } )
 ```
 Buscando com o operador `igual` com mais de um campo
 
-```
+```JavaScript
 db.produtos.find( { Produto: "Geladeira", preco:3400 } )
 db.produtos.find( { Produto: "Geladeira", preco:3400 } ).pretty()
 
 ```
 
 Buscando com o operador `Range`
-```
+```JavaScript
 db.produtos.find( { preco: { $gt: 1000, $lt: 5000 } } );
 ```
 
@@ -210,12 +200,12 @@ Alguns operadores
 
 
 Buscando com o operador `Like`
-```
+```JavaScript
 db.produtos.find({"Produto":/Computador/});
 ```
 
 Tipos de `Likes`
-```
+```JavaScript
 db.produtos.find({"Produto":/Computador/}); // Like '%Computador%'
 db.produtos.find({Produto: /^Ge/}); // Like 'Ge%'
 db.produtos.find({Produto: /Melhor$/}); // Like '%Melhor'
@@ -229,7 +219,7 @@ O Arquivo `mongo-import.sh`  vai ler os arquivos csv e importar para o mongodb u
 https://www.mongodb.com/docs/database-tools/mongoimport/
 
 
-```
+```JavaScript
 //Para sair do cluster mongodb
 exit
 
@@ -243,7 +233,7 @@ cd import
 ./mongo-import.sh
 
 //Entrar no cluster novamente
- mongo --port 27017
+ mongosh
 
 //Ver os banco de dados
 show dbs
@@ -262,7 +252,7 @@ db.orders.find()
 
 Usando o comando `explain` para extrair informações importantes de uma consulta.
 
-```
+```JavaScript
 db.orders.find({"CustomerID" :"BONAP"}).explain();
 ```
 
@@ -271,7 +261,7 @@ Mais informações em: https://www.mongodb.com/docs/manual/reference/explain-res
 ## Collection Capped
 
 Verifiando se a collection é do tipo Capped
-```
+```JavaScript
 use dbcursofia
 db.produtosCa.insert( {_id: 1,  Produto: "Celular", Preco: 10 } )
 db.produtosCa.isCapped()
@@ -279,14 +269,14 @@ db.produtosCa.isCapped()
 
 Convertendo uma collection para Capped
 
-```
+```JavaScript
 db.runCommand({"convertToCapped": "produtosCa", size: 100000});
 db.produtosCa.isCapped()
 ```
 
 Criando uma collection
 
-```
+```JavaScript
 db.createCollection("colecaonova", { capped : true, size : 5242880, max : 5000 } )
 db.colecaonova.isCapped()
 ```
@@ -298,7 +288,7 @@ db.collection.ensureIndex(
 <campo2> : <ordem>,
 ...} );
 
-```
+```JavaScript
 use sample
 db.orders.ensureIndex({ CustomerID : 1});
 
@@ -306,37 +296,38 @@ db.orders.find({"CustomerID" :"BONAP"}).explain("executionStats");
 ```
 
 Listar os índices criados
-```
+```JavaScript
 db.orders.getIndexes();
 ```
 
 Remover um índice criado
-```
+```JavaScript
 db.orders.dropIndex("<<nome do indice>");
 ```
 
 ## Alterando documentos
 
 Atualizando o documento todo
-```
+```JavaScript
 use dbcursofia
 db.produtos.update( { _id: 10} , {Produto: "TV 30 polegadas", preco: 10.99 })
 ```
 
 Atualizando uma entidade do documento
-```
+```JavaScript
 db.produtos.update({_id : 10}, {$set:{ "Produto": "TV 30 polegadas - Alterada" }})
 ```
 
 Criando um atributo no documento
-```
+
+```JavaScript
 db.produtos.update({_id : 10}, {$inc:{ "ranking": 10}})
 db.produtos.find({_id:10})
 ```
 
 Atualizando vários documentos
 
-```
+```JavaScript
 db.produtos.find({ Produto: "Geladeira"})
 db.produtos.update( { Produto: "Geladeira"} , { $set: { preco: 10000} })
 db.produtos.find({ Produto: "Geladeira"})
@@ -347,7 +338,7 @@ db.produtos.find({ Produto: "Geladeira"})
 
 Precisamos habilitar a atualização para multiplos documentos
 
-```
+```JavaScript
 db.produtos.update( { Produto: "Geladeira"} , { $set: { preco: 10000}  }, { multi: true })
 db.produtos.find({ Produto: "Geladeira"})
  
@@ -356,7 +347,7 @@ db.produtos.find({ Produto: "Geladeira"})
 Se o documento não for encontrado ? 
 Adiciona documento se update não tem o filtro existente
 
-```
+```JavaScript
 
 db.produtos.update(
    {_id : 101},
@@ -371,7 +362,7 @@ db.produtos.find({ _id: 101})
 
 ## Excluindo documentos
 
-```
+```JavaScript
 db.produtos.remove({_id: 101})
 ```
 
@@ -379,20 +370,20 @@ db.produtos.remove({_id: 101})
 
 Verificando o status do cluster
 
-```
+```JavaScript
 rs.status();
 ```
 
 Criando um usuário
 
-```
+```JavaScript
 db.createUser({user: 'admin', pwd: 'admin', roles: [ { role: 'root', db: 'admin' } ]});
 ```
 
 
 Exibir operações rodando
 
-```
+```JavaScript
 db.currentOp();
 
 ```
