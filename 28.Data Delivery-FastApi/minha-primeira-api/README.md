@@ -23,20 +23,6 @@ touch Dockerfile
 touch requirements.txt
 ```
  
- ### Terminal do Powershell
-```powershell
-mkdir app
-
-# Cria um objeto de codificação UTF-8 sem BOM
-$utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($false)
-
-[System.IO.File]::WriteAllText("app/main.py", "", $utf8NoBomEncoding)
-[System.IO.File]::WriteAllText("Dockerfile", "", $utf8NoBomEncoding)
-[System.IO.File]::WriteAllText("requirements.txt", "", $utf8NoBomEncoding)
-
-
-```
-
 //Após a criação da estrutura das pastas o Visual Studio Code deve ficar assim
 
 ![Estrutura](../../content/lab-fastapi-01.png)

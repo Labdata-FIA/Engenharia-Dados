@@ -80,25 +80,16 @@ docker exec -it kafkaConect curl  http://localhost:8083/connector-plugins
 Executando os scripts
 
 ```
-//Linux
+
 export  SA_PASSWORD=Password!
 cat sql/init.sql | docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd -U sa -P $SA_PASSWORD -C
 
-//PowerShell
-$SA_PASSWORD = "Password!"
-Get-Content sql/init.sql | docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd -U sa -P $SA_PASSWORD -C
-
 ```
 
 
 ```
-//Linux
+
 curl -X PUT -d @connect/conector-sql.json http://localhost:8083/connectors/connector-sql/config -H 'Content-Type: application/json' -H 'Accept: application/json'
-
-
- //ou no PowerShell - Windows
-
- $response = Invoke-WebRequest -Uri "http://localhost:8083/connectors/connector-sql/config" -Method Put -Body (Get-Content -Path "connect/conector-sql.json" -Raw) -ContentType "application/json"; $response.Content
 
 ```
 
@@ -120,14 +111,7 @@ docker compose up -d akhq
 
 
 ```
-
-//Linux
 export SA_PASSWORD=Password!
-
-
-//PowerShell
-$SA_PASSWORD = "Password!"
-
 
 docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd -U sa -P $SA_PASSWORD -d dbEcommerce  -Q "INSERT INTO produtos(nome,descricao)  VALUES ('Lapis','lapis de escrever');" -C
 

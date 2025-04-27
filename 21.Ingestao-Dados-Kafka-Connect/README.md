@@ -113,10 +113,6 @@ Criando o conector PostGres
 curl -X PUT -d @conector-postgres.json http://localhost:8083/connectors/connector-postgres/config -H 'Content-Type: application/json' -H 'Accept: application/json'
 
 
-//Ou via powershell
-$response = Invoke-WebRequest -Uri "http://localhost:8083/connectors/connector-postgres/config" -Method Put -Body (Get-Content -Path "conector-postgres.json" -Raw) -ContentType "application/json"; $response.Content
-
-
 ```
 
 
@@ -233,14 +229,7 @@ Instalando o conector do MinIO
 > Não esqueçam de mudar os campos  `aws.access.key.id` e `aws.secret.access.key` do arquivo `conector-minio.json`
 
 ```
-cd ../../lab-kafka-connect/
-
-curl -X PUT -d @conector-minio.json http://localhost:8083/connectors/connector-minio/config -H 'Content-Type: application/json' -H 'Accept: application/json'
-
-
-//Ou via powershell
-$response = Invoke-WebRequest -Uri "http://localhost:8083/connectors/connector-minio/config" -Method Put -Body (Get-Content -Path "conector-minio.json" -Raw) -ContentType "application/json"; $response.Content
-
+curl -X PUT -d @21.Ingestao-Dados-Kafka-Connect/conector-minio.json http://localhost:8083/connectors/connector-minio/config -H 'Content-Type: application/json' -H 'Accept: application/json'
 
 ```
 
