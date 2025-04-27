@@ -19,8 +19,7 @@ Este documento fornece instruções sobre como instalar o Docker em diferentes s
     - Após a instalação, execute o Docker Desktop.
     - Siga as instruções na tela para completar a configuração inicial.
 
-4. **Verificar a Instalação**:
-    - Abra o PowerShell ou Prompt de Comando e digite `docker --version`.
+4. **Verificar a Instalação**:  
     - Se a versão do Docker for exibida, a instalação foi bem-sucedida.
 
 ## macOS (Docker Desktop)

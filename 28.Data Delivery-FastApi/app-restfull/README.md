@@ -26,17 +26,6 @@ touch setup.py
 touch docker-compose.yaml
 ```
 
- ### Terminal do Powershell
-```powershell
-
-# Cria um objeto de codificação UTF-8 sem BOM
-$utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($false)
-
-[System.IO.File]::WriteAllText("setup.py", "", $utf8NoBomEncoding)
-[System.IO.File]::WriteAllText("docker-compose.yaml", "", $utf8NoBomEncoding)
-
-```
-
 ### Editando o arquivo `setup.py` 
 
 
@@ -228,23 +217,6 @@ docker container rm  fast-api-fia -f
 docker image rm fia_fastapi
 
 docker compose down && docker-compose build --no-cache && docker compose up -d
-
-docker image ls
-
-docker logs  fast-api-fia
-
-```
-
-### Terminal PowerShell
-```powershell
-
-docker container rm  fast-api-fia -f
-
-docker image rm fia_fastapi
-
-docker compose down 
-docker-compose build --no-cache 
-docker compose up -d
 
 docker image ls
 

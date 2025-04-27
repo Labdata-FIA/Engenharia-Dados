@@ -28,25 +28,6 @@ touch postgres/Dockerfile
 
 ```
 
- ### Terminal do Powershell
-```powershell
-
-# Cria um objeto de codificação UTF-8 sem BOM
-$utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($false)
-
-[System.IO.File]::WriteAllText("app/configs.py", "", $utf8NoBomEncoding)
-[System.IO.File]::WriteAllText("app/db.py", "", $utf8NoBomEncoding)
-
-
-mkdir postgres
-
-[System.IO.File]::WriteAllText("postgres/create-databases.sh", "", $utf8NoBomEncoding)
-[System.IO.File]::WriteAllText("postgres/Dockerfile", "", $utf8NoBomEncoding)
-
-
-```
-
-
 ### Editando o arquivo `requirements.txt` e adicionaremos mais bibliotecas
 
 
@@ -385,20 +366,5 @@ docker image ls
 docker logs  fast-api-fia 
 
 ```
-
-### Terminal PowerShell
-```powershell
-
-docker container rm  fast-api-fia -f
-
-docker image rm fia_fastapi
-
-docker compose up -d api
-
-docker image ls
-
-docker logs  fast-api-fia
-```
-
 
 * http://localhost:8000/docs

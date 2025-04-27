@@ -49,21 +49,7 @@ mkdir .github
 mkdir .github/workflows
 touch .github/workflows/pipeline.yaml
 ```
-
- ### Terminal do Powershell
-```powershell
-mkdir .github
-mkdir .github/workflows
-
-# Cria um objeto de codificação UTF-8 sem BOM
-$utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($false)
-
-[System.IO.File]::WriteAllText(".github/workflows/pipeline.yaml", "", $utf8NoBomEncoding)
-
-
-```
-
-
+ 
 ### Criando nosso pipeline editando o arquivo `pipeline.yaml`
 
 

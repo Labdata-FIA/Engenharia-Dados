@@ -31,28 +31,6 @@ touch app/routes/{__init__,aluno}.py
 
 ```
 
- ### Terminal do Powershell
-```powershell
-mkdir tests
-
-# Cria um objeto de codificação UTF-8 sem BOM
-$utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($false)
-
-[System.IO.File]::WriteAllText("tests/conftest.py", "", $utf8NoBomEncoding)
-[System.IO.File]::WriteAllText("tests/test_api.py", "", $utf8NoBomEncoding)
-
-
-mkdir app/models
-mkdir app/routes
-
-[System.IO.File]::WriteAllText("app/models/aluno.py", "", $utf8NoBomEncoding)
-[System.IO.File]::WriteAllText("app/routes/__init__.py", "", $utf8NoBomEncoding)
-[System.IO.File]::WriteAllText("app/routes/aluno.py", "", $utf8NoBomEncoding)
-
-
-```
-
-
 ### Editando o arquivo `requirements.txt` e adicionando mais bibliotecas
 
 
@@ -273,22 +251,6 @@ docker image ls
 
 docker logs  fast-api-fia 
 
-```
-
-### Terminal PowerShell
-```powershell
-
-docker container rm  fast-api-fia -f
-
-docker image rm fia_fastapi
-
-docker compose down 
-docker-compose build --no-cache 
-docker compose up -d
-
-docker image ls
-
-docker logs  fast-api-fia
 ```
 
 > [!IMPORTANT]
