@@ -79,6 +79,24 @@ docker compose up -d minio
 > http://localhost:9001/browser
 
 
+![Minio](../content/clickhouse-minio-01.png)
+
+![Minio](../content/clickhouse-minio-02.png)
+
+
+
+### Subindo o container clickhouse
+```sh
+docker compose up -d clickhouse
+```
+
+### Configurando a conexão com Clickhouse
+![Minio](../content/clickhouse-00.png)
+
+
+![Minio](../content/clickhouse-01.png)
+
+![Minio](../content/clickhouse-0.png)
 
 ### Criando nosso Primeiro banco de dados
 
@@ -153,7 +171,10 @@ ALTER TABLE aluno DELETE WHERE id_aluno =4;
 
 ```
 
-### Acessando arquivos que estao no MiniO
+
+> Baixe os arquivos `epidemiology.csv`, `2015_flights.parquet` e coloque na camada Raw no Minio
+
+### Acessando arquivos que estão no MiniO
 ```sql
 SELECT *
 FROM s3('http://minio:9000/raw/epidemiology.csv', 'cursolab', 'cursolab')
@@ -249,11 +270,3 @@ SELECT location_key,
 FROM latest_deaths_data
 WHERE rn=1;
 
-
-```
-
-# Criar exemplo utilizando Storage como Minio
-
-##  Conclusão
-
-ClickHouse é uma excelente ferramenta para análise de grandes volumes de dados com alta performance. Ele permite ingestão de dados a partir de diversas fontes e integra-se bem com sistemas de armazenamento como MinIO.
