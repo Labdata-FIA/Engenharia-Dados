@@ -526,7 +526,11 @@ services:
       rede_fia:
 
   clickhouse:
+<<<<<<< HEAD
     image: clickhouse/clickhouse-server:${CLICK_HOUSE_VERSION}
+=======
+    image: clickhouse/clickhouse-server
+>>>>>>> 26ad486 (add ClickHouse)
     depends_on:
       - minio
     platform: linux/amd64
@@ -544,6 +548,7 @@ services:
       - ./25.Olap/s3.xml:/etc/clickhouse-server/config.d/config.xml
       - ./25.Olap/data:/data  
     networks:
+<<<<<<< HEAD
       rede_fia:
 
   cassandra:
@@ -652,6 +657,10 @@ services:
      - redis-stack
     networks:
       - rede_fia
+=======
+      otel:
+
+>>>>>>> 26ad486 (add ClickHouse)
 
 networks:
   rede_fia:
