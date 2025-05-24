@@ -65,8 +65,22 @@ O ClickHouse utiliza diferentes engines de armazenamento dependendo do caso de u
 * Armazena os dados na memória RAM
 * Muito rápida, mas os dados são perdidos ao reiniciar o servidor
 
+## Configuração ClickHouse container para MinIO
+https://clickhouse.com/docs/integrations/minio
 
-### Criando noss Primeiro banco de dados
+### Subindo o container MinIO
+
+```sh
+docker compose up -d minio
+```
+
+### Configurando o MinIO
+
+> http://localhost:9001/browser
+
+
+
+### Criando nosso Primeiro banco de dados
 
 ```sql
 create database if not exists curso;

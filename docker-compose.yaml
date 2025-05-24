@@ -182,7 +182,7 @@ services:
     networks:
       rede_fia:
 
-  postman:
+  postman:   
     image: quay.io/microcks/microcks-postman-runtime:${MICROCKS_POSTMAN_RUNTIME_VERSION}
     container_name: microcks-postman-runtime
     networks:
@@ -381,7 +381,7 @@ services:
       MINIO_NOTIFY_KAFKA_TLS_EventKafka: "off"
     command: server --console-address ":9001" /data
     networks:
-      rede_fia:
+       rede_fia:
 
   mc:
     image: minio/mc:${MINIO_MC_VERSION}
@@ -397,7 +397,7 @@ services:
       /usr/bin/mc event add  myminio/bronze arn:minio:sqs::EventKafka:kafka --event put --suffix .json;      
      
       sleep 3000 "
-    networks:
+    networks: 
       rede_fia:    
 
 
@@ -477,14 +477,16 @@ services:
       - 9201:55679  # zpages
       - 13133:13133 # Health check
     networks:
+      
       rede_fia:
   
   jaeger-all-in-one:
     container_name: jaeger
+    
     image: jaegertracing/all-in-one:${JAEGER_VERSION}
     ports:
       - "16686:16686"
-    networks:
+    networks:  
       rede_fia:
 
 
@@ -505,6 +507,7 @@ services:
     ports:
       - 9443:9443        
     networks:
+     
       rede_fia:
 
   duckdb:
@@ -523,14 +526,11 @@ services:
       - ./27.SmallData:/home/src/  
     command: jupyter notebook --ip 0.0.0.0 --port 8085 --allow-root 
     networks:
+    
       rede_fia:
 
   clickhouse:
-<<<<<<< HEAD
     image: clickhouse/clickhouse-server:${CLICK_HOUSE_VERSION}
-=======
-    image: clickhouse/clickhouse-server
->>>>>>> 26ad486 (add ClickHouse)
     depends_on:
       - minio
     platform: linux/amd64
@@ -548,7 +548,6 @@ services:
       - ./25.Olap/s3.xml:/etc/clickhouse-server/config.d/config.xml
       - ./25.Olap/data:/data  
     networks:
-<<<<<<< HEAD
       rede_fia:
 
   cassandra:
@@ -657,12 +656,8 @@ services:
      - redis-stack
     networks:
       - rede_fia
-=======
-      otel:
 
->>>>>>> 26ad486 (add ClickHouse)
-
-networks:
+networks:  
   rede_fia:
 
 volumes:
