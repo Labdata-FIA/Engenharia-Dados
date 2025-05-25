@@ -69,6 +69,8 @@ O ClickHouse utiliza diferentes engines de armazenamento dependendo do caso de u
 ## Configuração ClickHouse container para MinIO
 https://clickhouse.com/docs/integrations/minio
 
+* Login: admin
+* password: minioadmin
 ### Subindo o container MinIO
 
 ```sh
