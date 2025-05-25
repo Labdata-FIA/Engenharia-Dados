@@ -544,6 +544,8 @@ services:
       CLICKHOUSE_USER: "admin"
       CLICKHOUSE_PASSWORD: "admin"
       CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
+      AWS_ACCESS_KEY_ID: cursolab
+      AWS_SECRET_ACCESS_KEY: cursolab
     volumes:
       - ./25.Olap/s3.xml:/etc/clickhouse-server/config.d/config.xml
       - ./25.Olap/data:/data  

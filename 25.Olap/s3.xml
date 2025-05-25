@@ -3,10 +3,11 @@
         <disks>
             <s3>
                 <type>s3</type>
-                <endpoint>http://minio:9000/raw//</endpoint>
+                <endpoint>http://minio:9000/clickhouse-bucket//</endpoint>
                 <access_key_id>cursolab</access_key_id>
                 <secret_access_key>cursolab</secret_access_key>
                 <region></region>
+                <bucket>clickhouse-bucket</bucket>
                 <metadata_path>/var/lib/clickhouse/disks/s3/</metadata_path>
             </s3>
             <s3_cache>

@@ -122,6 +122,24 @@ PRIMARY KEY (id_aluno, timestamp)
 
 select * from aluno;
 
+SELECT 
+    database, 
+    name, 
+    engine, 
+    sorting_key 
+FROM system.tables
+WHERE name = 'aluno';
+
+SELECT 
+    table, 
+    count() AS total_partes
+FROM system.parts
+WHERE 
+    database = 'curso' AND
+    table = 'aluno' AND
+    active
+GROUP BY table;
+
 ```
 
 ### Populando registros
@@ -154,6 +172,31 @@ ORDER BY timestamp
 limit 2
 
 ```
+
+## 📄 Formatos de Saída no ClickHouse
+
+| Formato                                | Descrição |
+|---------------------------------------- |-----------|
+| **TabSeparated**                       | Colunas separadas por tabulação (`\t`), sem cabeçalho. |
+| **TabSeparatedWithNames**              | Igual ao TabSeparated, mas inclui os **nomes das colunas** na primeira linha. |
+| **TabSeparatedWithNamesAndTypes**      | Inclui **nomes das colunas** e **tipos** nas duas primeiras linhas. |
+| **CSV**                                | Dados separados por vírgulas, compatível com ferramentas como Excel e pandas. |
+| **CSVWithNames**                       | Igual ao CSV, mas com **nomes das colunas** na primeira linha. |
+| **JSON**                               | Exporta o resultado como um **array JSON completo**. |
+| **JSONEachRow**                        | Cada linha é um **objeto JSON individual** — ideal para pipelines de dados. |
+| **Pretty**                             | Formata os resultados como uma **tabela legível** no terminal. |
+| **PrettyCompact**                      | Variante mais **compacta** do Pretty, reduz espaços e bordas. |
+| **Parquet**                            | Exporta dados em **formato binário Parquet**, usado em Data Lakes. |
+| **ORC**                                | Exporta dados no **formato ORC**, eficiente para sistemas como Hive. |
+| **Arrow**                              | Exporta no **formato Apache Arrow**, ideal para integração com pandas e PyArrow. |
+| **RowBinary**                          | Formato **binário eficiente**, usado para comunicação entre servidores ClickHouse. |
+| **Null**                               | Não gera saída. Usado para **testes de desempenho**. |
+
+✅ Importante: A escolha do formato depende do uso:
+
+* Human-readable: Pretty, TabSeparated.
+* Integração com sistemas: JSON, CSV, Parquet.
+* Eficiência máxima: RowBinary, Null.
 
 ### Alterando registros
 
@@ -253,8 +296,6 @@ SELECT formatReadableQuantity(sum(new_confirmed))
 FROM covid19;
 
 
-
-
 WITH latest_deaths_data AS
    ( SELECT location_key,
             date,
@@ -270,3 +311,27 @@ SELECT location_key,
 FROM latest_deaths_data
 WHERE rn=1;
 
+```
+
+
+### Usando o Minio como fonte de dados
+
+
+```sql
+CREATE TABLE s3_table
+(
+    id UInt32,
+    nome String
+)
+ENGINE = MergeTree
+ORDER BY id
+SETTINGS storage_policy = 's3_main';
+
+INSERT INTO s3_table (id, nome) VALUES
+    (1, 'Maria Silva'  ),
+    (2, 'José Silva'),
+    (3, 'Fernando Silva'),
+    (4, 'Joana')
+
+
+```
