@@ -10,6 +10,7 @@
 * Docker-Compose
 * https://storage.googleapis.com/covid19-open-data/v3/epidemiology.csv
 * https://raw.githubusercontent.com/plotly/datasets/refs/heads/master/2015_flights.parquet
+* https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2023/pypi_0_7_34.snappy.parquet
 
 # Introdução ao OLAP
 
