@@ -91,6 +91,8 @@ docker compose up -d minio
 
 ![Minio](../content/clickhouse-minio-03.png)
 
+> Antes de subir o container clickhouse crie o backet `clickhouse-bucket` no MinIO
+
 ### Subindo o container clickhouse
 ```sh
 docker compose up -d clickhouse
