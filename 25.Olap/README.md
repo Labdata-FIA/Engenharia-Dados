@@ -86,7 +86,7 @@ docker compose up -d minio
 
 ![Minio](../content/clickhouse-minio-02.png)
 
-
+![Minio](../content/clickhouse-minio-03.png)
 
 ### Subindo o container clickhouse
 ```sh
