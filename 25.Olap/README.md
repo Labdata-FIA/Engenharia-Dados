@@ -100,6 +100,9 @@ docker compose up -d clickhouse
 ![Minio](../content/clickhouse-00.png)
 
 
+* Login: admin
+* password: admin
+
 ![Minio](../content/clickhouse-01.png)
 
 ![Minio](../content/clickhouse-0.png)
