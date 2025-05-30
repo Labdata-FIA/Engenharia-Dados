@@ -21,31 +21,38 @@ O arquivo `docker-compose.yml` configura dois serviços em um ambiente Docker Co
 ## Comandos para Gerenciamento dos Serviços
 
 ### Iniciando Serviços
+- **Navegar no diretório base**
 
+Após o clone do projeto, a partir do diretório `Engenharia-Dados`, navegar para o diretório:
+
+```shell
+cd ./10.Linguagem-SQL/docker
+```
+ 
 - **Iniciar todos os serviços**:
-  ```bash
-  docker compose up -d
-  ```
+```shell
+docker compose up -d
+```
   O `-d` significa "desanexado" e executa os contêineres em segundo plano.
 
 ### Parando Serviços
 
 - **Parar todos os serviços**:
-  ```bash
-  docker-compose stop
-  ```
+```shell
+docker-compose stop
+```
   Este comando para os contêineres em execução, mas não os remove.
 
 ### Parando e Removendo Serviços, Redes e Volumes
 
 - **Parar e remover tudo**:
-  ```bash
-  docker-compose down
-  ```
+```shell
+docker-compose down
+```
   Para remover também os volumes nomeados (e assim destruir os dados persistentes), adicione o parâmetro `-v`:
-  ```bash
-  docker-compose down -v
-  ```
+```bash
+docker-compose down -v
+```
 
 ## Considerações Finais
 
