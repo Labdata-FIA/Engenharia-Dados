@@ -21,17 +21,10 @@ O arquivo `docker-compose.yml` configura dois serviços em um ambiente Docker Co
 ## Comandos para Gerenciamento dos Serviços
 
 ### Iniciando Serviços
-- **Navegar no diretório base**
-
-Após o clone do projeto, a partir do diretório `Engenharia-Dados`, navegar para o diretório:
-
-```shell
-cd ./10.Linguagem-SQL/docker
-```
  
 - **Iniciar todos os serviços**:
 ```shell
-docker compose up -d
+docker compose up -d database-dev-mysql cloudbeaver
 ```
   O `-d` significa "desanexado" e executa os contêineres em segundo plano.
 
@@ -39,7 +32,7 @@ docker compose up -d
 
 - **Parar todos os serviços**:
 ```shell
-docker-compose stop
+docker compose stop database-dev-mysql cloudbeaver
 ```
   Este comando para os contêineres em execução, mas não os remove.
 
@@ -47,11 +40,11 @@ docker-compose stop
 
 - **Parar e remover tudo**:
 ```shell
-docker-compose down
+docker compose down database-dev-mysql cloudbeaver
 ```
   Para remover também os volumes nomeados (e assim destruir os dados persistentes), adicione o parâmetro `-v`:
 ```bash
-docker-compose down -v
+docker compose down -v database-dev-mysql cloudbeaver
 ```
 
 ## Considerações Finais
