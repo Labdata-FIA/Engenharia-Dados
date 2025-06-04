@@ -11,7 +11,7 @@ Uma empresa deseja analisar a atividade de pedidos em duas condições diferente
 ```sql
 SELECT pedido.id AS PedidoID, pedido.data_pedido AS DataPedido, cliente.nome AS ClienteNome
 FROM pedido
-JOIN cliente ON pedido.cliente_id = cliente.id
+         JOIN cliente ON pedido.cliente_id = cliente.id
 WHERE pedido.data_pedido BETWEEN '2022-12-24' AND '2022-12-26';
 ```
 
@@ -32,13 +32,13 @@ WHERE cliente.estado IN ('PR', 'SC', 'RS');
 -- Pedidos durante o Natal
 SELECT 'Natal' AS Evento, pedido.id AS PedidoID, pedido.data_pedido AS DataPedido, cliente.nome AS ClienteNome
 FROM pedido
-JOIN cliente ON pedido.cliente_id = cliente.id
+         JOIN cliente ON pedido.cliente_id = cliente.id
 WHERE pedido.data_pedido BETWEEN '2022-12-24' AND '2022-12-26'
 UNION
 -- Pedidos na região Sul
 SELECT 'Região Sul' AS Evento, pedido.id AS PedidoID, pedido.data_pedido AS DataPedido, cliente.nome AS ClienteNome
 FROM pedido
-JOIN cliente ON pedido.cliente_id = cliente.id
+         JOIN cliente ON pedido.cliente_id = cliente.id
 WHERE cliente.estado IN ('PR', 'SC', 'RS');
 ```
 
