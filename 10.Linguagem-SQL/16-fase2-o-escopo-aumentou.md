@@ -46,7 +46,7 @@ CREATE TABLE entrega (
 Inclui uma referência à forma de pagamento em cada pedido, para melhor rastreamento financeiro.
 
 ```sql
-ALTER TABLE Pedido
+ALTER TABLE pedido
 ADD forma_pagamento_id INT,
 ADD FOREIGN KEY (forma_pagamento_id) REFERENCES forma_pagamento(id);
 ```
