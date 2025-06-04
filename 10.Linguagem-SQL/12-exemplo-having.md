@@ -14,7 +14,7 @@ Objetivo: Encontrar produtos cujas vendas totais ultrapassaram 100 unidades em t
 
 ```sql
 SELECT p.id AS ProdutoID, p.nome AS ProdutoNome, SUM(ip.quantidade) AS UnidadesVendidas
-FROM Produto p
+FROM produto p
 JOIN item_pedido ip ON p.id = ip.produto_id
 GROUP BY p.id, p.nome
 HAVING SUM(ip.quantidade) > 100;
