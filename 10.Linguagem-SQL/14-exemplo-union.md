@@ -9,7 +9,7 @@ Uma empresa deseja analisar a atividade de pedidos em duas condições diferente
 **Objetivo:** Analisar os pedidos feitos durante o período do Natal para identificar tendências de consumo e planejar estoque para o próximo ano.
 
 ```sql
-SELECT Pedido.id AS PedidoID, pedido.data_pedido AS DataPedido, cliente.nome AS ClienteNome
+SELECT pedido.id AS PedidoID, pedido.data_pedido AS DataPedido, cliente.nome AS ClienteNome
 FROM pedido
 JOIN cliente ON pedido.cliente_id = cliente.id
 WHERE pedido.data_pedido BETWEEN '2022-12-24' AND '2022-12-26';
