@@ -548,7 +548,7 @@ services:
       AWS_SECRET_ACCESS_KEY: cursolab
     volumes:
       - ./25.Olap/s3.xml:/etc/clickhouse-server/config.d/config.xml
-      - ./25.Olap/data:/data  
+      - ./25.Olap/data:/var/lib/clickhouse/user_files
     networks:
       rede_fia:
 

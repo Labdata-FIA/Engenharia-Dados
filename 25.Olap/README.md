@@ -69,6 +69,9 @@ O ClickHouse utiliza diferentes engines de armazenamento dependendo do caso de u
 ## Configuração ClickHouse container para MinIO
 https://clickhouse.com/docs/integrations/minio
 
+
+![Clickhouse](../content/integracao-clickhouse.jpeg)
+
 * Login: admin
 * password: minioadmin
 ### Subindo o container MinIO
@@ -116,11 +119,27 @@ create database if not exists curso;
 
 use curso;
 
+select * from system.data_type_families;
+
+select * from system.settings;
+
+select * from system.server_settings;
+
+select * from system.databases;
+
+select * from system.tables;
+
 ```
+
+> https://clickhouse.com/docs/sql-reference/data-types
+
+
 
 ### Criando a tabela Aluno
 
 ```sql
+
+--Criando a tabela
 CREATE TABLE aluno
 (
     id_aluno UInt32,
@@ -133,6 +152,7 @@ PRIMARY KEY (id_aluno, timestamp)
 
 select * from aluno;
 
+--Observando a tabela criada
 SELECT 
     database, 
     name, 
@@ -141,6 +161,7 @@ SELECT
 FROM system.tables
 WHERE name = 'aluno';
 
+--Quantas partes foram criadas no disco ?
 SELECT 
     table, 
     count() AS total_partes
@@ -163,6 +184,11 @@ INSERT INTO aluno (id_aluno, matricula, timestamp, nome) VALUES
     (4, 'M004',  now() + 5,   'Joana')
 
 
+
+alter table aluno add nota uint8;
+
+--Observando a estrutura da tabela
+show create table aluno;
 ```
 
 
@@ -185,6 +211,8 @@ limit 2
 ```
 
 ## 📄 Formatos de Saída no ClickHouse
+
+> https://clickhouse.com/docs/interfaces/formats
 
 | Formato                                | Descrição |
 |---------------------------------------- |-----------|
@@ -225,11 +253,62 @@ ALTER TABLE aluno DELETE WHERE id_aluno =4;
 
 ```
 
+### Particionamento das tabelas
+```sql
+CREATE TABLE vendas
+(
+    id UInt32,   
+    produto String,
+    valor Float32,
+    data_venda DateTime,
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(data_venda)
+ORDER BY (produto, data_venda);
+
+INSERT INTO vendas
+   SELECT
+      *,
+      now() - INTERVAL rand()%6 MONTH AS timestamp
+   FROM generateRandom('id UInt32, produto String, valor Float32')
+   LIMIT 1000000;
+
+
+SELECT partition
+FROM system.parts
+WHERE `table` = 'vendas';
+
+select * from vendas
+where data_venda >= '2025-03-01' AND data_venda < '2025-06-31'
+
+ALTER TABLE vendas DROP PARTITION 202501;
+
+SELECT tables, partitions , read_rows, *
+FROM system.query_log
+WHERE type = 'QueryFinish' and tables = ['default.vendas']
+  AND event_date = today()
+ORDER BY query_start_time DESC
+LIMIT 1;
+
+```
 
 > Baixe os arquivos `epidemiology.csv`, `2015_flights.parquet` e coloque na camada Raw no Minio
 
+> https://clickhouse.com/docs/engines/table-engines/integrations
+
+## Tables Functions
+
+As table functions são funções que retornam uma tabela como resultado.
+
+> https://clickhouse.com/docs/sql-reference/table-functions
+
 ### Acessando arquivos que estão no MiniO
 ```sql
+
+SELECT *
+FROM file('/var/lib/clickhouse/user_files/dados.csv', 'CSV', 'id UInt32, nome String, valor Float32');
+
+
 SELECT *
 FROM s3('http://minio:9000/raw/epidemiology.csv', 'cursolab', 'cursolab')
 LIMIT 100;
@@ -247,6 +326,73 @@ FROM s3('http://minio:9000/raw/epidemiology.csv', 'cursolab', 'cursolab')
 
 ```
 
+### LowCardinality
+LowCardinality(TIPO) é um tipo especial de coluna, otimizando o armazenamento e a leitura de colunas com baixa cardinalidade.
+
+```sql
+CREATE TABLE vendas_normal (
+    id UInt32,
+    nome String,
+    estado String,
+    valor Float32
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+
+
+CREATE TABLE vendas_otimizada (
+    id UInt32,
+    nome String,
+    estado LowCardinality(String),
+    valor Float32
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+
+
+INSERT INTO vendas_normal VALUES
+(1, 'Ana', 'SP', 150.0),
+(2, 'Carlos', 'RJ', 200.0),
+(3, 'Mariana', 'SP', 180.0),
+(4, 'João', 'MG', 220.0),
+(5, 'Fernanda', 'SP', 160.0),
+(6, 'Lucas', 'RJ', 190.0),
+(7, 'Patrícia', 'MG', 210.0),
+(8, 'Ricardo', 'SP', 170.0);
+
+-- Copiar para a tabela otimizada:
+INSERT INTO vendas_otimizada SELECT * FROM vendas_normal;
+
+
+
+SELECT estado, count(), avg(valor)
+FROM vendas_normal
+GROUP BY estado
+ORDER BY estado;
+
+
+SELECT estado, count(), avg(valor)
+FROM vendas_otimizada
+GROUP BY estado
+ORDER BY estado;
+
+
+
+SELECT
+    query,
+    read_rows,
+    read_bytes,
+    memory_usage,
+    query_duration_ms
+FROM system.query_log
+WHERE event_date = today()
+  AND query ILIKE '%GROUP BY estado%'
+  AND type = 'QueryFinish'
+ORDER BY query_start_time DESC
+LIMIT 5;
+```
 
 ### Utilizando arquivos no formato Parquet
 
@@ -321,6 +467,83 @@ SELECT location_key,
        rn
 FROM latest_deaths_data
 WHERE rn=1;
+
+```
+### Views
+
+```sql
+CREATE VIEW vendas_ultimos_30_dias AS
+SELECT *
+FROM vendas
+WHERE data_venda >= today() - 30;
+
+SELECT * FROM vendas_ultimos_30_dias;
+
+```
+
+### Views Materializada
+Uma MATERIALIZED VIEW (MV) é uma view que armazena os dados fisicamente.
+
+Ela é atualizada automaticamente com base em inserts feitos em uma tabela de origem.
+
+```sql
+
+--Tabela de Origem
+CREATE TABLE votes
+(
+    `Id` UInt32,
+    `PostId` Int32,
+    `VoteTypeId` UInt8,
+    `CreationDate` DateTime64(3, 'UTC'),
+    `UserId` Int32,
+    `BountyAmount` UInt8
+)
+ENGINE = MergeTree
+ORDER BY (VoteTypeId, CreationDate, PostId)
+
+--Buscando informações no
+INSERT INTO votes SELECT * FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2008.parquet')
+
+SELECT toStartOfDay(CreationDate) AS day,
+       countIf(VoteTypeId = 2) AS UpVotes,
+       countIf(VoteTypeId = 3) AS DownVotes
+FROM votes
+GROUP BY day
+ORDER BY day ASC
+LIMIT 10
+
+
+CREATE TABLE votes_per_day
+(
+  `Day` Date,
+  `UpVotes` UInt32,
+  `DownVotes` UInt32
+)
+ENGINE = SummingMergeTree
+ORDER BY Day
+
+
+CREATE MATERIALIZED VIEW votes_per_day_mv TO votes_per_day AS
+SELECT toStartOfDay(CreationDate)::Date AS Day,
+       countIf(VoteTypeId = 2) AS UpVotes,
+       countIf(VoteTypeId = 3) AS DownVotes
+FROM votes
+GROUP BY Day
+
+INSERT INTO votes SELECT * FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2008.parquet')
+
+SELECT count()
+FROM up_down_votes_per_day
+FINAL
+
+SELECT
+        Day,
+        UpVotes,
+        DownVotes
+FROM up_down_votes_per_day
+FINAL
+ORDER BY Day ASC
+LIMIT 10
 
 ```
 
