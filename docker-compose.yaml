@@ -1,4 +1,3 @@
-version: '3.7'
 services:
   grafana:
     image: "grafana/grafana:${GRAFANA_VERSION}"
@@ -14,7 +13,7 @@ services:
     depends_on:
      - prometheus
      - tempo
-     - loki    
+     - loki
     networks:
       rede_fia:
 
@@ -119,18 +118,18 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - kafka-broker    
+      - kafka-broker
       - connect
     networks:
       rede_fia:
 
   kafka-net:
       image: fernandos/kafka-net:v0
-      container_name: kafkanet    
+      container_name: kafkanet
       environment:
           ASPNETCORE_ENVIRONMENT: Development
       depends_on:
-          - kafka-broker       
+          - kafka-broker
       ports:
         - "5000:80"
       networks:
@@ -138,10 +137,10 @@ services:
 
   kafka-net-api-obs:
       image: fernandos/kafka-net-api-obs:v1
-      container_name: kafka-net-api-obs      
+      container_name: kafka-net-api-obs
       depends_on:
-          - kafka-broker     
-          - otel-collector                
+          - kafka-broker
+          - otel-collector
       ports:
         - "5000:80"
       networks:
@@ -149,11 +148,11 @@ services:
 
   kafka-net-worker-obs:
       image: fernandos/kafka-net-worker-obs:v1
-      container_name: kafka-net-worker-obs 
+      container_name: kafka-net-worker-obs
       depends_on:
-          - kafka-broker     
-          - otel-collector   
-          - kafka-net-api-obs        
+          - kafka-broker
+          - otel-collector
+          - kafka-net-api-obs
       networks:
         rede_fia:
 
@@ -182,7 +181,7 @@ services:
     networks:
       rede_fia:
 
-  postman:   
+  postman:
     image: quay.io/microcks/microcks-postman-runtime:${MICROCKS_POSTMAN_RUNTIME_VERSION}
     container_name: microcks-postman-runtime
     networks:
@@ -236,8 +235,8 @@ services:
         container_name: kafkaConect
         ports:
         - 8083:8083
-        depends_on:      
-         - kafka-broker      
+        depends_on:
+         - kafka-broker
         environment:
         - KAFKA_LOG4J_OPTS=-Dlog4j.configuration=file:/opt/kafka/config/connect-log4j.properties
         - KAFKA_CONNECT_BOOTSTRAP_SERVERS=kafka-broker:29092
@@ -255,13 +254,13 @@ services:
             status.storage.topic=connect-status
             status.storage.replication.factor=1  
             CONNECT_REST_ADVERTISED_HOST_NAME: 'connect'  
-            producer.interceptor.classes=io.debezium.tracing.DebeziumTracingProducerInterceptor  
+            producer.interceptor.classes=io.debezium.tracing.DebeziumTracingProducerInterceptor
         - OTEL_SERVICE_NAME=kafka-connect
         - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
         - OTEL_TRACES_SAMPLER=always_on
         - OTEL_TRACES_EXPORTER=otlp
         - OTEL_METRICS_EXPORTER=none
-        - STRIMZI_TRACING=opentelemetry      
+        - STRIMZI_TRACING=opentelemetry
         command: /opt/kafka/kafka_connect_run.sh
         networks:
           rede_fia:
@@ -314,11 +313,11 @@ services:
     image: dpage/pgadmin4:${PAGADMIN_VERSION}
     environment:
       PGADMIN_DEFAULT_EMAIL: lab-pgadmin4@pgadmin.org
-      PGADMIN_DEFAULT_PASSWORD: postgres    
+      PGADMIN_DEFAULT_PASSWORD: postgres
     ports:
       - "5433:80"
     depends_on:
-      - postgres    
+      - postgres
     networks:
       rede_fia:
 
@@ -335,19 +334,19 @@ services:
     hostname: ksqldb-server
     container_name: ksqldb-server
     depends_on:
-      - kafka-broker        
+      - kafka-broker
     ports:
       - "8088:8088"
     environment:
       KSQL_LISTENERS: http://0.0.0.0:8088
-      KSQL_BOOTSTRAP_SERVERS: kafka-broker:29092      
+      KSQL_BOOTSTRAP_SERVERS: kafka-broker:29092
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
-      KSQL_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"        
+      KSQL_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"
     volumes:
       - ./scripts:/scripts
     networks:
-      rede_fia: 
+      rede_fia:
 
 
   minio-nifi:
@@ -373,7 +372,7 @@ services:
       - minio_storage:/data
     environment:
       MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: minioadmin      
+      MINIO_ROOT_PASSWORD: minioadmin
       MINIO_NOTIFY_KAFKA_ENABLE_EventKafka: "on"
       MINIO_NOTIFY_KAFKA_BROKERS_EventKafka: "kafka-broker:29092"
       MINIO_NOTIFY_KAFKA_TOPIC_EventKafka: "sink-products"
@@ -397,8 +396,8 @@ services:
       /usr/bin/mc event add  myminio/bronze arn:minio:sqs::EventKafka:kafka --event put --suffix .json;      
      
       sleep 3000 "
-    networks: 
-      rede_fia:    
+    networks:
+      rede_fia:
 
 
   ksqldb-cli:
@@ -418,11 +417,11 @@ services:
     image: "confluentinc/cp-schema-registry:${CONFLUENT_VERSION}"
     container_name: schema-registry
     ports:
-      - 8081:8081  
+      - 8081:8081
     depends_on:
       - zookeeper
-      - kafka-broker 
-    environment:     
+      - kafka-broker
+    environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "PLAINTEXT://kafka-broker:9092"
@@ -435,9 +434,9 @@ services:
     image: grafana/tempo:${TEMPO_VERSION}
     container_name: tempo
     command: [ "-config.file=/etc/tempo.yaml" ]
-    volumes:   
-      - /etc/localtime:/etc/localtime:ro   
-      - ./etc/tempo/tempo.yml:/etc/tempo.yaml    
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./etc/tempo/tempo.yml:/etc/tempo.yaml
       - tempo:/tmp/tempo
     restart: unless-stopped
     ports:
@@ -453,7 +452,7 @@ services:
     container_name: loki
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
-      - /etc/localtime:/etc/localtime:ro      
+      - /etc/localtime:/etc/localtime:ro
       - ./etc/loki/loki.yml:/etc/loki/local-config.yaml
       - loki:/data/loki
     restart: unless-stopped
@@ -462,7 +461,7 @@ services:
     networks:
       rede_fia:
 
-  otel-collector:    
+  otel-collector:
     container_name: otel
     hostname: otel
     image: otel/opentelemetry-collector-contrib:${OPEN_TELEMETRY_VESION}
@@ -477,16 +476,16 @@ services:
       - 9201:55679  # zpages
       - 13133:13133 # Health check
     networks:
-      
+
       rede_fia:
-  
+
   jaeger-all-in-one:
     container_name: jaeger
-    
+
     image: jaegertracing/all-in-one:${JAEGER_VERSION}
     ports:
       - "16686:16686"
-    networks:  
+    networks:
       rede_fia:
 
 
@@ -498,16 +497,16 @@ services:
     volumes:
       - ./19.Data-Flow-Nifi/files:/files
     environment:
-      NIFI_WEB_HTTPS_PORT: "9443"      
+      NIFI_WEB_HTTPS_PORT: "9443"
       SINGLE_USER_CREDENTIALS_USERNAME: admin
       SINGLE_USER_CREDENTIALS_PASSWORD: fia@2024@ladata@laboratorio
-      TZ: "America/Sao_Paulo" 
+      TZ: "America/Sao_Paulo"
     depends_on:
-      - kafka-broker         
+      - kafka-broker
     ports:
-      - 9443:9443        
+      - 9443:9443
     networks:
-     
+
       rede_fia:
 
   duckdb:
@@ -520,13 +519,13 @@ services:
     depends_on:
       - minio
     ports:
-      - 8085:8085       
+      - 8085:8085
     volumes:
       - ./jupyter/docker-entrypoint.sh:/jupyter/docker-entrypoint.sh
-      - ./27.SmallData:/home/src/  
-    command: jupyter notebook --ip 0.0.0.0 --port 8085 --allow-root 
+      - ./27.SmallData:/home/src/
+    command: jupyter notebook --ip 0.0.0.0 --port 8085 --allow-root
     networks:
-    
+
       rede_fia:
 
   clickhouse:
@@ -558,8 +557,8 @@ services:
     container_name: cassandra
     hostname: cassandra
     environment:
-      CQLSH_HOST: cassandra 
-      CQLSH_PORT: 9042 
+      CQLSH_HOST: cassandra
+      CQLSH_PORT: 9042
       CQLVERSION: 3.4.6
       CASSANDRA_CLUSTER_NAME: datalab
     ports:
@@ -571,7 +570,7 @@ services:
       - ./cassandra/data/:/var/lib/cassandra
     networks:
       rede_fia:
- 
+
   cassandra-web:
     image: ipushc/cassandra-web:${CASSANDRA_WEB_VERSION}
     platform: linux/amd64
@@ -584,8 +583,8 @@ services:
       CASSANDRA_HOST: cassandra
       CASSANDRA_PORT: 9042
       CASSANDRA_USER: cassandra
-      CASSANDRA_PASSWORD: cassandra 
-      HOST_PORT: ":80"  
+      CASSANDRA_PASSWORD: cassandra
+      HOST_PORT: ":80"
     networks:
       rede_fia:
 
@@ -659,7 +658,43 @@ services:
     networks:
       - rede_fia
 
-networks:  
+  database-dev-mysql:
+    image: library/mysql:${MYSQL_VERSION}
+    container_name: database-dev-mysql
+    hostname: database-dev-mysql
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=database-dev-mysql
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_USER=user_app
+      - MYSQL_PASSWORD=user_app
+    volumes:
+      - ./10.Linguagem-SQL/docker/data:/var/lib/mysql
+    networks:
+      - rede_fia
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:${CLOUDBEAVER_VERSION}
+    container_name: cloudbeaver
+    ports:
+      - "8978:8978"
+    volumes:
+      - ./10.Linguagem-SQL/docker/cloudbeaver_workspace:/opt/cloudbeaver/workspace # Persiste os dados da workspace
+    restart: unless-stopped
+    networks:
+      - rede_fia
+
+networks:
   rede_fia:
 
 volumes:

@@ -9,20 +9,20 @@ Uma empresa deseja analisar a atividade de pedidos em duas condições diferente
 **Objetivo:** Analisar os pedidos feitos durante o período do Natal para identificar tendências de consumo e planejar estoque para o próximo ano.
 
 ```sql
-SELECT Pedido.id AS PedidoID, Pedido.data_pedido AS DataPedido, Cliente.nome AS ClienteNome
-FROM Pedido
-JOIN Cliente ON Pedido.cliente_id = Cliente.id
-WHERE Pedido.data_pedido BETWEEN '2022-12-24' AND '2022-12-26';
+SELECT pedido.id AS PedidoID, pedido.data_pedido AS DataPedido, cliente.nome AS ClienteNome
+FROM pedido
+JOIN cliente ON pedido.cliente_id = cliente.id
+WHERE pedido.data_pedido BETWEEN '2022-12-24' AND '2022-12-26';
 ```
 
 ### Cenário 2: Pedidos na Região Sul
 **Objetivo:** Avaliar a quantidade de pedidos na região Sul para ajustar estratégias de marketing e distribuição.
 
 ```sql
-SELECT Pedido.id AS PedidoID, Pedido.data_pedido AS DataPedido, Cliente.nome AS ClienteNome
-FROM Pedido
-JOIN Cliente ON Pedido.cliente_id = Cliente.id
-WHERE Cliente.estado IN ('PR', 'SC', 'RS');
+SELECT pedido.id AS PedidoID, pedido.data_pedido AS DataPedido, cliente.nome AS ClienteNome
+FROM pedido
+JOIN cliente ON pedido.cliente_id = cliente.id
+WHERE cliente.estado IN ('PR', 'SC', 'RS');
 ```
 
 ### Combinação dos Cenários com UNION
@@ -30,16 +30,16 @@ WHERE Cliente.estado IN ('PR', 'SC', 'RS');
 
 ```sql
 -- Pedidos durante o Natal
-SELECT 'Natal' AS Evento, Pedido.id AS PedidoID, Pedido.data_pedido AS DataPedido, Cliente.nome AS ClienteNome
-FROM Pedido
-JOIN Cliente ON Pedido.cliente_id = Cliente.id
-WHERE Pedido.data_pedido BETWEEN '2022-12-24' AND '2022-12-26'
+SELECT 'Natal' AS Evento, pedido.id AS PedidoID, pedido.data_pedido AS DataPedido, cliente.nome AS ClienteNome
+FROM pedido
+JOIN cliente ON pedido.cliente_id = cliente.id
+WHERE pedido.data_pedido BETWEEN '2022-12-24' AND '2022-12-26'
 UNION
 -- Pedidos na região Sul
-SELECT 'Região Sul' AS Evento, Pedido.id AS PedidoID, Pedido.data_pedido AS DataPedido, Cliente.nome AS ClienteNome
-FROM Pedido
-JOIN Cliente ON Pedido.cliente_id = Cliente.id
-WHERE Cliente.estado IN ('PR', 'SC', 'RS');
+SELECT 'Região Sul' AS Evento, pedido.id AS PedidoID, pedido.data_pedido AS DataPedido, cliente.nome AS ClienteNome
+FROM pedido
+JOIN cliente ON pedido.cliente_id = cliente.id
+WHERE cliente.estado IN ('PR', 'SC', 'RS');
 ```
 
 Este relatório combinado oferece uma análise diversificada que ajuda a empresa a entender melhor as demandas específicas em diferentes tempos e locais.
