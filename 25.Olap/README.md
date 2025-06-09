@@ -185,7 +185,7 @@ INSERT INTO aluno (id_aluno, matricula, timestamp, nome) VALUES
 
 
 
-alter table aluno add nota uint8;
+alter table aluno add column nota UInt8;
 
 --Observando a estrutura da tabela
 show create table aluno;
@@ -533,14 +533,14 @@ GROUP BY Day
 INSERT INTO votes SELECT * FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2008.parquet')
 
 SELECT count()
-FROM up_down_votes_per_day
+FROM votes_per_day
 FINAL
 
 SELECT
         Day,
         UpVotes,
         DownVotes
-FROM up_down_votes_per_day
+FROM votes_per_day
 FINAL
 ORDER BY Day ASC
 LIMIT 10
