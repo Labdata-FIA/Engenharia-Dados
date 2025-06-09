@@ -223,11 +223,8 @@ https://www.mongodb.com/docs/database-tools/mongoimport/
 //Para sair do cluster mongodb
 exit
 
-//Para voltar uma pasta anterior
-cd ..
-
-//Entrar na pasta import
-cd import 
+//Entrar na pastinha import
+cd 06.NoSql-Mongodb/import
 
 //Executar o arquivo ./mongo-import.sh para importar os dados dos arquivos csv para o Mongodb
 ./mongo-import.sh
