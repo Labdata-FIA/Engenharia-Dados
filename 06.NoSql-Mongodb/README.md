@@ -49,7 +49,7 @@ Verificando as imagens que foram feitas download do docker-hub
 docker exec -it mongo1 /bin/bash
 
 
-mongosh
+mongo --port 27017
 
 rs.initiate(
   {
