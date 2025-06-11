@@ -224,13 +224,13 @@ https://www.mongodb.com/docs/database-tools/mongoimport/
 exit
 
 //Entrar na pastinha import
-cd 06.NoSql-Mongodb/import
+cd import
 
 //Executar o arquivo ./mongo-import.sh para importar os dados dos arquivos csv para o Mongodb
 ./mongo-import.sh
 
 //Entrar no cluster novamente
- mongosh
+ mongo --port 27017
 
 //Ver os banco de dados
 show dbs
