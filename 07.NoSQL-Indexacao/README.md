@@ -59,6 +59,9 @@ curl -X GET http://localhost:9200/alunos
 ### ❌ Excluir índice
 
 ```bash
+
+curl -X PUT http://localhost:9200/teste -H "Content-Type: application/json"
+
 curl -X GET http://localhost:9200/teste
 
 curl -X DELETE http://localhost:9200/teste
@@ -206,7 +209,7 @@ curl -X GET http://localhost:9200/alunos/_search -H "Content-Type: application/j
     "nomeAluno": "joão"
   }
 }
-}
+}'
 ```
 
 #### `ids` — busca por múltiplos `_id`
@@ -217,7 +220,7 @@ curl -X GET http://localhost:9200/alunos/_search -H "Content-Type: application/j
     "values": ["1", "2"]
   }
 }
-}
+}'
 ```
 
 #### `match_all` — retorna todos os documentos
@@ -226,7 +229,7 @@ curl -X GET http://localhost:9200/alunos/_search -H "Content-Type: application/j
 "query": {
   "match_all": {}
 }
-}
+}'
 ```
 
 ## 🧬 Mapeamento de Documentos
