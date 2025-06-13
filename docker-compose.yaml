@@ -694,6 +694,36 @@ services:
     networks:
       - rede_fia
 
+  elasticsearch:
+    image: elasticsearch:${ELASTIC_VERSION}
+    platform: linux/amd64
+    container_name: elasticsearch
+    hostname: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: "single-node"
+      ES_JAVA_OPTS: "-Xms2g -Xmx2g"
+      #ELASTIC_PASSWORD: "12345"
+      xpack.security.enabled: "false"
+    networks:
+      - rede_fia
+
+  kibana:
+    image: kibana:${KIBAMA_VERSION}
+    platform: linux/amd64
+    container_name: kibana
+    hostname: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - rede_fia
+
 networks:
   rede_fia:
 

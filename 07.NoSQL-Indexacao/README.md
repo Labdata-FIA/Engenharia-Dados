@@ -18,7 +18,7 @@ Este laboratório demonstra como executar um ambiente local com Elasticsearch vi
 Para subir o ambiente local com Elasticsearch:
 
 ```bash
-docker-compose up -d elasticsearch  kibana
+docker compose up -d elasticsearch  kibana
 ```
 
 * Elastic
