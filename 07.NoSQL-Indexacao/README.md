@@ -46,6 +46,7 @@ curl -X PUT http://localhost:9200/aulas -H "Content-Type: application/json"
 docker exec -it elasticsearch /bin/bash
 ls data/indices/
 
+exit
 ```
 
 ### 🔹 Consultar índice
@@ -93,6 +94,9 @@ curl -X DELETE http://localhost:9200/alunos
 ```
 
 ### Criar índice alunos com mapeamento
+
+O mapeamento define a estrutura dos dados no Elasticsearch.
+
 ```bash
 curl -X PUT http://localhost:9200/alunos -H "Content-Type: application/json" -d '{
   "settings": {
@@ -109,6 +113,10 @@ curl -X PUT http://localhost:9200/alunos -H "Content-Type: application/json" -d 
     }
   }
 }'
+
+
+curl -X GET  http://localhost:9200/alunos/_mapping
+
 ```
 
 ## 📄 Manipulação de Documentos
@@ -126,12 +134,13 @@ curl -X POST http://localhost:9200/alunos/_doc/1 -H "Content-Type: application/j
   "dataCadastro": "2024-05-01"
 }'
 
+curl -XGET  "http://localhost:9200/alunos/_doc/1
 
 ```
 
 ### 🔄 Atualizar documento
 
-> #### Atenção didática: substitui TODO o documento — se esquecer algum campo, o campo será apagado.
+> #### Substitui TODO o documento — se esquecer algum campo, o campo será apagado.
 ```bash
 curl -X PUT http://localhost:9200/alunos/_doc/1 -H "Content-Type: application/json" -d '{
   "idaluno": 1,
@@ -142,10 +151,10 @@ curl -X PUT http://localhost:9200/alunos/_doc/1 -H "Content-Type: application/js
 }'
 ```
 
-> #### Atenção didática: apenas os campos informados serão atualizados.
+> #### Apenas os campos informados serão atualizados.
 
 ```bash
-curl -X POST http://localhost:9200/alunos/_update/8 -H "Content-Type: application/json" -d '{
+curl -X POST http://localhost:9200/alunos/_update/1 -H "Content-Type: application/json" -d '{
   "doc": {
     "curso": "Engenharia de Produção",
     "idade": 28
@@ -156,7 +165,7 @@ curl -X POST http://localhost:9200/alunos/_update/8 -H "Content-Type: applicatio
 > #### Atualização com script (exemplo de incremento de idade)
 
 ```bash
-curl -X POST http://localhost:9200/alunos/_update/8 -H "Content-Type: application/json" -d '{
+curl -X POST http://localhost:9200/alunos/_update/1 -H "Content-Type: application/json" -d '{
   "script": {
     "source": "ctx._source.idade += 1"
   }
@@ -166,7 +175,7 @@ curl -X POST http://localhost:9200/alunos/_update/8 -H "Content-Type: applicatio
 ### ❌ Excluir documento
 
 ```bash
-curl -X DELETE http://localhost:9200/alunos/_doc/3
+curl -X DELETE http://localhost:9200/alunos/_doc/1
 ```
 
 | Operação               | Método         | Comportamento                    |
@@ -177,58 +186,67 @@ curl -X DELETE http://localhost:9200/alunos/_doc/3
 | Atualização por script | `POST _update` | Executa lógica sobre o documento |
 | Deleção                | `DELETE`       | Exclui o documento               |
 
+```bash
+curl -X POST http://localhost:9200/_bulk -H "Content-Type: application/json" --data-binary @07.NoSQL-Indexacao/alunos-bulk.json
+
+```
+
+
 
 ### 🔍 Consultas
 
 ### 🔧 Busca simples com q=
 
 ```bash
-curl -XGET "localhost:9200/alunos/_search?q=joao&pretty"
+curl -XGET "localhost:9200/alunos/_search?q=silva&pretty"
 ```
 
 
 ###  Busca com várias palavras (AND implícito)
 
 ```bash
-curl -XGET "localhost:9200/alunos/_search?q=joao+silva&pretty"
+curl -XGET "localhost:9200/alunos/_search?q=pedro+silva&pretty"
 ```
 >Busca documentos que contenham ambos os termos: joao E silva.
 
 ###  Busca com OR explícito
 
 ```bash
-curl -XGET "localhost:9200/alunos/_search?q=joao+OR+maria&pretty"
+curl -XGET "localhost:9200/alunos/_search?q=pedro+OR+maria&pretty"
 ```
 >Retorna alunos com joao ou maria no nome.
 
 ###  Busca por frase exata (match_phrase)
 
 ```bash
-curl -XGET "localhost:9200/alunos/_search?q=\"joao silva\"&pretty"
-
+curl -XGET "localhost:9200/alunos/_search?q=%22Maria%20Souza%22&pretty"
 ```
-> busca exatamente joao silva
+
+* %22 → aspas
+* %20 → espaço
+
+> busca exatamente Maria Souza
 
 
 ###   Busca com exclusão (NOT)
 
 ```bash
-curl -XGET "localhost:9200/alunos/_search?q=joao+-silva&pretty"
+curl -XGET "localhost:9200/alunos/_search?q=pedro+-silva&pretty"
 ```
-> Traz alunos que tenham joao mas não contenham silva.
+> Traz alunos que tenham Pedro mas não contenham silva.
 
 
 ### Busca com wildcard
 
 ```bash
-curl -XGET "localhost:9200/alunos/_search?q=ger*&pretty"
+curl -XGET "localhost:9200/alunos/_search?q=jo*&pretty"
 ```
 > Pega qualquer token que comece com jo (ex: joao, jose).
 
 ### Busca com campo específico
 
 ```bash
-curl -XGET "localhost:9200/alunos/_search?q=nomeAluno:geracao&pretty"
+curl -XGET "localhost:9200/alunos/_search?q=curso:Engenharia&pretty"
 
 ```
 > Busca somente no campo curso (campo keyword).
@@ -312,44 +330,6 @@ curl -X GET http://localhost:9200/alunos/_search -H "Content-Type: application/j
 }'
 ```
 
-## 🧬 Mapeamento de Documentos
-
-O mapeamento define a estrutura dos dados no Elasticsearch.
-
-### 📌 Exemplo de mapeamento
-
-```json
-"mappings": {
-  "properties": {
-    "idaluno":    { "type": "integer" },
-    "nomeAluno":  { 
-      "type": "text",
-      "fields": {
-        "raw": { "type": "keyword" }
-      }
-    },
-    "data":       { "type": "date", "format": "yyyy-MM-dd" }
-  }
-}
-```
-
-```bash
-curl -X GET  http://localhost:9200/alunos/_mapping
-```
-
-
-```bash
-curl -X PUT  http://localhost:9200/materias -H "Content-Type: application/json" -d '{
-  
-  "mappings": {
-    "properties": {
-      "idmateria":   { "type": "integer" },
-      "nomeMateria": { "type": "text" },
-      "data":        { "type": "date", "format": "yyyy-MM-dd" }
-    }
-  }
-}'
-```
 
 ---
 
@@ -364,11 +344,20 @@ O comando `_analyze` permite simular esse processo e entender como o Elasticsear
 Veja como o Elasticsearch interpreta os termos de um campo:
 
 ```bash
-curl -X POST http://localhost:9200/_analyze -H "Content-Type: application/json" -d '{
+curl -X POST http://localhost:9200/_analyze?pretty -H "Content-Type: application/json" -d '{
   "analyzer": "standard",
   "text": "João Pedro Silva"
 }'
 ```
+
+| Campo             | Significado                                                         |
+| ----------------- | ------------------------------------------------------------------- |
+| **token**         | O termo gerado. Ex: `joão`, `pedro`, `silva`                        |
+| **start\_offset** | Onde começa esse token no texto original (em número de caracteres). |
+| **end\_offset**   | Onde termina esse token (não inclusivo).                            |
+| **type**          | O tipo de token (neste caso: `<ALPHANUM>`, ou seja, alfanumérico).  |
+| **position**      | A posição do token na sequência de tokens (começando do zero).      |
+
 
 > Campos do tipo `text` são tokenizados. Por isso, buscas exatas precisam de campos do tipo `keyword`.
 
@@ -398,7 +387,7 @@ curl -XPOST "localhost:9200/_analyze?pretty" -H "Content-Type: application/json"
 curl -XPOST "localhost:9200/_analyze?pretty" -H "Content-Type: application/json" -d '{
   "tokenizer": "standard",
   "filter": ["lowercase", "stop"],
-  "text": "João Pédrô da SílVA"
+  "text": "the student fernando"
 }'
 ```
 
@@ -427,9 +416,17 @@ curl -XPUT "localhost:9200/cursos?pretty" -H "Content-Type: application/json" -d
         }
       }
     }
+  },
+  "mappings": {
+    "properties": {
+      "idCurso": { "type": "integer" },
+      "nomeCurso": { 
+        "type": "text",
+        "analyzer": "analisador_com_sinonimos"
+      }
+    }
   }
 }'
-
 ```
 
 
@@ -442,7 +439,36 @@ curl -XPOST "localhost:9200/cursos/_analyze?pretty" -H "Content-Type: applicatio
 }'
 ```
 
+```bash
+curl -XPOST "localhost:9200/cursos/_doc/1" -H "Content-Type: application/json" -d '{
+  "idCurso": 1,
+  "nomeCurso": "Engenharia de Software"
+}'
 
+
+curl -XPOST "localhost:9200/cursos/_doc/2" -H "Content-Type: application/json" -d '{
+  "idCurso": 2,
+  "nomeCurso": "Administração"
+}'
+
+
+curl -XPOST "localhost:9200/cursos/_search?pretty" -H "Content-Type: application/json" -d '{
+  "query": {
+    "match": {
+      "nomeCurso": "Programação"
+    }
+  }
+}'
+
+curl -XPOST "localhost:9200/cursos/_search?pretty" -H "Content-Type: application/json" -d '{
+  "query": {
+    "match": {
+      "nomeCurso": "Negócios"
+    }
+  }
+}'
+
+```
 ---
 
 
@@ -525,6 +551,11 @@ curl -X POST http://localhost:9200/_aliases -H "Content-Type: application/json" 
 
 ```bash
 curl -X GET  http://localhost:9200/empresas 
+
+curl -X GET  http://localhost:9200/empresas/_search
+
+curl -X GET  http://localhost:9200/_aliases
+
 ```
 
 
@@ -690,3 +721,24 @@ curl -X POST "localhost:9200/produtos/_search?pretty" -H "Content-Type: applicat
 ```
 
 ### Kibana
+
+
+![Kibana](/content/elastic00.png)
+
+![Kibana](/content/elastic01.png)
+
+![Kibana](/content/elastic02.png)
+
+![Kibana](/content/elastic03.png)
+
+![Kibana](/content/elastic04.png)
+
+![Kibana](/content/elastic05.png)
+
+![Kibana](/content/elastic06.png)
+
+![Kibana](/content/elastic07.png)
+
+![Kibana](/content/elastic08.png)
+
+![Kibana](/content/elastic09.png)
