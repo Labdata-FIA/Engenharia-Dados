@@ -1,0 +1,14 @@
+{ "index": { "_index": "alunos", "_id": 1 } }
+{ "idaluno": 1, "nomeAluno": "João Silva", "curso": "Engenharia", "idade": 21, "dataCadastro": "2024-01-10" }
+{ "index": { "_index": "alunos", "_id": 2 } }
+{ "idaluno": 2, "nomeAluno": "Maria Souza", "curso": "Direito", "idade": 23, "dataCadastro": "2024-01-12" }
+{ "index": { "_index": "alunos", "_id": 3 } }
+{ "idaluno": 3, "nomeAluno": "Pedro Santos", "curso": "Administração", "idade": 25, "dataCadastro": "2024-02-05" }
+{ "index": { "_index": "alunos", "_id": 4 } }
+{ "idaluno": 4, "nomeAluno": "Ana Oliveira", "curso": "Engenharia", "idade": 22, "dataCadastro": "2024-03-01" }
+{ "index": { "_index": "alunos", "_id": 5 } }
+{ "idaluno": 5, "nomeAluno": "Carlos Lima", "curso": "Medicina", "idade": 28, "dataCadastro": "2024-03-15" }
+{ "index": { "_index": "alunos", "_id": 6 } }
+{ "idaluno": 6, "nomeAluno": "Juliana Castro", "curso": "Engenharia", "idade": 24, "dataCadastro": "2024-04-10" }
+{ "index": { "_index": "alunos", "_id": 7 } }
+{ "idaluno": 7, "nomeAluno": "Bruno Almeida", "curso": "Direito", "idade": 26, "dataCadastro": "2024-04-20" }

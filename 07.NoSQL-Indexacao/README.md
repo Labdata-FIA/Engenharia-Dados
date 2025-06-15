@@ -21,11 +21,10 @@ Para subir o ambiente local com Elasticsearch:
 docker compose up -d elasticsearch  kibana
 ```
 
-* Elastic
-http://localhost:9200/
+### Acesse:
 
-* kibana
-http://localhost:5601/
+* Elastic: http://localhost:9200/
+* kibana: http://localhost:5601/
 
 
 ## 📁 Índices
@@ -55,17 +54,6 @@ ls data/indices/
 curl -X GET http://localhost:9200/alunos
 ```
 
-
-### ❌ Excluir índice
-
-```bash
-
-curl -X PUT http://localhost:9200/teste -H "Content-Type: application/json"
-
-curl -X GET http://localhost:9200/teste
-
-curl -X DELETE http://localhost:9200/teste
-```
 
 ### 🔹 Criar índice com Mapeamento
 
@@ -98,6 +86,30 @@ curl -X PUT http://localhost:9200/alunos/_settings -H "Content-Type: application
 }'
 ```
 
+### ❌ Excluir índice
+
+```bash
+curl -X DELETE http://localhost:9200/alunos
+```
+
+### Criar índice alunos com mapeamento
+```bash
+curl -X PUT http://localhost:9200/alunos -H "Content-Type: application/json" -d '{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "properties": {
+      "idaluno": { "type": "integer" },
+      "nomeAluno": { "type": "text", "fields": { "raw": { "type": "keyword" } } },
+      "curso": { "type": "keyword" },
+      "idade": { "type": "integer" },
+      "dataCadastro": { "type": "date", "format": "yyyy-MM-dd" }
+    }
+  }
+}'
+```
 
 ## 📄 Manipulação de Documentos
 
@@ -108,34 +120,48 @@ Aqui estão exemplos para criar, atualizar, excluir e consultar documentos.
 ```bash
 curl -X POST http://localhost:9200/alunos/_doc/1 -H "Content-Type: application/json" -d '{
   "idaluno": 1,
-  "nomeAluno": "João Silva",
-  "data": "2024-03-31"
+  "nomeAluno": "Fernanda Martins",
+  "curso": "Engenharia",
+  "idade": 27,
+  "dataCadastro": "2024-05-01"
 }'
 
-curl -X POST http://localhost:9200/alunos/_doc/2 -H "Content-Type: application/json" -d '{
-  "idaluno": 2,
-  "nomeAluno": "João Silva 2",
-  "data": "2024-03-31"
-}'
-
-curl -X POST http://localhost:9200/alunos/_doc/3 -H "Content-Type: application/json" -d '{
-  "idaluno": 3,
-  "nomeAluno": "Maria",
-  "data": "2024-03-31"
-}'
 
 ```
 
 ### 🔄 Atualizar documento
 
+> #### Atenção didática: substitui TODO o documento — se esquecer algum campo, o campo será apagado.
 ```bash
-curl -X POST http://localhost:9200/alunos/_update/1 -H "Content-Type: application/json" -d '{
+curl -X PUT http://localhost:9200/alunos/_doc/1 -H "Content-Type: application/json" -d '{
+  "idaluno": 1,
+  "nomeAluno": "Fernanda Martins",
+  "curso": "Engenharia de Software",
+  "idade": 27,
+  "dataCadastro": "2024-05-01"
+}'
+```
+
+> #### Atenção didática: apenas os campos informados serão atualizados.
+
+```bash
+curl -X POST http://localhost:9200/alunos/_update/8 -H "Content-Type: application/json" -d '{
   "doc": {
-    "nomeAluno": "João Pedro Silva"
+    "curso": "Engenharia de Produção",
+    "idade": 28
   }
 }'
 ```
 
+> #### Atualização com script (exemplo de incremento de idade)
+
+```bash
+curl -X POST http://localhost:9200/alunos/_update/8 -H "Content-Type: application/json" -d '{
+  "script": {
+    "source": "ctx._source.idade += 1"
+  }
+}'
+```
 
 ### ❌ Excluir documento
 
@@ -143,11 +169,69 @@ curl -X POST http://localhost:9200/alunos/_update/1 -H "Content-Type: applicatio
 curl -X DELETE http://localhost:9200/alunos/_doc/3
 ```
 
+| Operação               | Método         | Comportamento                    |
+| ---------------------- | -------------- | -------------------------------- |
+| Inserção               | `POST`         | Cria ou sobrescreve              |
+| Atualização total      | `PUT`          | Substitui todo o documento       |
+| Atualização parcial    | `POST _update` | Altera apenas os campos enviados |
+| Atualização por script | `POST _update` | Executa lógica sobre o documento |
+| Deleção                | `DELETE`       | Exclui o documento               |
 
-### 🔍 Consultas com `_search`
+
+### 🔍 Consultas
+
+### 🔧 Busca simples com q=
+
+```bash
+curl -XGET "localhost:9200/alunos/_search?q=joao&pretty"
+```
 
 
+###  Busca com várias palavras (AND implícito)
 
+```bash
+curl -XGET "localhost:9200/alunos/_search?q=joao+silva&pretty"
+```
+>Busca documentos que contenham ambos os termos: joao E silva.
+
+###  Busca com OR explícito
+
+```bash
+curl -XGET "localhost:9200/alunos/_search?q=joao+OR+maria&pretty"
+```
+>Retorna alunos com joao ou maria no nome.
+
+###  Busca por frase exata (match_phrase)
+
+```bash
+curl -XGET "localhost:9200/alunos/_search?q=\"joao silva\"&pretty"
+
+```
+> busca exatamente joao silva
+
+
+###   Busca com exclusão (NOT)
+
+```bash
+curl -XGET "localhost:9200/alunos/_search?q=joao+-silva&pretty"
+```
+> Traz alunos que tenham joao mas não contenham silva.
+
+
+### Busca com wildcard
+
+```bash
+curl -XGET "localhost:9200/alunos/_search?q=ger*&pretty"
+```
+> Pega qualquer token que comece com jo (ex: joao, jose).
+
+### Busca com campo específico
+
+```bash
+curl -XGET "localhost:9200/alunos/_search?q=nomeAluno:geracao&pretty"
+
+```
+> Busca somente no campo curso (campo keyword).
 
 No Elasticsearch, a forma como você busca por dados depende do tipo de consulta utilizada. Três das mais comuns são `match`, `match_phrase` e `term`, e cada uma possui uma finalidade específica:
 
@@ -167,8 +251,6 @@ curl -X GET http://localhost:9200/alunos/_search -H "Content-Type: application/j
 }'
 ```
 
-**Caso de uso:** Busca por nomes, descrições ou campos textuais com múltiplas palavras.
-
 #### ✅ `match_phrase` – Busca por frase exata
 Também usada em campos `text`, mas considera a ordem e a proximidade das palavras.
 
@@ -182,8 +264,6 @@ curl -X GET http://localhost:9200/alunos/_search -H "Content-Type: application/j
 }
 }'
 ```
-
-**Caso de uso:** Títulos, nomes completos, endereços, frases exatas.
 
 #### ✅ `term` – Busca exata (não analisada)
 Usada para campos `keyword`, `integer`, `boolean`, etc. O valor não é analisado.
@@ -199,7 +279,7 @@ curl -X GET http://localhost:9200/alunos/_search -H "Content-Type: application/j
 }'
 ```
 
-**Caso de uso:** Filtros exatos, códigos, identificadores únicos, status fixos.
+**Exemplos:** Filtros exatos, códigos, identificadores únicos, status fixos.
 
 #### `prefix` — busca por prefixo (ex: autocomplete)
 ```bash
@@ -301,6 +381,68 @@ curl -X POST http://localhost:9200/_analyze -H "Content-Type: application/json" 
 | `keyword`      | Trata o campo inteiro como um único token (ideal para `term`)|
 | `custom`       | Você define seu próprio tokenizer e filtros                  |
 
+
+### Normalizar o texto para evitar problemas com maiúsculas e acentuação.
+```bash
+curl -XPOST "localhost:9200/_analyze?pretty" -H "Content-Type: application/json" -d '{
+  "tokenizer": "standard",
+  "filter": ["lowercase", "asciifolding"],
+  "text": "João Pédrô SílVA"
+}'
+```
+
+
+### Eliminar palavras de baixo valor semântico para buscas.
+
+```bash
+curl -XPOST "localhost:9200/_analyze?pretty" -H "Content-Type: application/json" -d '{
+  "tokenizer": "standard",
+  "filter": ["lowercase", "stop"],
+  "text": "João Pédrô da SílVA"
+}'
+```
+
+## 🔧Trabalhando com sinônimos
+
+### Criando analyzer com sinônimos:
+
+```bash
+curl -XPUT "localhost:9200/cursos?pretty" -H "Content-Type: application/json" -d '{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "sinonimos_cursos": {
+          "type": "synonym",
+          "synonyms": [
+            "Engenharia de Software, Desenvolvimento de Software, Programação",
+            "Administração, Gestão, Negócios",
+            "Marketing, Publicidade, Propaganda"
+          ]
+        }
+      },
+      "analyzer": {
+        "analisador_com_sinonimos": {
+          "tokenizer": "standard",
+          "filter": ["lowercase", "asciifolding", "sinonimos_cursos"]
+        }
+      }
+    }
+  }
+}'
+
+```
+
+
+### Testando o analyzer:
+
+```bash
+curl -XPOST "localhost:9200/cursos/_analyze?pretty" -H "Content-Type: application/json" -d '{
+  "analyzer": "analisador_com_sinonimos",
+  "text": "Administração"
+}'
+```
+
+
 ---
 
 
@@ -309,7 +451,7 @@ curl -X POST http://localhost:9200/_analyze -H "Content-Type: application/json" 
 
 Este exemplo demonstra como criar dois índices (`matriz` e `filial`), adicionar documentos com os campos `id`, `nome` e `parceiro`, e configurar um **alias com filtro** para retornar apenas os documentos onde `parceiro = "VIP"`.
 
-### 🧱 1. Criar os Índices
+### 🧱 Criar os Índices
 
 ```bash
 curl -X PUT http://localhost:9200/matriz -H "Content-Type: application/json" -d '
@@ -337,7 +479,8 @@ curl -X PUT http://localhost:9200/filial -H "Content-Type: application/json" -d 
 
 ```
 
-### 📟 2. Inserir Documentos
+
+### 📟 Inserir Documentos
 
 
 ```bash
@@ -365,7 +508,7 @@ curl -X POST http://localhost:9200/filial/_doc/2 -H "Content-Type: application/j
 
 
 
-### 🏷️ 3. Criar o Alias
+### 🏷️ Criar o Alias
 
 ```bash
 curl -X POST http://localhost:9200/_aliases -H "Content-Type: application/json" -d '
@@ -378,51 +521,172 @@ curl -X POST http://localhost:9200/_aliases -H "Content-Type: application/json" 
 ```
 
 
-### 🔍 4. Buscar Documentos via Alias
+### 🔍 Buscar Documentos via Alias
 
 ```bash
 curl -X GET  http://localhost:9200/empresas 
 ```
 
-### 🏷️ 3. Criar o Alias com filtros
+
+
+### 📟 Paginação Documentos
+
+![Paginação](/content/paginacao-elastic.png)
+
+
+Elasticsearch retorna os resultados em páginas.
+
+Usamos dois parâmetros:
+
+* from ➔ onde começar (offset)
+* size ➔ quantos registros retornar por página
+
 ```bash
-curl -X POST http://localhost:9200/_aliases -H "Content-Type: application/json" -d '
-{
-  "actions": [
-    {
-      "add": {
-        "index": "matriz",
-        "alias": "class",
-        "filter": {
-          "term": {
-            "parceiro": "CLASS"
-          }
-        }
-      }
-    },
-    {
-      "add": {
-        "index": "filial",
-        "alias": "class",
-        "filter": {
-          "term": {
-            "parceiro": "CLASS"
-          }
-        }
+curl -XGET "localhost:9200/alunos/_search?pretty"
+```
+
+Por padrão: Traz os primeiros 10 documentos.
+
+* from=0
+* size=10
+
+
+```bash
+curl -XGET "localhost:9200/alunos/_search?from=0&size=5&pretty"
+```
+
+Começa do 0
+Retorna os primeiros 5 documentos
+
+
+```bash
+curl -XGET "localhost:9200/alunos/_search?from=5&size=5&pretty"
+```
+
+Pula os 5 primeiros (from=5)
+Retorna do documento 6 ao 10
+
+
+
+### 🔬 O que é Fuzziness no Elasticsearch?
+Fuzziness permite que o Elasticsearch encontre resultados aproximados, mesmo que o termo buscado tenha pequenas variações ou erros de digitação.
+
+Por trás disso, o Elasticsearch usa o algoritmo de Levenshtein Distance (distância de edição), que calcula quantas operações de edição (inserção, remoção, substituição) são necessárias para transformar um termo em outro.
+
+
+### 🔢 Exemplos de distância de edição:
+
+| Palavra Original | Palavra Consultada | Distância |
+| ---------------- | ------------------ | --------- |
+| `sucesso`        | `sucesoo`          | 1         |
+| `geracao`        | `geracap`          | 1         |
+| `automatica`     | `automattica`      | 2         |
+
+
+### 🚩 Observação prática:
+O fuzziness funciona apenas em campos do tipo text (que passam por análise/tokenização).
+
+Não funciona em keyword, pois o token inteiro seria comparado.
+
+```bash
+curl -XPOST "localhost:9200/alunos/_search?pretty" -H "Content-Type: application/json" -d '{
+  "query": {
+    "match": {
+      "nomeAluno": {
+        "query": "joao silvaa",
+        "fuzziness": 1
       }
     }
-  ]
+  }
 }'
 ```
 
-```bash
-curl -X GET http://localhost:9200/_aliases
 
-curl -X GET http://localhost:9200/class
-```
-
-## 🔍 4. Buscar Documentos via Alias de filtro
+### Fuzziness automático (AUTO)
 
 ```bash
-curl -X GET http://localhost:9200/class/_search 
+curl -XPOST "localhost:9200/alunos/_search?pretty" -H "Content-Type: application/json" -d '{
+  "query": {
+    "match": {
+      "nomeAluno": {
+        "query": "joao silvaa",
+        "fuzziness": "AUTO"
+      }
+    }
+  }
+}'
 ```
+
+### O AUTO calcula o nível de tolerância com base no tamanho da palavra:
+
+| Tamanho do termo | Fuzziness aplicado |
+| ---------------- | ------------------ |
+| 0-2 caracteres   | 0                  |
+| 3-5 caracteres   | 1                  |
+| 5+ caracteres    | 2                  |
+
+
+
+## 📊 AGREGAÇÕES (E-COMMERCE)
+
+```bash
+curl -X PUT http://localhost:9200/produtos -H "Content-Type: application/json" -d '{
+  "mappings": {
+    "properties": {
+      "idProduto": { "type": "integer" },
+      "nome": { "type": "text" },
+      "sku": { "type": "keyword" },
+      "preco": { "type": "float" },
+      "categoria": { "type": "keyword" }
+    }
+  }
+}'
+```
+
+Inserir produtos (exemplo)
+
+```bash
+curl -X POST http://localhost:9200/produtos/_bulk -H "Content-Type: application/json" -d '
+{ "index": { "_id": 1 } }
+{ "idProduto": 1, "nome": "Notebook Dell", "sku": "N100", "preco": 3500, "categoria": "Eletrônicos" }
+{ "index": { "_id": 2 } }
+{ "idProduto": 2, "nome": "Smartphone Samsung", "sku": "S200", "preco": 2500, "categoria": "Eletrônicos" }
+{ "index": { "_id": 3 } }
+{ "idProduto": 3, "nome": "Tênis Nike", "sku": "T300", "preco": 400, "categoria": "Moda" }
+{ "index": { "_id": 4 } }
+{ "idProduto": 4, "nome": "Camisa Polo", "sku": "C400", "preco": 120, "categoria": "Moda" }
+'
+
+```
+
+
+Agregação terms (por categoria)
+
+```bash
+curl -X POST "localhost:9200/produtos/_search?pretty" -H "Content-Type: application/json" -d '{
+  "size": 0,
+  "aggs": {
+    "por_categoria": {
+      "terms": { "field": "categoria" }
+    }
+  }
+}'
+
+```
+
+
+Agregação avg (média de preços)
+
+```bash
+curl -X POST "localhost:9200/produtos/_search?pretty" -H "Content-Type: application/json" -d '{
+  "size": 0,
+  "aggs": {
+    "media_preco": {
+      "avg": { "field": "preco" }
+    }
+  }
+}'
+
+```
+
+### Kibana
