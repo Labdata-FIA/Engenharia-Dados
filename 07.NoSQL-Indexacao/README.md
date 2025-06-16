@@ -299,6 +299,11 @@ curl -X GET http://localhost:9200/alunos/_search -H "Content-Type: application/j
 
 **Exemplos:** Filtros exatos, códigos, identificadores únicos, status fixos.
 
+>Se o Elasticsearch precisa pensar e entender o texto: match.
+>Se eu quero que ele respeite a ordem exata: match_phrase.
+>Se eu quero que ele só compare como se fosse um ==: term."
+
+
 #### `prefix` — busca por prefixo (ex: autocomplete)
 ```bash
 curl -X GET http://localhost:9200/alunos/_search -H "Content-Type: application/json" -d '{
@@ -742,3 +747,22 @@ curl -X POST "localhost:9200/produtos/_search?pretty" -H "Content-Type: applicat
 ![Kibana](/content/elastic08.png)
 
 ![Kibana](/content/elastic09.png)
+
+## Cluster
+
+
+> https://www.elastic.co/docs/api/doc/elasticsearch/
+
+```bash
+curl -XGET "http://localhost:9200/_cluster/health?pretty"
+
+http://localhost:9200/_cluster/state?pretty
+
+http://localhost:9200/_cluster/stats?human&pretty
+
+http://localhost:9200/_cluster/settings
+
+
+http://localhost:9200/_nodes
+
+```
