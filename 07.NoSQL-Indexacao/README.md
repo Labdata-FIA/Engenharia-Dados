@@ -134,7 +134,7 @@ curl -X POST http://localhost:9200/alunos/_doc/1 -H "Content-Type: application/j
   "dataCadastro": "2024-05-01"
 }'
 
-curl -XGET  "http://localhost:9200/alunos/_doc/1
+curl -XGET  "http://localhost:9200/alunos/_doc/1"
 
 ```
 
@@ -728,20 +728,24 @@ curl -X POST "localhost:9200/produtos/_search?pretty" -H "Content-Type: applicat
 ### Kibana
 
 
+### Gerenciando os indices
 ![Kibana](/content/elastic00.png)
 
 ![Kibana](/content/elastic01.png)
 
+### Configurando indice aluno
 ![Kibana](/content/elastic02.png)
 
 ![Kibana](/content/elastic03.png)
 
+### Criando dash Kibana
 ![Kibana](/content/elastic04.png)
 
 ![Kibana](/content/elastic05.png)
 
 ![Kibana](/content/elastic06.png)
 
+### Criando grafico para o indice aluno
 ![Kibana](/content/elastic07.png)
 
 ![Kibana](/content/elastic08.png)
