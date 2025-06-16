@@ -725,30 +725,87 @@ curl -X POST "localhost:9200/produtos/_search?pretty" -H "Content-Type: applicat
 
 ```
 
-### Kibana
+## 📊 Explorando o Kibana com os Índices Criados
 
 
-### Gerenciando os indices
+### Acessando o Management
+
+No menu lateral do Kibana, clique em:
+
+Management → Kibana → Data Views
+
+
 ![Kibana](/content/elastic00.png)
+
+### Criando um Data View
+
+Clique em "Create data view".
+
+Na tela de criação preencha:
+
+* Data view name: alunos
+* Index pattern: alunos
+> (permite capturar qualquer índice que comece com alunos)
+
+* Timestamp field: dataCadastro
+
+> O campo dataCadastro deve estar mapeado no índice como tipo date.
+
 
 ![Kibana](/content/elastic01.png)
 
-### Configurando indice aluno
+
 ![Kibana](/content/elastic02.png)
+
+
+### Acessando o Discover
+Após criar o Data View, vá para o menu:
+
+Analytics → Discover
 
 ![Kibana](/content/elastic03.png)
 
-### Criando dash Kibana
+
+### Criando um Dashboard
+
+No menu lateral, acesse:
+
+Analytics → Dashboard
+
+Clique em "Create Dashboard" para montar um novo painel.
+Adicione visualizações já criadas ou crie novas diretamente.
+
+Os dashboards podem unir várias visualizações do seu índice alunos.
+
+
 ![Kibana](/content/elastic04.png)
 
 ![Kibana](/content/elastic05.png)
 
+### Criando uma Visualização
+Dentro do Dashboard ou diretamente em Visualize Library, clique em:
+
+"Create visualization"
+
+Escolha o tipo de gráfico desejado, por exemplo:
+
+Pie (Pizza Chart)
+
+Selecione o Data View alunos e configure:
+
 ![Kibana](/content/elastic06.png)
 
-### Criando grafico para o indice aluno
+
 ![Kibana](/content/elastic07.png)
 
 ![Kibana](/content/elastic08.png)
+
+### Usando o Dev Tools
+Acesse:
+
+Management → Dev Tools
+
+Aqui podemos executar comandos direto na API REST do Elasticsearch.
 
 ![Kibana](/content/elastic09.png)
 
