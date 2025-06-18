@@ -50,16 +50,10 @@ docker compose -f docker/docker-compose.yml down
 
 Após inicializar o serviço, crie um usuário admin para acessar a interface do Airflow:
 
-1. Acesse o container do webserver:
+- Executar o comando abaixo no terminal
 
 ```shell
-docker compose -f docker/docker-compose.yml exec webserver bash
-```
-
-2. No container, crie o usuário admin:
-
-```shell
-airflow users create \
+docker compose -f docker/docker-compose.yml exec webserver airflow users create \
     --username admin \
     --firstname Firstname \
     --lastname Lastname \
@@ -69,6 +63,8 @@ airflow users create \
 ```
 
 ## Configurar a Conexão MySQL no Airflow
+
+### Utilizando interface gráfica
 
 1. Acesse a interface do Airflow em [http://localhost:8080](http://localhost:8080) e faça login com as credenciais criadas.
 2. Vá para `Admin` -> `Connections`.
@@ -81,6 +77,16 @@ airflow users create \
 - **Login**: `airflow`
 - **Password**: `airflow`
 - **Port**: `3306`
+
+### Utilizando linha de comando
+
+```shell
+docker compose -f docker/docker-compose.yml exec webserver \
+    airflow connections delete 'mysql_default'
+
+docker compose -f docker/docker-compose.yml exec webserver \
+    airflow connections add 'mysql_default' --conn-uri 'mysql://airflow:airflow@mysql_airflow:3306/airflow'
+```
 
 ## Monitoramento de Logs
 

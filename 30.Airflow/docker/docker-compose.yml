@@ -1,8 +1,7 @@
-version: '3.8'
-
 services:
-  mysql:
-    image: mysql:8.0
+  mysql_airflow:
+    image: library/mysql:8.0.31
+    container_name: mysql_airflow
     environment:
       MYSQL_ROOT_PASSWORD: airflow
       MYSQL_DATABASE: airflow
@@ -13,8 +12,9 @@ services:
     networks:
       - laboratorio-airflow-tier
 
-  postgres:
+  postgres_airflow:
     image: postgres:13
+    container_name: postgres_airflow
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -27,12 +27,14 @@ services:
   webserver:
     build: .
 #    image: apache/airflow:2.7.2-python3.11
+    container_name: webserver
     restart: always
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-      AIRFLOW__CORE__FERNET_KEY: ${FERNET_KEY}
-      AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY}2'
+#      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
+      AIRFLOW__CORE__FERNET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA=}'
+      AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA2}'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'True'
     volumes:
       - ../dags:/opt/airflow/dags
@@ -40,7 +42,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
+      - postgres_airflow
     networks:
       - laboratorio-airflow-tier
     command: >
@@ -50,16 +52,18 @@ services:
     build: .
 #    image: apache/airflow:2.7.2-python3.11
     restart: always
+    container_name: scheduler
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-      AIRFLOW__CORE__FERNET_KEY: ${FERNET_KEY}
-      AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY}2'
+#      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
+      AIRFLOW__CORE__FERNET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA=}'
+      AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA2}'
     volumes:
       - ../dags:/opt/airflow/dags
       - ../requirements.txt:/requirements.txt
     depends_on:
-      - postgres
+      - postgres_airflow
     networks:
       - laboratorio-airflow-tier
     command: >
