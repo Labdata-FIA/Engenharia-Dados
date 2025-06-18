@@ -78,12 +78,8 @@ O parâmetro `class` define **como os dados serão replicados no cluster**. Os v
 | `NetworkTopologyStrategy` | Permite definir quantidade de réplicas por data center. Respeita topologia física do cluster. | **Produção, ambientes multi data center ou nuvem.** |
 | `LocalStrategy` | Usado internamente pelo keyspace `system` do próprio Cassandra. | **Não usar manualmente.** |
 
-
-## Caso de uso: Sistema de Alunos e Produtos
-
 **Contexto**: Sistema para registrar informações de alunos e produtos adquiridos.
 
-### Criando a tabela de pesquisadores:
 
 ### Tabela de Alunos
 
@@ -100,7 +96,7 @@ describe table alunos;
 alter table alunos
 add nota decimal;
 
-drop table alunos;
+--drop table alunos;
 
 ```
 
@@ -132,7 +128,7 @@ CREATE TABLE produtos (
     PRIMARY KEY (id_produto, ano)
 ) WITH CLUSTERING ORDER BY (ano DESC);
 
-);
+
 ```
 
 ### PRIMARY KEY:
@@ -167,18 +163,11 @@ INSERT INTO produtos (id_produto,  nome_produto, ano, categoria)
 VALUES (uuid(), 'Licença Temporária', 2024, 'Software') USING TTL 3600;
 ```
 
-
-### Inserindo dados
-```sql
-INSERT INTO pesquisadores (id, nome, area_pesquisa, email)
-VALUES (uuid(), 'Dra. Ana Silva', 'Inteligência Artificial', 'ana@universidade.edu');
-
-```
-
 ### Inserindo os mesmos dados
 ```sql
-INSERT INTO pesquisadores (id, nome, area_pesquisa, email)
-VALUES (<<pegar o id>>, 'Dra. Ana Silva', 'Inteligência Artificial', 'ana@universidade.edu');
+
+INSERT INTO alunos (id, nome, curso, email, nota)
+VALUES (2fcb1bbe-adc0-4786-9805-ec115636fbf5, 'Carlos Silv 2', 'Engenharia de Dados', 'carlos@escola.edu', 10);
 
 ```
 
@@ -192,6 +181,9 @@ SELECT * FROM produtos WHERE id_produto = 550e8400-e29b-41d4-a716-446655440000;
 ```
 
 ### Consultando Dados
+
+
+### Usando LIMIT
 
 ```sql
 SELECT * FROM produtos WHERE id_produto = 550e8400-e29b-41d4-a716-446655440000 LIMIT 5;
@@ -219,8 +211,6 @@ Para permitir consultas por uma coluna que não faz parte da chave primária, po
 CREATE INDEX ON produtos (categoria);
 ```
 
-### Usando LIMIT
-
 ```sql
 UPDATE alunos SET email = 'carlos.silva@escola.edu' WHERE id = 550e8400-e29b-41d4-a716-446655440000;
 ```
@@ -247,6 +237,15 @@ CREATE TABLE vendas (
     valor_total DECIMAL,
     PRIMARY KEY (id_cliente, ano, mes)
 );
+
+INSERT INTO vendas (id_cliente, ano, mes, valor_total)
+VALUES (
+  550e8400-e29b-41d4-a716-446655440000,
+  2025,
+  6,
+  3200.75
+);
+
 ```
 * Partition Key: id_cliente
 * Clustering Columns: ano, mes
@@ -260,10 +259,10 @@ CREATE TABLE vendas (
 SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000;
 
 -- 2. Consulta por partition key + clustering column (ano)
-SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 AND ano = 2024;
+SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 AND ano = 2025;
 
 -- 3. Consulta completa usando todas as chaves (PK + clustering)
-SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 AND ano = 2024 AND mes = 5;
+SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 AND ano = 2025 AND mes = 6;
 
 -- 4. Consulta ordenada (automático com clustering)
 SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 ORDER BY ano DESC, mes DESC;
@@ -276,13 +275,13 @@ SELECT SUM(valor_total) FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-4
 ## Consultas que não vão funcionar (ou precisam de ALLOW FILTERING)
 ```sql
 -- 1. Filtro apenas pelo clustering column (sem partition key)
-SELECT * FROM vendas WHERE ano = 2024;
+SELECT * FROM vendas WHERE ano = 2025;
 
 -- 2. Filtro por clustering fora da ordem (ano omitido)
-SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 AND mes = 5;
+SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 AND mes = 6;
 
 -- 3. Filtro com OR (não é suportado)
-SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 OR ano = 2024;
+SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 OR ano = 2025;
 
 -- 4. Consulta com subquery (não suportado)
 SELECT * FROM vendas WHERE ano IN (SELECT ano FROM outra_tabela);
@@ -330,7 +329,7 @@ VALUES (uuid(), 'Engenharia de Dados Completo', ['SQL', 'Cassandra', 'Kafka']);
 
 UPDATE cursos_completos SET modulos = modulos + ['Spark'] WHERE id = <ID>;
 ```
-> List pode ter dados repetidos
+> LIST: mantém a ordem de inserção. Ideal para armazenar listas ordenadas de itens. Permite duplicatas.
 
 ### Set (elementos únicos, sem ordem garantida)
 
@@ -344,6 +343,8 @@ CREATE TABLE certificados (
 INSERT INTO certificados (id, nome, certificacoes)
 VALUES (uuid(), 'João Pedro', {'Azure', 'AWS', 'GCP', 'AWS'});
 ```
+
+> SET: garante unicidade, sem ordem. Evita valores repetidos.
 
 
 ### Map (chave-valor)
@@ -361,6 +362,7 @@ VALUES (uuid(), 'Maria', {'Matematica': 8.5, 'IA': 9.0});
 UPDATE notas_finais SET notas['BigData'] = 10.0 WHERE id = <ID>;
 ```
 
+>MAP: estrutura de chave-valor. Ideal para armazenar pares dinâmicos de dados.
 
 ## Consistência (Consistency Level)
 No cqlsh podemos ajustar o nível de consistência:
