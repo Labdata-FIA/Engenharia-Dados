@@ -7,10 +7,15 @@
 
 ---
 
-## Subindo o Apache Cassandra com Docker Compose
+## Subindo o Apache Cassandra com Docker Compose, mas antes
 
 ```bash
-docker-compose up -d cassandra cassandra-web
+docker container rm $(docker ps -a -q) -f
+docker container volume prune
+```
+
+```bash
+docker compose up -d cassandra cassandra-web
 ```
 
 ---
@@ -92,10 +97,10 @@ CREATE TABLE alunos (
 
 describe table alunos;
 
-drop table alunos;
-
 alter table alunos
 add nota decimal;
+
+drop table alunos;
 
 ```
 
@@ -108,7 +113,7 @@ add nota decimal;
 
 ### Conceitos Importantes: Partition Key e Clustering Columns
 
-* Partition Key: é o primeiro campo (ou conjunto de campos) da chave primária. Ele determina em qual nó do cluster os dados serão armazenados. Cada valor de partition key gera uma "partição física" distinta no cluster. Exemplo: id_aluno é a partition key da tabela produtos.
+* Partition Key: é o primeiro campo (ou conjunto de campos) da chave primária. Ele determina em qual nó do cluster os dados serão armazenados. Cada valor de partition key gera uma "partição física" distinta no cluster. Exemplo: id é a partition key da tabela produtos.
 
 * Clustering Columns: são os campos que aparecem após a partition key na chave primária. Eles definem como os dados serão organizados e ordenados dentro da partição. Exemplo: ano, id_produto são clustering columns na tabela produtos.
 
@@ -118,12 +123,15 @@ add nota decimal;
 ### Tabela de Produtos (Exemplo de Particionamento)
 
 ```sql
+
 CREATE TABLE produtos (
     id_produto UUID,
-    ano INT,   
+    ano INT,
     nome_produto TEXT,
     categoria TEXT,
     PRIMARY KEY (id_produto, ano)
+) WITH CLUSTERING ORDER BY (ano DESC);
+
 );
 ```
 
@@ -133,6 +141,9 @@ CREATE TABLE produtos (
 - **Clustering Key**: ano
 - Os dados são particionados por id_produto e ordenados pelo ano e dentro de cada particao.
 
+
+### ⚠️ Cuidado com Partition Keys mal definidas (Hot Partitions)
+No Cassandra, a Partition Key determina como os dados são distribuídos entre os nós do cluster. Quando essa chave é mal planejada — por exemplo, quando muitos registros compartilham o mesmo valor de partition key — ocorre o problema conhecido como Hot Partition:
 
 ### Inserindo Dados
 
@@ -176,14 +187,14 @@ VALUES (<<pegar o id>>, 'Dra. Ana Silva', 'Inteligência Artificial', 'ana@unive
 
 ```sql
 SELECT * FROM alunos;
-SELECT * FROM produtos WHERE id_aluno = 550e8400-e29b-41d4-a716-446655440000;
+SELECT * FROM produtos WHERE id_produto = 550e8400-e29b-41d4-a716-446655440000;
 
 ```
 
 ### Consultando Dados
 
 ```sql
-SELECT * FROM produtos WHERE id_aluno = 550e8400-e29b-41d4-a716-446655440000 LIMIT 5;
+SELECT * FROM produtos WHERE id_produto = 550e8400-e29b-41d4-a716-446655440000 LIMIT 5;
 ```
 
 ### Filtros sem usar Partition Key
@@ -217,16 +228,70 @@ UPDATE alunos SET email = 'carlos.silva@escola.edu' WHERE id = 550e8400-e29b-41d
 ### Aggregate (exemplo com SUM)
 >Importante: Agregações no Cassandra exigem que a partição esteja especificada
 ```sql
-SELECT SUM(ano) FROM produtos WHERE id_aluno = 550e8400-e29b-41d4-a716-446655440000;
+SELECT SUM(ano) FROM produtos WHERE id_produto = 550e8400-e29b-41d4-a716-446655440000;
 ```
 
 ### GROUP BY
 > O GROUP BY no Cassandra funciona apenas sobre uma partição completa.
 ```sql
-SELECT ano, COUNT(*) FROM produtos WHERE id_aluno = 550e8400-e29b-41d4-a716-446655440000 GROUP BY ano;
+SELECT ano, COUNT(*) FROM produtos WHERE id_produto = 550e8400-e29b-41d4-a716-446655440000 GROUP BY ano;
 ```
 
+### Nem tudo são flores
 
+```sql
+CREATE TABLE vendas (
+    id_cliente UUID,
+    ano INT,
+    mes INT,
+    valor_total DECIMAL,
+    PRIMARY KEY (id_cliente, ano, mes)
+);
+```
+* Partition Key: id_cliente
+* Clustering Columns: ano, mes
+> Dentro da partição id_cliente, os dados são ordenados por ano e depois por mes.
+
+
+## Consultas que funcionam corretamente
+
+```sql
+-- 1. Consulta básica por partition key
+SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000;
+
+-- 2. Consulta por partition key + clustering column (ano)
+SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 AND ano = 2024;
+
+-- 3. Consulta completa usando todas as chaves (PK + clustering)
+SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 AND ano = 2024 AND mes = 5;
+
+-- 4. Consulta ordenada (automático com clustering)
+SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 ORDER BY ano DESC, mes DESC;
+
+-- 5. Agregação dentro da partição
+SELECT SUM(valor_total) FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000;
+
+```
+
+## Consultas que não vão funcionar (ou precisam de ALLOW FILTERING)
+```sql
+-- 1. Filtro apenas pelo clustering column (sem partition key)
+SELECT * FROM vendas WHERE ano = 2024;
+
+-- 2. Filtro por clustering fora da ordem (ano omitido)
+SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 AND mes = 5;
+
+-- 3. Filtro com OR (não é suportado)
+SELECT * FROM vendas WHERE id_cliente = 550e8400-e29b-41d4-a716-446655440000 OR ano = 2024;
+
+-- 4. Consulta com subquery (não suportado)
+SELECT * FROM vendas WHERE ano IN (SELECT ano FROM outra_tabela);
+
+-- 5. Consulta sem nenhuma chave
+SELECT * FROM vendas WHERE valor_total > 100;
+
+
+```
 ### Update de Dados
 
 ```sql
@@ -244,7 +309,10 @@ UPDATE alunos SET email = 'carlos.silva@escola.edu' ;
 
 ```sql
 UPDATE alunos SET email = 'carlos.silva@escola.edu'  WHERE id = 550e8400-e29b-41d4-a716-446655440000;
+
 ```
+
+> Insert e Update tem o mesmo comportamento  =>  `Upsert`
 
 ## Trabalhando com Collections: LIST, SET e MAP
 
