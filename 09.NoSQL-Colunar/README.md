@@ -11,7 +11,7 @@
 
 ```bash
 docker container rm $(docker ps -a -q) -f
-docker container volume prune
+docker volume prune
 ```
 
 ```bash
