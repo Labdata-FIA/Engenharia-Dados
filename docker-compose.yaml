@@ -724,6 +724,48 @@ services:
     networks:
       - rede_fia
 
+  namenode:
+    image: fjardim/mds-namenode
+    platform: linux/amd64
+    container_name: namenode
+    hostname: namenode
+    volumes:
+      - ./05.Armazenamento-Distribuido/hdfs/namenode:/hadoop/dfs/name
+      - ./05.Armazenamento-Distribuido/util:/util
+    env_file:
+      - ./05.Armazenamento-Distribuido/hadoop.env
+    ports:
+      - "9870:9870"
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+    networks:
+      - rede_fia
+
+  datanode:
+    image: fjardim/mds-datanode
+    platform: linux/amd64
+    container_name: datanode
+    hostname: datanode
+    volumes:
+      - ./05.Armazenamento-Distribuido/hdfs/datanode:/hadoop/dfs/data
+      - ./05.Armazenamento-Distribuido/util:/util
+    env_file:
+      - ./05.Armazenamento-Distribuido/hadoop.env
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    depends_on:
+      - namenode
+    ports:
+      - "9864:9864"
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+    networks:
+      - rede_fia
+
 networks:
   rede_fia:
 

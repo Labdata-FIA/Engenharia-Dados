@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "Modelo que transforma e limpa os dados dos clientes a partir do modelo stg_customer"
+    columns:
+      - name: customer_key
+        description: "Chave única para identificar o cliente"
+        tests:
+          - not_null
+          - unique
+      - name: last_name
+        description: "Sobrenome do cliente"
+        tests:
+          - not_null
+      - name: first_name
+        description: "Nome do cliente"
+        tests:
+          - not_null
+      - name: full_name
+        description: "Nome completo do cliente, gerado concatenando o primeiro nome e o sobrenome"
+      - name: prefix
+        description: "Prefixo de tratamento do cliente (Sr., Sra., etc.)"
+      - name: email_address
+        description: "Endereço de e-mail do cliente"
+        tests:
+          - not_null
+          - unique
+          - accepted_values:
+              values: ['@']
+      - name: occupation
+        description: "Ocupação profissional do cliente"
+      - name: birth_date
+        description: "Data de nascimento do cliente. Caso seja nulo ou vazio, o valor permanece nulo."
+        tests:
+          - not_null
+      - name: gender
+        description: "Gênero do cliente"
+        tests:
+          - not_null
+      - name: maritial_status
+        description: "Estado civil do cliente"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Married', 'Single', 'Divorced', 'Widowed'] # Ajustar conforme necessário
+      - name: total_children
+        description: "Número total de filhos do cliente"
+        tests:
+          - not_null
+      - name: education_level
+        description: "Nível de escolaridade do cliente"
+      - name: home_owner
+        description: "Indica se o cliente possui casa própria"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+      - name: annual_income
+        description: "Renda anual do cliente convertida para float"
+        tests:
+          - not_null
