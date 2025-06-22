@@ -12,7 +12,7 @@ def filter_data(todos):
 
 def insert_data(titles):
     conn = mysql.connector.connect(
-        host="mysql",
+        host="mysql_airflow",
         database="airflow",
         user="airflow",
         password="airflow"

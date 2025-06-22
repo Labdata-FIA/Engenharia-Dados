@@ -1,4 +1,4 @@
-requests
-psycopg2-binary
-apache-airflow-providers-jdbc
-mysql-connector-python
+requests==2.31.0
+psycopg2-binary==2.9.9
+mysql-connector-python==8.1.0
+apache-airflow-providers-jdbc==4.3.1
