@@ -80,7 +80,7 @@ keys aluno*
 ```
 
 * Caractere *, representa conjuntos de caracteres
-* Caractere ? representa um caractre
+* Caractere ? representa um caractere
 * Caractere [], representa um grupo caracteres Ex. [ab]
 
 
@@ -215,7 +215,7 @@ HINCRBY aluno-10 idade 1
 HDEL aluno-10 rua
 
 
-//Só se o campo existir
+//Só se o campo não existir
 HSETNX aluno-10 idade 25
 
 hget aluno-10 idade
