@@ -374,6 +374,10 @@ publish ConcessionariaBMW-A-TemX1 sim
 
 //Ctrl + C
 //No terminal 1
+
+//Caso tenha saido do redis
+redis-cli -h 127.0.0.1 -p 6379 -a "labdata"
+
 psubscribe ConcessionariaBMW*
 
 //No terminal 2
