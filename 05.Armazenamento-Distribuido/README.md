@@ -17,7 +17,7 @@ Este laboratório tem como objetivo praticar comandos HDFS utilizando um cluster
 A estrutura a ser criada no HDFS será a seguinte:
 
 ```
-/datalake
+
 ├── bronze/
 │   └── ano=2025/mes=06/dia=19/
 ├── silver/
@@ -27,6 +27,9 @@ A estrutura a ser criada no HDFS será a seguinte:
 ```
 
 ---
+
+> http://localhost:9864/
+> http://localhost:9870/
 
 ```bash
 docker container rm $(docker ps -a -q) -f
@@ -80,37 +83,40 @@ cat  /util/clientes.csv
 ### 1.1 Enviando o arquivo `clientes.csv` para o HDFS
 
 ```bash
-hdfs dfs -put clientes.csv /bronze/ano=2025/mes=06/dia=19/
+hdfs dfs -put /util/clientes.csv /bronze/ano=2025/mes=06/dia=19/
 ```
 
 ### 2. Visualização dos dados
 
 ```bash
-hdfs dfs -ls /datalake/bronze/ano=2025/mes=06/dia=19
-hdfs dfs -cat /datalake/bronze/ano=2025/mes=06/dia=19/clientes.csv
-
-
-hdfs dfs -get /datalake/bronze/ano=2025/mes=06/dia=19/clientes.csv
+hdfs dfs -ls /bronze/ano=2025/mes=06/dia=19
+hdfs dfs -cat /bronze/ano=2025/mes=06/dia=19/clientes.csv
 ```
 
 
 ### 3. Simular transformação para Silver
 
 ```bash
-hdfs dfs -cp /datalake/bronze/ano=2025/mes=06/dia=19/clientes.csv \
-          /datalake/silver/ano=2025/mes=06/dia=19/
+hdfs dfs -cp /bronze/ano=2025/mes=06/dia=19/clientes.csv \
+          /silver/ano=2025/mes=06/dia=19/
+
+hdfs dfs -ls /silver/ano=2025/mes=06/dia=19/
+
 ```
 
 ### 4. Simular tratamento final para Gold
 
 ```bash
-hdfs dfs -cp /datalake/silver/ano=2025/mes=06/dia=19/clientes.csv \
-          /datalake/gold/ano=2025/mes=06/dia=19/
+hdfs dfs -cp /silver/ano=2025/mes=06/dia=19/clientes.csv \
+          /gold/ano=2025/mes=06/dia=19/
+
+hdfs dfs -ls /gold/ano=2025/mes=06/dia=19/
+
 ```
 
 ### 5. Buscando os dados, mas antes apague o arquivo `clientes.csv` da pasta util dentro do seu computador o maquina virtual
 ```bash
- hdfs dfs -get /datalake/bronze/ano=2025/mes=06/dia=19/clientes.csv ./util/
+ hdfs dfs -get /bronze/ano=2025/mes=06/dia=19/clientes.csv ./util/
 
 ```
 
@@ -154,7 +160,7 @@ hdfs dfs -du -h /
 ### 📌 Script para listar todos os arquivos e blocos
 
 ```bash
-hdfs dfs -ls -R /datalake | awk '{print $8}' | while read file; do
+hdfs dfs -ls -R / | awk '{print $8}' | while read file; do
   echo "Arquivo: $file"
   hdfs fsck $file -files -blocks -locations
 done
@@ -167,7 +173,7 @@ hdfs fsck / -blocks -locations -files | grep -i 'Under replicated'
 ```
 
 
-## Agora crie a mesma estrutura de armazenamento com o MiniO
+## Agora é com voce! Crie a mesma estrutura de armazenamento com o MiniO
 
 > http://localhost:9001/login
 
