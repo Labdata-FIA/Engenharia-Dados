@@ -740,6 +740,10 @@ services:
       resources:
         limits:
           memory: 500m
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
       - rede_fia
 
@@ -763,6 +767,10 @@ services:
       resources:
         limits:
           memory: 500m
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
       - rede_fia
 
