@@ -1,4 +1,4 @@
-# Lab ElasticSearch
+# Lab Armazenamento Distribuido
 
 
 ## Disclaimer
