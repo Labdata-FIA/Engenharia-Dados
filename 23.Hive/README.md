@@ -43,11 +43,7 @@ docker exec -it namenode bash
 ### 🔍 Verificar modo seguro (Safe Mode)
 
 ```bash
-hdfs dfsadmin -safemode leave
-
-hdfs fsck -delete
-
-exit
+hdfs dfsadmin -safemode get
 ```
 
 ### Se o retorno for `Safe mode is OFF` então não está, pode pular o proximo comando.
@@ -56,6 +52,10 @@ exit
 
 ```bash
 hdfs dfsadmin -safemode leave
+
+hdfs fsck -delete
+
+exit
 ```
 
 ## 🚀 Comandos iniciais
@@ -70,8 +70,10 @@ docker exec -it hive bash
 hdfs dfs -mkdir -p /bronze/alunos
 hdfs dfs -mkdir -p /bronze/produtos/
 ```
+### Deu certo ?
+> http://localhost:9870/
 
-
+> Se Precisar subir muitos arquivo - hdfs dfs -put /tmp/exercicio_vendas/* /user/hive/warehouse/exercicio_vendas/
 ---
 
 ## 📂 Exercícios práticos
@@ -88,7 +90,7 @@ hdfs dfs -put /util/produtos.csv /bronze/produtos/
 
 ```bash
 hdfs dfs -ls /bronze/alunos/
-hdfs dfs -cat /bronze/produtos/
+hdfs dfs -cat /bronze/produtos/produtos.csv
 ```
 
 
@@ -98,7 +100,7 @@ hdfs dfs -cat /bronze/produtos/
 beeline -u jdbc:hive2://localhost:10000
 ```
 
-> Quando pedir login, use qualquer usuário (ex: `hive`) e pressione Enter para senha vazia.
+> Se pedir login, use qualquer usuário (ex: `hive`) e pressione Enter para senha vazia.
 
 
 ### Conectar pelo Dbeaver
@@ -107,7 +109,7 @@ beeline -u jdbc:hive2://localhost:10000
 ![HFDS](/content/hive-02.png)
 
 
-### Criar banco de dados
+### Criando o  banco de dados
 
 ```sql
 CREATE DATABASE IF NOT EXISTS db;
@@ -117,7 +119,7 @@ SHOW DATABASES;
 DROP DATABASE aula_hive CASCADE;
 
 ```
-
+#### CASCADE
 * Remove o banco de dados e todas as tabelas dentro dele.
 * Tabelas internas: arquivos apagados do HDFS.
 * Tabelas externas: arquivos permanecem no HDFS, mas o metadado é removido.
@@ -155,7 +157,7 @@ show tables;
 | **Arquivos apagados ao dropar?** | ✅ Sim                          | ❌ Não                 |
 | **Quando usar?**                 | Quando o Hive controla tudo    | Quando os dados já existem ou são compartilhados |
 
-💬 **Resumo:**  
+
 - Tabelas internas são totalmente gerenciadas pelo Hive.  
 - Tabelas externas só armazenam metadados; os arquivos físicos permanecem após o drop.
 
@@ -163,26 +165,24 @@ show tables;
 
 ```sql
 
-DESCRIBE DATABASE aula_hive
-DESCRIBE pessoas
-DESCRIBE FORMATTED pessoas
+DESCRIBE DATABASE aula_hive;
+DESCRIBE pessoas;
+DESCRIBE FORMATTED pessoas;
 
 ```
 
 ### Consultando Hcatalog (Conectando ao PostgreSql)
 
+![HFDS](/content/hive-postgres.png)
+
+
+![HFDS](/content/hive-postgres_01.png)
 ```sql
+select * from public."DBS";
 
-use metastore;
+select * from  public."TBLS" where "DB_ID"= <<pegar o id do banco do resulta da query acima>>
 
-show tables;
-
-
-select * from FROM public."DBS";
-
-select * from FROM public."TBLS" where db_id= <<pegar o id do banco do resulta da query acima>>
-
-select * from columns_v2 where DB_ID = <<pegar o id da tabela do resultada da query acima>>
+select * from "COLUMNS_V2" where "CD_ID" = <<pegar o id da tabela do resultada da query acima>>
 ```
 
 
@@ -199,7 +199,9 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
 STORED AS TEXTFILE;
 
-LOAD DATA INPATH '/util/alunos.csv /bronze/alunos/' into table alunos
+LOAD DATA INPATH '/bronze/alunos/alunos.csv' into table alunos;
+
+select * from alunos;
 
 ```
 
@@ -221,6 +223,18 @@ TBLPROPERTIES ("skip.header.line.count"="1");
 >Com skip.header.line.count=1, apenas as linhas com dados serão carregadas.
 >Por padrão, o valor é 0, ou seja, não ignora nenhuma linha.
 >Se o seu arquivo não tiver cabeçalho, mantenha 0.
+
+### Em outro terminal
+
+```bash
+docker exec -it hive bash
+hdfs dfs -put /util/produtos.csv /bronze/produtos/
+```
+
+### Volte para terminal que esta o hive ativo 
+```sql
+select * from produtos;
+```
 
 ### Criando tabelas de uma query
 
@@ -311,6 +325,8 @@ hdfs dfs -ls '/result-alunos-delimited/'
 
 ## Particionamento
 
+### No outro terminal, onde esta ativo o container do Hive.
+
 ```bash
 hdfs dfs -mkdir -p /bronze/aluno_particionamento/ano=2025/mes=06/dia=01
 hdfs dfs -put /util/alunos.csv /bronze/aluno_particionamento/ano=2025/mes=06/dia=01/
@@ -359,6 +375,18 @@ WHERE idade > 23;
 
 SELECT * FROM alunos_maiores_23_view;
 
+SHOW VIEWS;
+
+SHOW TABLES;
+
+SHOW CREATE TABLE alunos_maiores_23_view;
+
+```
+
+### No PostgreSql
+
+```sql
+select * from  public."TBLS"
 ```
 
 
@@ -393,6 +421,9 @@ CREATE TABLE alunos_orc (
   idade INT
 )
 STORED AS ORC;
+
+INSERT INTO alunos_orc SELECT * FROM alunos;
+
 ```
 
 ### Inserir dados
