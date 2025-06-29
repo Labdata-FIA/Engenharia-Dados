@@ -54,9 +54,13 @@ hdfs dfsadmin -safemode get
 
 ```bash
 hdfs dfsadmin -safemode leave
+
+hdfs fsck -delete
+
+exit
 ```
 
-## 🚀 Comandos iniciaiss
+## 🚀 Comandos iniciais
 
 ### Criar diretórios no HDFS
 
