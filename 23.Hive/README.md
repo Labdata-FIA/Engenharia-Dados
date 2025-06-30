@@ -134,7 +134,9 @@ CREATE DATABASE IF NOT EXISTS db;
 
 SHOW DATABASES;
 
-DROP DATABASE aula_hive CASCADE;
+DROP DATABASE db CASCADE;
+
+
 
 ```
 #### CASCADE
@@ -145,6 +147,22 @@ DROP DATABASE aula_hive CASCADE;
 
 ```sql
 CREATE DATABASE IF NOT EXISTS aula_hive;
+USE aula_hive;
+```
+
+### Encontre o caminho do banco de dados 
+
+> /opt/hive/data/warehouse
+> No arquivo  `23.Hive/config/hive-site.xml`tem a propriedade `metastore.warehouse.dir`definindo esse diretorio
+
+
+```sql
+CREATE DATABASE IF NOT EXISTS dbhive location '/fia/aula';
+```
+
+
+```sql
+
 USE aula_hive;
 
 CREATE TABLE pessoas (
@@ -164,9 +182,6 @@ SELECT * FROM pessoas;
 
 show tables;
 ```
-
-### Local do arquivo
-/user/hive/warehouse/<nome_tabela>
 
 |                                  | **Tabela Interna**             | **Tabela Externa**        |
 |----------------------------------|--------------------------------|---------------------------|
@@ -236,23 +251,14 @@ STORED AS TEXTFILE
 LOCATION '/bronze/produtos/'
 TBLPROPERTIES ("skip.header.line.count"="1");
 
+select * from produtos;
+
 ```
 
 >Com skip.header.line.count=1, apenas as linhas com dados serão carregadas.
 >Por padrão, o valor é 0, ou seja, não ignora nenhuma linha.
 >Se o seu arquivo não tiver cabeçalho, mantenha 0.
 
-### Em outro terminal
-
-```bash
-docker exec -it hive bash
-hdfs dfs -put /util/produtos.csv /bronze/produtos/
-```
-
-### Volte para terminal que esta o hive ativo 
-```sql
-select * from produtos;
-```
 
 ### Criando tabelas de uma query
 
@@ -313,6 +319,10 @@ WHERE idade BETWEEN 21 AND 25;
 
 
 ### JOIN
+
+> [!IMPORTANT]
+> Precisa criar a tabela compras para os alunos
+
 ```sql
 SELECT a.nome, c.valor_total
 FROM alunos a
@@ -326,20 +336,16 @@ ON a.id = c.id_cliente;
 insert overwrite directory
 '/result-alunos/' select * from alunos;
 
+```
+
+### Em outro terminal
+```bash
+
+docker exec -it hive bash
 hdfs dfs -ls '/result-alunos/'
+hdfs dfs -cat  /result-alunos/000000_0
 ```
->Formato: JSON Serializado (padrão)
 
-### Salvando resultados de consultas no HDFS, formato Delimitado
-
-```sql
-insert overwrite local directory
-'/result-alunos-delimited/' row format 
-delimited fields terminated by ','
-select * from alunos;
-
-hdfs dfs -ls '/result-alunos-delimited/'
-```
 
 ## Particionamento
 
@@ -351,7 +357,7 @@ hdfs dfs -put /util/alunos.csv /bronze/aluno_particionamento/ano=2025/mes=06/dia
 
 ```
 
-### Criar tabela particionada
+### No terminal do Hive, criar tabela particionada
 ```sql
 USE aula_hive;
 
@@ -426,10 +432,6 @@ ORC (Optimized Row Columnar) é um formato de arquivo colunar otimizado, muito u
 ### Configuração recomendada
 Antes de criar tabelas ORC, configurar compressão (opcional):
 
-```bash
-SET hive.exec.compress.output=true;
-SET orc.compress=SNAPPY;
-```
 
 ### Criar tabela ORC
 ```bash
@@ -444,31 +446,119 @@ INSERT INTO alunos_orc SELECT * FROM alunos;
 
 ```
 
-### Inserir dados
-```bash
-INSERT INTO alunos_orc VALUES (1, 'Maria', 22);
-INSERT INTO alunos_orc VALUES (2, 'João', 25);
-INSERT INTO alunos_orc VALUES (3, 'Ana', 20);
-
-SELECT * FROM alunos_orc;
-
-```
-
 
 ### O que acontece no HDFS?
 
-* O Hive cria uma pasta para a tabela, por exemplo: /user/hive/warehouse/alunos_orc.
+* O Hive cria uma pasta para a tabela, por exemplo: /opt/hive/data/warehouse/aula_hive.db/alunos_orc.
 * Os arquivos dentro dessa pasta são salvos no formato ORC (compactados e colunar).
 * Cada arquivo ORC armazena dados em blocos, otimizando leitura e reduzindo espaço em disco.
 
 
-
-
 ### Vantagens do ORC
 
-* Melhor compressão (até 75% menor).
+
 * Leituras mais rápidas para consultas analíticas.
 * Suporte nativo a predicate pushdown (filtros mais eficientes).
 
 > Para grandes volumes, use ORC para performance e economia de armazenamento. 
 
+
+### Preparando estrutura para tabela Parquet
+```sql
+
+CREATE EXTERNAL TABLE IF NOT EXISTS bf (
+  User_ID BIGINT,
+  Product_ID STRING,
+  Gender STRING,
+  Age STRING,
+  Occupation INT,
+  City_Category STRING,
+  Stay_In_Current_City_Years STRING,
+  Marital_Status INT,
+  Product_Category_1 INT,
+  Product_Category_2 INT,
+  Product_Category_3 INT,
+  Purchase FLOAT
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/bronze/bf/';
+
+```
+
+### No outro terminal, dentro do container do hive
+```bash
+hdfs dfs -put '/util/bf.csv' /bronze/bf/
+```
+
+```sql
+
+select  * from  bf ;
+
+```
+
+
+### Criando o Tipo Parquet
+
+```sql
+CREATE EXTERNAL TABLE IF NOT EXISTS  bf_parquet (
+  User_ID BIGINT,
+  Product_ID STRING,
+  Gender STRING,
+  Age STRING,
+  Occupation INT,
+  City_Category STRING,
+  Stay_In_Current_City_Years STRING,
+  Marital_Status INT,
+  Product_Category_1 INT,
+  Product_Category_2 INT,
+  Product_Category_3 INT,
+  Purchase FLOAT
+)
+STORED AS parquet
+LOCATION '/bronze/bf_parquet/';
+
+insert into bf_parquet
+select * from bf ;
+
+```
+
+### Armazenando no Minio
+
+![HFDS](/content/hive-03.png)
+
+![HFDS](/content/hive-04.png)
+
+```sql
+
+CREATE DATABASE aula LOCATION 's3a://raw/aula';
+
+show database;
+
+CREATE EXTERNAL TABLE IF NOT EXISTS aula.bf (
+  User_ID BIGINT,
+  Product_ID STRING,
+  Gender STRING,
+  Age STRING,
+  Occupation INT,
+  City_Category STRING,
+  Stay_In_Current_City_Years STRING,
+  Marital_Status INT,
+  Product_Category_1 INT,
+  Product_Category_2 INT,
+  Product_Category_3 INT,
+  Purchase FLOAT
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION 's3a://raw//aula/bf/'
+TBLPROPERTIES ("skip.header.line.count"="1");
+
+```
+
+![HFDS](/content/hive-05.png)
+
+### Depois que subiu o arquivo
+```sql
+select *  from aula.bf;
+```
