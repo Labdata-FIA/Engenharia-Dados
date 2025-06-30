@@ -538,7 +538,7 @@ select * from bf ;
 
 CREATE DATABASE aula LOCATION 's3a://raw/aula';
 
-show database;
+show databases;
 
 CREATE EXTERNAL TABLE IF NOT EXISTS aula.bf (
   User_ID BIGINT,
