@@ -148,6 +148,8 @@ DROP DATABASE db CASCADE;
 ```sql
 CREATE DATABASE IF NOT EXISTS aula_hive;
 USE aula_hive;
+
+SELECT current_database();
 ```
 
 ### Encontre o caminho do banco de dados 
