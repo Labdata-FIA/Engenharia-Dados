@@ -24,6 +24,22 @@ A estrutura a ser criada no HDFS será a seguinte:
 
 ```
 
+> [!IMPORTANT]
+> Criando as pastas para o container PostGreSql
+
+
+```bash
+
+mkdir ./postgresql/volume/pg_notify
+mkdir ./postgresql/volume/pg_tblspc
+mkdir ./postgresql/volume/pg_twophase
+mkdir ./postgresql/volume/pg_stat
+mkdir ./postgresql/volume/pg_logical/mappings
+mkdir ./postgresql/volume/pg_commit_ts
+mkdir ./postgresql/volume/pg_snapshots
+```
+
+
 ---
 
 * > http://localhost:9864/
