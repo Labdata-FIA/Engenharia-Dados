@@ -431,8 +431,6 @@ select * from  public."TBLS"
 
 ORC (Optimized Row Columnar) é um formato de arquivo colunar otimizado, muito usado no Hive para melhorar compressão e performance de leitura.
 
-### Configuração recomendada
-Antes de criar tabelas ORC, configurar compressão (opcional):
 
 
 ### Criar tabela ORC
