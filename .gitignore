@@ -31,6 +31,7 @@ LAB-EDA/KAFKA-NET/secrets.dev.yaml
 LAB-EDA/KAFKA-NET/values.dev.yaml
 
 05.Armazenamento-Distribuido/hdfs/*
+postgresql/volume/*
 
 __pycache__/
 *.py[cod]
