@@ -523,7 +523,7 @@ select * from bf ;
 
 ```
 
-### Armazenando no Minio
+## Armazenando os arquivo no Minio
 
 ![HFDS](/content/hive-03.png)
 
