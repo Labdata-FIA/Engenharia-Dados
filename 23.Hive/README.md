@@ -525,6 +525,11 @@ select * from bf ;
 
 ## Armazenando os arquivo no Minio
 
+> http://localhost:9001/login
+
+* Usuario: admin
+* Senha: minioadmin
+
 ![HFDS](/content/hive-03.png)
 
 ![HFDS](/content/hive-04.png)
