@@ -28,6 +28,7 @@ A estrutura a ser criada no HDFS será a seguinte:
 
 * > http://localhost:9864/
 * > http://localhost:9870/
+* > http://localhost:10002/
 
 ```bash
 docker container rm $(docker ps -a -q) -f

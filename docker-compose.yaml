@@ -784,7 +784,8 @@ services:
       AWS_SECRET_ACCESS_KEY: cursolab
       HIVE_CUSTOM_CONF_DIR: "/hive_custom_conf"
       SERVICE_NAME: hiveserver2
-      SERVICE_OPTS: "-Dhive.metastore.uris=thrift://metastore:9083"     
+      SERVICE_OPTS: "-Dhive.metastore.uris=thrift://metastore:9083"   
+      SERVICE_PRECONDITION: "metastore:9083"  
       IS_RESUME: "true"
       #HIVE_VERSION: "3.1.3"
     ports:
@@ -812,6 +813,7 @@ services:
       #SERVICE_OPTS: "-Dhive.metastore.uris=thrift://metastore:9083" 
       IS_RESUME: "true"
       DB_DRIVER: postgres 
+      SERVICE_PRECONDITION: "namenode:9870 datanode:9864 db:5432"
       SERVICE_OPTS: "-Djavax.jdo.option.ConnectionDriverName=org.postgresql.Driver -Djavax.jdo.option.ConnectionURL=jdbc:postgresql://db:5432/metastore -Djavax.jdo.option.ConnectionUserName=admin -Djavax.jdo.option.ConnectionPassword=admin" 
     ports:
        - "9083:9083"
@@ -821,12 +823,12 @@ services:
        - ./23.Hive/config:/hive_custom_conf
        - ./23.Hive/util:/util
     depends_on:
-        - db
+        - db-metastore
     networks:
       - rede_fia
 
 
-  db:
+  db-metastore:
     image: postgres:14
     platform: linux/amd64
     container_name: db
