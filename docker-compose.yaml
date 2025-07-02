@@ -344,7 +344,7 @@ services:
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
       KSQL_CONFLUENT_SUPPORT_METRICS_ENABLE: "false"
     volumes:
-      - ./scripts:/scripts
+      - ./15.EDA-Event-Driven-Architecture/ksqldb/scripts:/scripts
     networks:
       rede_fia:
 
@@ -407,7 +407,7 @@ services:
       - kafka-broker
       - ksqldb-server
     volumes:
-      - ./scripts:/scripts
+      - ./15.EDA-Event-Driven-Architecture/ksqldb/scripts:/scripts:/scripts
     entrypoint: /bin/sh
     tty: true
     networks:
