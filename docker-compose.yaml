@@ -224,7 +224,7 @@ services:
     container_name: microcks-async-minion
     restart: on-failure
     volumes:
-      - "./config:/deployments/config"
+      - "./15.EDA-Event-Driven-Architecture/microcks/config:/deployments/config"
     environment:
       - QUARKUS_PROFILE=docker-compose
     networks:
