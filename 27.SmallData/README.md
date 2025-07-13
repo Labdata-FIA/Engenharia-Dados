@@ -257,11 +257,11 @@ Com o botão direito na area do Group Process clique em `Controller Services` e 
 |Table Name|jdbc:postgresql://postgres:5432/dbdemo|
 |Translate Field Names|false|
 
-![Small-Data](../content/small-data-19.ng)
+![Small-Data](../content/small-data-19.png)
 
 ### Ligando o relacionamento entre os Processor `QueryRecord` e `PutDatabaseRecord`
 
-![Small-Data](../content/small-data-31.ng)
+![Small-Data](../content/small-data-31.png)
 
 
 ### Habilitando os relacionamentos de `failure`, `retry` e `sucsess`
@@ -341,7 +341,7 @@ Botão direito, Controller Services.
 
 ### Nâo esqueça de fazer o relacionamento com os Processor `JoltTransformJSON` e o `PutS3Object`, e os Relacionamentos de `failure` e `success` do `PutS3Object`.
 
-![Lab](/content/smal-data-32.png)
+![Lab](/content/small-data-32.png)
 
 # Introdução ao DuckDB
 
