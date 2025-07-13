@@ -1,0 +1,125 @@
+[33mbcff305[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m smalldata
+[33m7151c1c[m smalldata
+[33m221018b[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m smalldata
+[33m0fe43c0[m eda
+[33m5d779cc[m eda
+[33m658e6c5[m hive
+[33m342aac1[m hive
+[33m3928a87[m hive
+[33me72d81e[m hive
+[33m5d4e2ae[m hive
+[33ma61c891[m hive
+[33mbcb160c[m hive
+[33mfb56929[m hive
+[33m64c30ca[m hive
+[33m624845f[m hive
+[33m35eaab9[m hive
+[33md59b75b[m hive
+[33m3543e94[m hive
+[33m4d7af0e[m armazenamento
+[33maf73ae8[m armazenamento
+[33m613ffa4[m armazenamento
+[33mececc39[m armazenamento
+[33m798c2fb[m armazenamento
+[33mec12162[m redis
+[33m9816b42[m redis
+[33m5601fdb[m Merge branch 'main' of github.com:Labdata-FIA/Engenharia-Dados
+[33mc5d5a58[m armazenamento
+[33mef84662[m armazenamento
+[33m738996a[m Fixando versao do airflow
+[33m523900b[m ajustando o nome das tabelas para minusculo
+[33m86c99c2[m elasticsearch
+[33m44a358f[m cassandra
+[33mbec0f67[m cassandra
+[33mf18af1e[m elasticsearch
+[33m581d639[m elasticsearch
+[33md7a68d1[m elasticsearch
+[33m3d9bb2b[m cassandra
+[33m7352a63[m elasticsearch
+[33md04437f[m elasticsearch
+[33m8016572[m elastic
+[33m93c3a0e[m elastic
+[33m1e86749[m Update README.md
+[33m3571f33[m Update README.md
+[33m86537ff[m Update .env
+[33mc1bfcc3[m Update README.md
+[33mb0661de[m Update README.md
+[33m26b42c5[m Update README.md
+[33me2daf65[m ClickHouse
+[33m22b2d04[m ClickHouse
+[33m654ff61[m Update 16-fase2-o-escopo-aumentou.md
+[33m46c7de5[m Update 15-exemplo-union-all.md
+[33m32616c7[m Update 15-exemplo-union-all.md
+[33m55c7a01[m Update 14-exemplo-union.md
+[33ma94fa56[m Update 14-exemplo-union.md
+[33m4d5f169[m Update 12-exemplo-having.md
+[33md90e77f[m ajustando o nome das tabelas para minusculo
+[33mf25277b[m Movimentando o servicos do lab da aula de SQL para o docker-compose raiz
+[33mddb7c9f[m Adicao de instrucao de navegar para diretorio docker do lab 10.Linguagem-SQL
+[33mccdd8f5[m ajustes clickhouse
+[33m1d2786c[m ajustes clickhouse
+[33m1932cc1[m ajustes clickhouse
+[33mc88869b[m ajustes clickhouse
+[33m06e6cb5[m ajustes clickhouse
+[33m1098f33[m ajustes clickhouse
+[33mf104807[m ajustes clickhouse
+[33mf8908e7[m ajustes clickhouse
+[33mbfa3e8a[m ajustes clickhouse
+[33m30de3f8[m ajustes clickhouse
+[33mec6c5a2[m add ClickHouse
+[33m026023a[m ajustes clickhouse
+[33md95f0ed[m ajustes clickhouse
+[33mffeb077[m feature: aula transformacao digital adicionada
+[33md11d287[m ajustes mongodb
+[33m13239fb[m ajustes mongodb
+[33mc35a9ef[m ajustes gerais powershell
+[33mf28a321[m ajustes redis
+[33m7f5bfa3[m ajustes mongodb
+[33m50f77f8[m ajustes
+[33m6fc3bcd[m ajustes
+[33mff42f6f[m ajustes
+[33m68a0a9a[m ajustes
+[33ma858e8b[m ajustes
+[33m705cb8c[m ajuste version
+[33m9145185[m ajuste version
+[33m5e881a4[m ajuste version
+[33meeae328[m cassandra
+[33mb90869a[m add lab elastic
+[33mc2a7653[m add lab elastic
+[33ma73cfd7[m add lab elastic
+[33m20a1588[m add lab elastic
+[33m80caf41[m add ClickHouse
+[33madb2a68[m ajustando navegacao do readm
+[33md1d4a9a[m atualizando todas as instrucoes que utilizam `docker-componse` possam utilizar `docker componse`
+[33m3adc371[m Adicao do comando final remover os containers criados
+[33mf4d7574[m fixando versao das imagens no docker-compose.yaml referente ao redis
+[33m20be3e7[m Deixando em code block o delete
+[33mf680948[m Adicionando a pasta import para os outros containers
+[33m9f018fe[m Adicionando log no momento da importacao dos CSVs
+[33m0bf9c34[m deixando o mongo-import.sh para ser executavel
+[33m851e32d[m Retirada da versao no docker-compose.yml do lab mongodb, retirada do `-` do comando `docker-compose` para `docker compose`
+[33m753ba64[m ajustes
+[33m101d126[m ajustes
+[33mce48291[m Merge branch 'main' of github.com:Labdata-FIA/Engenharia-Dados
+[33m95b21bb[m ajustes
+[33m622971f[m Adicionando as aulas de spark / databricks
+[33mcee1511[m Adicionando as aulas de airflow
+[33m9601351[m Adicionando as aulas de airflow
+[33mf148618[m Adicionando as aulas de Python
+[33m90bf913[m Adicao da aula de SQL
+[33maaf17b0[m renomeando as pastas para facilitar a ordenacao via terminal
+[33m64575a6[m Correção do título de Mnio para MinIO e o path da imagem do nifi
+[33mf427ee8[m nifi
+[33me71f673[m Create flowxml.xml
+[33m48deb8e[m nifi
+[33me353d20[m Merge branch 'main' of github.com:Labdata-FIA/Engenharia-Dados
+[33mc4f4514[m nifi
+[33m249c3ec[m nifi
+[33mad9c552[m Saving Flow Snapshot flow-lab
+[33me0dd653[m Saving Flow Snapshot flow-lab
+[33m5fb5fe3[m Registering Flow [flow-lab]
+[33m9f24c57[m nifi
+[33m7cfdc6b[m feature: aula 37 - dbt adicionada
+[33m83f4192[m Ajustes pastas/aulas
+[33m585c843[m Ajustes pastas/aulas
+[33md938d53[m first commit
