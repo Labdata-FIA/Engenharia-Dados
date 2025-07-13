@@ -341,7 +341,7 @@ Botão direito, Controller Services.
 
 ### Nâo esqueça de fazer o relacionamento com os Processor `JoltTransformJSON` e o `PutS3Object`, e os Relacionamentos de `failure` e `success` do `PutS3Object`.
 
-![Lab](/content/small-data-32.png)
+![Lab](/content/smal-data-32.png)
 
 # Introdução ao DuckDB
 
