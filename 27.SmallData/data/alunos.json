@@ -1,0 +1,252 @@
+[
+  {
+    "id_aluno": 1,
+    "nome": "Helena Almeida",
+    "matricula": "MAT0001"
+  },
+  {
+    "id_aluno": 2,
+    "nome": "Helena Ribeiro",
+    "matricula": "MAT0002"
+  },
+  {
+    "id_aluno": 3,
+    "nome": "Thiago Santos",
+    "matricula": "MAT0003"
+  },
+  {
+    "id_aluno": 4,
+    "nome": "Daniela Souza",
+    "matricula": "MAT0004"
+  },
+  {
+    "id_aluno": 5,
+    "nome": "Juliana Almeida",
+    "matricula": "MAT0005"
+  },
+  {
+    "id_aluno": 6,
+    "nome": "Mariana Souza",
+    "matricula": "MAT0006"
+  },
+  {
+    "id_aluno": 7,
+    "nome": "Igor Gomes",
+    "matricula": "MAT0007"
+  },
+  {
+    "id_aluno": 8,
+    "nome": "Fernanda Souza",
+    "matricula": "MAT0008"
+  },
+  {
+    "id_aluno": 9,
+    "nome": "Gabriel Almeida",
+    "matricula": "MAT0009"
+  },
+  {
+    "id_aluno": 10,
+    "nome": "Bruno Almeida",
+    "matricula": "MAT0010"
+  },
+  {
+    "id_aluno": 11,
+    "nome": "Renato Gomes",
+    "matricula": "MAT0011"
+  },
+  {
+    "id_aluno": 12,
+    "nome": "Sofia Santos",
+    "matricula": "MAT0012"
+  },
+  {
+    "id_aluno": 13,
+    "nome": "Renato Santos",
+    "matricula": "MAT0013"
+  },
+  {
+    "id_aluno": 14,
+    "nome": "Renato Costa",
+    "matricula": "MAT0014"
+  },
+  {
+    "id_aluno": 15,
+    "nome": "Paulo Almeida",
+    "matricula": "MAT0015"
+  },
+  {
+    "id_aluno": 16,
+    "nome": "Olivia Gomes",
+    "matricula": "MAT0016"
+  },
+  {
+    "id_aluno": 17,
+    "nome": "Daniela Lima",
+    "matricula": "MAT0017"
+  },
+  {
+    "id_aluno": 18,
+    "nome": "Mariana Souza",
+    "matricula": "MAT0018"
+  },
+  {
+    "id_aluno": 19,
+    "nome": "Nicolas Santos",
+    "matricula": "MAT0019"
+  },
+  {
+    "id_aluno": 20,
+    "nome": "Bruno Souza",
+    "matricula": "MAT0020"
+  },
+  {
+    "id_aluno": 21,
+    "nome": "Fernanda Gomes",
+    "matricula": "MAT0021"
+  },
+  {
+    "id_aluno": 22,
+    "nome": "Sofia Almeida",
+    "matricula": "MAT0022"
+  },
+  {
+    "id_aluno": 23,
+    "nome": "Daniela Silva",
+    "matricula": "MAT0023"
+  },
+  {
+    "id_aluno": 24,
+    "nome": "Gabriel Pereira",
+    "matricula": "MAT0024"
+  },
+  {
+    "id_aluno": 25,
+    "nome": "Leonardo Ribeiro",
+    "matricula": "MAT0025"
+  },
+  {
+    "id_aluno": 26,
+    "nome": "Sofia Almeida",
+    "matricula": "MAT0026"
+  },
+  {
+    "id_aluno": 27,
+    "nome": "Daniela Gomes",
+    "matricula": "MAT0027"
+  },
+  {
+    "id_aluno": 28,
+    "nome": "Leonardo Almeida",
+    "matricula": "MAT0028"
+  },
+  {
+    "id_aluno": 29,
+    "nome": "Gabriel Pereira",
+    "matricula": "MAT0029"
+  },
+  {
+    "id_aluno": 30,
+    "nome": "Gabriel Ribeiro",
+    "matricula": "MAT0030"
+  },
+  {
+    "id_aluno": 31,
+    "nome": "Daniela Silva",
+    "matricula": "MAT0031"
+  },
+  {
+    "id_aluno": 32,
+    "nome": "Helena Lima",
+    "matricula": "MAT0032"
+  },
+  {
+    "id_aluno": 33,
+    "nome": "Carlos Silva",
+    "matricula": "MAT0033"
+  },
+  {
+    "id_aluno": 34,
+    "nome": "Eduardo Almeida",
+    "matricula": "MAT0034"
+  },
+  {
+    "id_aluno": 35,
+    "nome": "Quésia Lima",
+    "matricula": "MAT0035"
+  },
+  {
+    "id_aluno": 36,
+    "nome": "Eduardo Almeida",
+    "matricula": "MAT0036"
+  },
+  {
+    "id_aluno": 37,
+    "nome": "Nicolas Souza",
+    "matricula": "MAT0037"
+  },
+  {
+    "id_aluno": 38,
+    "nome": "Ana Pereira",
+    "matricula": "MAT0038"
+  },
+  {
+    "id_aluno": 39,
+    "nome": "Olivia Gomes",
+    "matricula": "MAT0039"
+  },
+  {
+    "id_aluno": 40,
+    "nome": "Gabriel Ribeiro",
+    "matricula": "MAT0040"
+  },
+  {
+    "id_aluno": 41,
+    "nome": "Paulo Souza",
+    "matricula": "MAT0041"
+  },
+  {
+    "id_aluno": 42,
+    "nome": "Eduardo Lima",
+    "matricula": "MAT0042"
+  },
+  {
+    "id_aluno": 43,
+    "nome": "Fernanda Santos",
+    "matricula": "MAT0043"
+  },
+  {
+    "id_aluno": 44,
+    "nome": "Juliana Pereira",
+    "matricula": "MAT0044"
+  },
+  {
+    "id_aluno": 45,
+    "nome": "Paulo Almeida",
+    "matricula": "MAT0045"
+  },
+  {
+    "id_aluno": 46,
+    "nome": "Nicolas Costa",
+    "matricula": "MAT0046"
+  },
+  {
+    "id_aluno": 47,
+    "nome": "Renato Oliveira",
+    "matricula": "MAT0047"
+  },
+  {
+    "id_aluno": 48,
+    "nome": "Carlos Gomes",
+    "matricula": "MAT0048"
+  },
+  {
+    "id_aluno": 49,
+    "nome": "Renato Souza",
+    "matricula": "MAT0049"
+  },
+  {
+    "id_aluno": 50,
+    "nome": "Olivia Pereira",
+    "matricula": "MAT0050"
+  }
+]

@@ -496,11 +496,12 @@ services:
     hostname: nifi-n
     volumes:
       - ./19.Data-Flow-Nifi/files:/files
+      - ./postgresql/postgresql-42.5.1.jar:/util/postgresql-42.5.1.jar
     environment:
       NIFI_WEB_HTTPS_PORT: "9443"
       SINGLE_USER_CREDENTIALS_USERNAME: admin
       SINGLE_USER_CREDENTIALS_PASSWORD: fia@2024@ladata@laboratorio
-      TZ: "America/Sao_Paulo"
+      TZ: "America/Sao_Paulo"     
     depends_on:
       - kafka-broker
     ports:
@@ -520,12 +521,12 @@ services:
       - minio
     ports:
       - 8085:8085
+      - 8501:8501
     volumes:
       - ./jupyter/docker-entrypoint.sh:/jupyter/docker-entrypoint.sh
       - ./27.SmallData:/home/src/
     command: jupyter notebook --ip 0.0.0.0 --port 8085 --allow-root
     networks:
-
       rede_fia:
 
   clickhouse:
@@ -842,6 +843,17 @@ services:
       - 5432:5432
     volumes:
       - ./postgresql/volume:/var/lib/postgresql/data   
+    networks:
+      - rede_fia
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase
+    hostname: metabase
+    depends_on:
+        - postgres
+    ports:
+      - 3000:3000
     networks:
       - rede_fia
       

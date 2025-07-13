@@ -9,6 +9,340 @@
 * Docker
 * Docker-Compose
 
+# Iniciando o ambiente
+
+```sh
+docker compose up -d nifi postgres minio pgadmin 
+```
+
+
+## Configuração pode ser pelo `DBeaver` ou `PgAdmin`
+
+
+### Provisionando Banco de dados Postgres com a ferramenta PgAdmin
+
+
+Acesso para o PgAdmin http://localhost:5433/
+
+
+* Login: lab-pgadmin4@pgadmin.org
+* Senha : postgres    
+
+* Nome do server: postgres
+* Nome do Host Name: postgres
+* database: postgres
+* Username: postgres
+* password: postgres
+
+### Tela de login do PgAdmin
+![Exemplo Kafka Conect](../content/login-pgadmin.png)
+
+
+### Inserindo um server
+![Exemplo Kafka Conect](../content/add-server.png)
+
+### Configurando o server
+![Exemplo Kafka Conect](../content/conect-pgadmin.png)
+
+
+## Criando estrutura para o banco de dados
+
+```sql
+
+CREATE database dbdemo;
+
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    nome varchar(100),
+    sobrenome varchar(100),
+    email varchar(100),
+    telefone varchar(100),
+    username varchar(100),
+    rua varchar(100),
+    cidade varchar(100),
+    estado varchar(100),
+    pais varchar(100),
+    cep varchar(100),
+    latitude float,
+    longitude float
+);
+
+```
+
+
+> https://localhost:9443/nifi/#/login
+
+
+|Usuário|Senha|
+|------------------|--------------|
+|admin|fia@2024@ladata@laboratorio|
+
+
+# Criando o Pipeline com Nifi
+
+## Organizando nosso fluxo
+
+![Small-Data](../content/small-data-0.png)
+
+## Criando o Processor para fazer requisição
+
+![Small-Data](../content/small-data-00.png)
+
+
+## Configurando o Processor `InvokeHTTP`
+
+![Small-Data](../content/small-data-01.png)
+
+|Property|Value|
+|------------------|--------------|
+|HTTP Method|GET|
+|HTTP URL|https://randomuser.me/api/|
+
+## Na aba `Relationships` habilite todos os itens menos o `Response`
+
+![Small-Data](../content/small-data-02.png)
+
+Na aba Scheduling mude a propriedade `Run Schedule para 5 sec`
+
+
+## Tudo funcionando ?
+
+Insira um `Funnel` e crie conexão somente para o `Response` e depois botão direito e no nome suspenso click em `Start`
+
+![Small-Data](../content/small-data-03.png)
+
+> Depois pause a execução e limpe toda a fila
+
+
+## Inserindo o Processor `JoltTransformJSON`
+
+![Small-Data](../content/small-data-25.png)
+
+### Suas configurações
+
+|Property|Value|
+|------------------|--------------|
+|Jolt Transform|Shift|
+|Jolt Specification|{
+  "results": {
+    "0": {
+      "*": "&"
+    }
+  }
+}
+|
+
+![Small-Data](../content/small-data-26.png)
+
+## Vamos testar
+
+Ligue o Processor InvokeHttp com JoltTransformJSON usando o relacionamento `Reponse` e o `Sucess`com o `Funnel` e `failure` com eles mesmo e depois botão direito e no nome suspenso click em `Start`
+
+
+![Small-Data](../content/small-data-27.png)
+
+## Inserindo Processor `QueryRecord`
+
+![Small-Data](../content/small-data-28.png)
+
+
+
+## Configurando Processor `QueryRecord`
+
+Para o processor vamos criar dois `services` para as seguintes propriedades
+
+|Property|Value|
+|------------------|--------------|
+|Record Reader|JsonTreeReader|
+|Record Writer|JsonRecordSetWriter|
+
+![Small-Data](../content/small-data-05.png)
+
+
+## Crie uma propriedade Select
+
+## Configurando Record Reader como `JsonTreeReader`
+
+![Small-Data](../content/small-data-06.png)
+
+## Configurando Record Writer como `JsonRecordSetWriter`
+
+![Small-Data](../content/small-data-07.png)
+
+## Eles vão estar com essas propriedades
+![Small-Data](../content/small-data-08.png)
+
+## Criando a propriedade select
+
+![Small-Data](../content/small-data-30.png)
+
+
+
+```sql
+ SELECT
+  RPATH_STRING(name, '/first')       AS nome,
+  RPATH_STRING(name, '/last')        AS sobrenome,
+  email,
+  phone                             AS telefone,
+  RPATH_STRING(login, '/username')   AS username,
+  RPATH_STRING(location, '/street/name') AS rua,
+  RPATH_STRING(location, '/city')    AS cidade,
+  RPATH_STRING(location, '/state')   AS estado,
+  RPATH_STRING(location, '/country') AS pais,
+  RPATH_STRING(location, '/postcode') AS cep,
+  RPATH_STRING(location, '/coordinates/latitude') AS latitude,
+  RPATH_STRING(location, '/coordinates/longitude') AS longitude
+FROM FLOWFILE
+
+```
+
+## Habilitando os services `JsonTreeReader` e `JsonRecordSetWriter`
+
+Com o botão direito na area do Group Process clique em `Controller Services` e depois em `enable` conforme imagem abaixo:
+
+![Small-Data](../content/small-data-09.png)
+![Small-Data](../content/small-data-10.png)
+
+
+
+## Ligando os Processor `JoltTransformJSON` com o `QueryRecord` com relacionamento de sucesso.
+
+> Não esqueça de mudar as configurações do Processor `QueryRecord`, aba RelationsShips como terminate, as opções failure e original.
+
+![Small-Data](../content/small-data-11.png)
+
+## Nosso Pipeline vai ter esses Processor e relacionamentos
+![Small-Data](../content/small-data-29.png)
+
+## Inserindo Processor `PutDatabaseRecord`
+![Small-Data](../content/small-data-12.png)
+
+|Property|Value|
+|------------------|--------------|
+|Record Reader|JsonTreeReader|
+|Database Type|PostgreSQL|
+|Statement Type|INSERT|
+|Database Connection Pooling Service|DBCPConnectionPool|
+
+
+![Small-Data](../content/small-data-14.png)
+
+> A propriedade Database Connection Pooling Service é um service
+
+
+![Small-Data](../content/small-data-15.png)
+
+
+## Configurando o  Service `DBCPConnectionPool`
+
+![Small-Data](../content/small-data-16.png)
+
+### Editando o  Service `DBCPConnectionPool`
+![Small-Data](../content/small-data-17.png)
+
+|Property|Value|
+|------------------|--------------|
+|Database Connection URL    |jdbc:postgresql://postgres:5432/dbdemo|
+|Database Driver Class Name|org.postgresql.Driver|
+|Database Driver Location(s)|/util|
+|Database User|postgres|
+|Password|postgres|
+
+> Não esqueça de habilitar o services
+
+### Finalizando as configurações do Processor `PutDatabaseRecord`
+
+|Property|Value|
+|------------------|--------------|
+|Table Name|jdbc:postgresql://postgres:5432/dbdemo|
+|Translate Field Names|false|
+
+![Small-Data](../content/small-data-19.ng)
+
+### Ligando o relacionamento entre os Processor `QueryRecord` e `PutDatabaseRecord`
+
+![Small-Data](../content/small-data-31.ng)
+
+
+### Habilitando os relacionamentos de `failure`, `retry` e `sucsess`
+
+### Se tudo deu certo, vamos encontrar informações na tabela `usuarios`
+
+```sql
+select * from usuarios;
+
+```
+
+## Fazendo a ingestão com MinIO, mas antes...
+
+### Configurando MinIO
+
+Acesso para o MinIO http://localhost:9001/login
+
+* Senha : admin
+* password: minioadmin
+
+### Configurando o MinIO
+
+> [!IMPORTANT]
+> Crie a camada Raw ou Bronze caso não tenha ainda
+
+![MinIO](../content/minio-04.png)
+![MinIO](../content/minio-05.png)
+![MinIO](../content/minio-06.png)
+
+
+![MinIO](../content/minio-07.png)
+
+
+
+---
+
+## Controller Services
+No Apache NiFi, os Controller Services são componentes compartilháveis que fornecem funcionalidades comuns a vários processadores dentro de um fluxo de dados. Eles permitem centralizar configurações e melhorar a eficiência do processamento.
+
+Exemplos de Controller Services:
+* DBCPConnectionPool – Gerencia conexões com bancos de dados.
+* SSLContextService – Configura SSL/TLS para comunicação segura.
+* AvroSchemaRegistry – Define esquemas de dados Avro para validação.
+
+![Lab](/content/nifi7.png)
+
+
+### Criando Controller Services `AWSCredentialsProviderControllerService` para autenticação do MinIO.
+
+Botão direito, Controller Services.
+
+![Lab](/content/nifi22-0.png)
+
+![Lab](/content/nifi22.png)
+
+
+|Property|Value|
+|------------------|--------------|
+|Access Key ID|cursolab|
+|Secret Access Key|cursolab|
+
+
+![Lab](/content/nifi22-2.png)
+
+### Criando o Processor `PutS3Object`
+
+
+|Property|Value|
+|------------------|--------------|
+|Bucket|raw|
+|AWS Credentials Provider Service|AWSCredentialsProviderControllerService|
+|Object Key|${filename}|
+|Endpoint Override URL|http://minio:9000|
+
+![Lab](/content/nifi22-4.png)
+
+
+### Nâo esqueça de fazer o relacionamento com os Processor `JoltTransformJSON` e o `PutS3Object`, e os Relacionamentos de `failure` e `success` do `PutS3Object`.
+
+![Lab](/content/smal-data-32.png)
+
 # Introdução ao DuckDB
 
 DuckDB é um banco de dados OLAP embutido, projetado para consultas analíticas de alto desempenho em tabelas de colunas. Ele é eficiente para trabalhar com arquivos de dados locais como CSV, Parquet e JSON, sendo uma ótima alternativa para workloads analíticos em notebooks e pipelines de dados.
@@ -92,7 +426,7 @@ SELECT * FROM vendas LIMIT 5;
 ### Exportando para Parquet
 
 ```sql
-COPY vendas TO 'vendas.parquet' (FORMAT 'parquet');
+COPY vendas TO 'data/vendas.parquet' (FORMAT 'parquet');
 
 SELECT * FROM read_parquet('vendas.parquet');
 
@@ -133,19 +467,6 @@ WITH clientes_filtrados AS (
 SELECT * FROM clientes_filtrados;
 ```
 
-#### Exemplo 2: Calculando total de vendas por cliente
-
-```sql
-WITH vendas_por_cliente AS (
-    SELECT cliente_id, SUM(valor) AS total_vendas 
-    FROM vendas 
-    GROUP BY cliente_id
-)
-SELECT c.nome, v.total_vendas 
-FROM clientes c
-JOIN vendas_por_cliente v ON c.id = v.cliente_id;
-```
-
 ## Ingestão de Dados no MinIO e Exportação para Parquet
 
 ```sql
@@ -164,12 +485,20 @@ CREATE SECRET secret_minio  (
 
 FROM duckdb_secrets();
 
-COPY vendas TO 's3://bronze/vendas.parquet' (FORMAT 'parquet');
+COPY vendas TO 's3://raw/vendas.parquet' (FORMAT 'parquet');
 ```
 
+## Acesso o Endereço do Jupyter, mas para isso pegue o endereço nos logs do container.
+```bash
+docker logs duckdb
+```
 
 ## Exemplo em Python (Jupyter Notebook)
 
 Para exemplos práticos com Python, veja o arquivo `notebook.ipynb` incluído neste material.
 
 
+## Metabase
+```bash
+ docker-compose up -d metabase
+```

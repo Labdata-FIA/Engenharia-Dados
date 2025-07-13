@@ -6,3 +6,5 @@ numpy
 pyarrow
 deltalake
 duckdb
+streamlit
+plotly.express
