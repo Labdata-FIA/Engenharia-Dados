@@ -124,13 +124,12 @@ Insira um `Funnel` e crie conexão somente para o `Response` e depois botão dir
 |------------------|--------------|
 |Jolt Transform|Shift|
 |Jolt Specification|{
-  "results": {
-    "0": {
-      "*": "&"
-    }
-  }
-}
-|
+                        "results": {
+                          "0": {
+                            "*": "&"
+                          }
+                        }
+                      }|
 
 ![Small-Data](../content/small-data-26.png)
 
