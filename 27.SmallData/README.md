@@ -120,16 +120,21 @@ Insira um `Funnel` e crie conexão somente para o `Response` e depois botão dir
 
 ### Suas configurações
 
-|Property|Value|
-|------------------|--------------|
-|Jolt Transform|Shift|
-|Jolt Specification|```json{
-                          "results": {
-                          "0": {
-                            "*": "&"
-                          }
-                        }
-                      }```|
+|Property       |Value |
+|---------------|------|
+|Jolt Transform |Shift |
+
+**Jolt Specification:**
+
+```json
+{
+  "results": {
+    "0": {
+      "*": "&"
+    }
+  }
+}
+```
 
 ![Small-Data](../content/small-data-26.png)
 
