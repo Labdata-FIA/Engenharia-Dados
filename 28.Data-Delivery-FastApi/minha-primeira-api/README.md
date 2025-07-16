@@ -23,7 +23,8 @@ touch Dockerfile
 touch requirements.txt
 ```
  
-//Após a criação da estrutura das pastas o Visual Studio Code deve ficar assim
+> [!IMPORTANT]
+>Após a criação da estrutura das pastas o Visual Studio Code deve ficar assim
 
 ![Estrutura](../../content/lab-fastapi-01.png)
 
@@ -74,13 +75,10 @@ CMD ["fastapi", "run", "app/main.py", "--port", "80"]
 
 ```
 
-> [!IMPORTANT]
-> Não esqueçam de mudar para o usuário do DockerHub de vocês.
-
 Criando a imagem da nossa aplicação
 
 ```bash
-docker image build -t <<seu usuario>>/app-fastapi-fia .
+docker image build -t app-fastapi-fia .
 
 ```
 
@@ -89,7 +87,7 @@ Execute o container para testar
 
 ```console
 
-docker container run -d --name fast-api-fia -p 80:80  <<seu usuario>>/app-fastapi-fia
+docker container run -d --name fast-api-fia -p 8080:80  app-fastapi-fia
 
 docker logs  fast-api-fia
 
@@ -97,14 +95,13 @@ docker logs  fast-api-fia
 
 Acesse os endereços:
 
-* http://localhost/docs
-* http://localhost/openapi.json
-* http://localhost/redoc
+* http://localhost:8080/docs
+* http://localhost:8080/openapi.json
+* http://localhost:8080/redoc
 
 ---
 
 
 2. [Um poouco mais sobre RestFull](../app-restfull/README.md)
 3. [Vamos melhorar um pouco](../app-restfull-refactor/README.md)
-4. [FastAPI e Esteira GitAction](../app-gitaction/README.md)
-5. [FastAPI e Postgresql](../app-crud-db/README.md)
+4. [FastAPI e Postgresql](../app-crud-db/README.md)

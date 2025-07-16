@@ -243,7 +243,7 @@ Atualizando a imagem docker pelo arquivo DockerCompose
 
 docker container rm  fast-api-fia -f
 
-docker image rm fia_fastapi
+docker image rm fast-api-fia-api 
 
 docker compose down api && docker-compose build api --no-cache && docker compose up -d api
 
@@ -265,5 +265,4 @@ docker compose exec api pytest tests/
 
 ---
 
-4. [FastAPI e Esteira GitAction](../app-gitaction/README.md)
-5. [FastAPI e Postgresql](../app-crud-db/README.md)
+4. [FastAPI e Postgresql](../app-crud-db/README.md)

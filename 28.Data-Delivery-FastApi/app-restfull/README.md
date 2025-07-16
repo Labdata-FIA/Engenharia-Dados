@@ -214,7 +214,7 @@ Atualizando a imagem docker pelo arquivo DockerCompose
 
 docker container rm  fast-api-fia -f
 
-docker image rm fia_fastapi
+docker image rm app-fastapi-fia
 
 docker compose down && docker-compose build --no-cache && docker compose up -d
 
@@ -238,5 +238,4 @@ Acesse os endereços:
 ---
 
 3. [Vamos melhorar um pouco](../app-restfull-refactor/README.md)
-4. [FastAPI e Esteira GitAction](../app-gitaction/README.md)
-5. [FastAPI e Postgresql](../app-crud-db/README.md)
+4. [FastAPI e Postgresql](../app-crud-db/README.md)
