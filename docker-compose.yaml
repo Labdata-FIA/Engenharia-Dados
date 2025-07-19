@@ -856,6 +856,80 @@ services:
       - 3000:3000
     networks:
       - rede_fia
+
+  trino:
+    image: fjardim/mds-trino 
+    platform: linux/amd64
+    container_name: trino
+    hostname: trino
+    ports: 
+      - "8080:8080" 
+    depends_on:
+      - postgres
+      - hive
+    volumes: 
+      - ./trino/catalog:/etc/trino/catalog  
+      - ./trino/conf:/conf
+      
+  spark-master:
+    platform: linux/amd64
+    image: fjardim/mds-spark
+    hostname: spark-master
+    container_name: spark-master
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        /usr/local/spark/sbin/start-master.sh
+        start-notebook.sh --NotebookApp.token=''
+    ports:
+      - 8889:8888
+      - 4040:4040
+      - 4041:4041
+      - 4042:4042
+      - 4043:4043
+      - 8180:8080
+      - 7077:7077
+    volumes:
+      - ./spark/util:/util/
+      - ./spark/work:/home/user 
+      - ./spark/env:/env 
+    #deploy:
+    #  resources:
+    #    limits:
+    #      memory: 500m
+
+  spark-worker:
+    platform: linux/amd64
+    image: fjardim/mds-spark
+    hostname: spark-worker
+    container_name: spark-worker
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        /usr/local/spark/sbin/start-worker.sh spark-master:7077
+        start-notebook.sh --NotebookApp.token='' 
+    env_file:
+      - ./spark/env/jupyter.env
+    ports:
+      - 5040:4040
+      - 5041:4041
+      - 5042:4042
+      - 5043:4043
+      - 8881:8081
+      - 36533:36533
+    volumes:
+      - ./spark/util:/util/
+      - ./spark/work:/home/user 
+    environment:
+      SPARK_MASTER: spark-master
+    depends_on:
+        - spark-master
+    #deploy:
+    #  resources:
+    #    limits:
+    #      memory: 1g
       
 networks:
   rede_fia:
