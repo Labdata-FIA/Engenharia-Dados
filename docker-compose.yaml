@@ -840,7 +840,7 @@ services:
       POSTGRES_DB: admin
     command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=200 -c wal_level=logical
     ports:
-      - 5432:5432
+      - 5442:5432
     volumes:
       - ./postgresql/volume:/var/lib/postgresql/data   
     networks:
