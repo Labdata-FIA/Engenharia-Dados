@@ -794,6 +794,7 @@ services:
        - "10002:10002"
     depends_on:
       - metastore
+      - datanode
     user: root
     volumes:
        - ./23.Hive/config:/hive_custom_conf
