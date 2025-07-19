@@ -891,9 +891,9 @@ services:
       - 8180:8080
       - 7077:7077
     volumes:
-      - ./spark/util:/util/
-      - ./spark/work:/home/user 
-      - ./spark/env:/env 
+      - ./31.Spark-Databricks/apacheSpark/util:/util/
+      - ./31.Spark-Databricks/apacheSpark/work:/home/user 
+      - ./31.Spark-Databricks/apacheSpark/env:/env 
     #deploy:
     #  resources:
     #    limits:
@@ -911,7 +911,7 @@ services:
         /usr/local/spark/sbin/start-worker.sh spark-master:7077
         start-notebook.sh --NotebookApp.token='' 
     env_file:
-      - ./spark/env/jupyter.env
+      - ./31.Spark-Databricks/apacheSpark/env/jupyter.env
     ports:
       - 5040:4040
       - 5041:4041
@@ -920,8 +920,8 @@ services:
       - 8881:8081
       - 36533:36533
     volumes:
-      - ./spark/util:/util/
-      - ./spark/work:/home/user 
+      - ./31.Spark-Databricks/apacheSpark/util:/util/
+      - ./31.Spark-Databricks/apacheSpark/work:/home/user 
     environment:
       SPARK_MASTER: spark-master
     depends_on:
