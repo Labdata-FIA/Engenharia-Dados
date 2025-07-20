@@ -50,11 +50,11 @@ Grafana
 
 Verificando se os containers foram criados com sucesso
 
-```
+```sh
  docker container ls
 ```
 Verificando as imagens que foram feitas download do docker-hub
-```
+```sh
  docker image ls
 ```
 
@@ -64,64 +64,64 @@ Vamos executar alguns comandos de dentro do container kafka-broker
 
 Acessar o Shell do container kafka-broker
 
-```
+```sh
 docker exec -it kafka-broker /bin/bash
 ```
 
 # Criando nosso Primeiro tópico
-```
+```sh
 kafka-topics --bootstrap-server localhost:9092 --topic alunos --create
 ```
 
 Listando o tópico criado
-```
+```sh
 kafka-topics --bootstrap-server localhost:9092 --list 
 ```
 
 Alguém lembra das partições? Agora o tópico com mais de uma partição
 
-```
+```sh
 kafka-topics --bootstrap-server localhost:9092 --topic alunos-novos --create --partitions 3
 ```
 Esqueceu a configuração do tópico?
 
-```
+```sh
 kafka-topics --bootstrap-server localhost:9092 --topic alunos-novos --describe
 ```
 
 ... e com fator de replicação
 
-```
+```sh
 kafka-topics --bootstrap-server localhost:9092 --topic alunos-novos-factor --create --partitions 3 --replication-factor 2
 ```
 ...deu certo, porque ?
 
 Agora vai dar certo...
-```
+```sh
 kafka-topics --bootstrap-server localhost:9092 --topic alunos-novos-factor --create --partitions 3 --replication-factor 1
 ```
 
 
 Criando tópicos com configurações
 
-```
+```sh
 kafka-topics --bootstrap-server localhost:9092 --create --topic topico-config --partitions 3 --replication-factor 1
 
-kafka-configs --bootstrap-server kafka:29092 --entity-type topics --entity-name topico-config --alter --add-config retention.ms=259200000
+kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-name topico-config --alter --add-config retention.ms=259200000
 
 kafka-topics --bootstrap-server localhost:9092 --describe --topic topico-config
 ```
 
 # Deletando um tópico
 
-```
+```sh
 kafka-topics --bootstrap-server localhost:9092 --topic alunos-novos-factor --delete
 kafka-topics --bootstrap-server localhost:9092 --topic alunos-novos-factor --describe
 ```
 
 # Produzinho mensagens
 
-```
+```sh
 kafka-console-producer --bootstrap-server localhost:9092 --topic alunos
 
 >Minha primeira mensagem
@@ -133,13 +133,13 @@ kafka-console-producer --bootstrap-server localhost:9092 --topic alunos
 
 Produzinho mensagens com acks
 
-```
+```sh
 kafka-console-producer --bootstrap-server localhost:9092 --topic alunos --producer-property acks=all
 ```
 
 Criando o tópico no momento de criar a mensagem
 
-```
+```sh
 kafka-console-producer --bootstrap-server localhost:9092 --topic professor
 
 kafka-topics --bootstrap-server localhost:9092 --topic professor --describe
@@ -153,7 +153,7 @@ Ver as configurações na pasta cat /etc/kafka/server.properties
 
 Produzir mensagens habilitando a Key
 
-```
+```sh
 kafka-console-producer --bootstrap-server localhost:9092 --topic alunos --property parse.key=true --property key.separator=:
 >key:value
 >aluno:fernando
@@ -161,16 +161,16 @@ kafka-console-producer --bootstrap-server localhost:9092 --topic alunos --proper
 
 # Consumindo mensagens
 
-```
+```sh
 kafka-console-consumer --bootstrap-server localhost:9092 --topic alunos
 ```
 
 Abre outro terminal, entre no container e produza uma mensagem
 
-```
+```sh
 //Entrando no containar em outro terminal
 
-docker exec -it kafka1 /bin/bash
+docker exec -it kafka-broker /bin/bash
 
 //Produzindo mensagens
 
@@ -185,7 +185,7 @@ Consumindo as mensagens desde o inicio
 
 No primeiro terminal cancele o consumo das mensagens
 
-```
+```sh
 >^C  (<- Ctrl + C is used to exit the producer)
 
 kafka-console-consumer --bootstrap-server localhost:9092 --topic alunos --from-beginning
@@ -194,7 +194,7 @@ kafka-console-consumer --bootstrap-server localhost:9092 --topic alunos --from-b
 
 Consumindo mensagens mostrando algumas configurações tais como: `Key` e `Value`
 
-```
+```sh
 kafka-console-consumer --bootstrap-server localhost:9092 --topic alunos  --property print.timestamp=true --property print.key=true --property print.value=true --property print.partition=true --from-beginning
 
 >^C  (<- Ctrl + C is used to exit the producer)
@@ -207,7 +207,7 @@ Criando um consumer group
 
 Consumindo as mensagens com um consumer group
 
-```
+```sh
 kafka-console-consumer --bootstrap-server localhost:9092 --topic alunos --group aplicacao-lab
 ```
 
@@ -215,28 +215,28 @@ Em um outro terminal....
 
 Produzindo as mensagem 
 
-```
+```sh
 kafka-console-producer --bootstrap-server localhost:9092  --topic alunos
 >nome:fernando
 ```
 
 Listando os consumer groups em outro terminal
 
-```
+```sh
 docker exec -it kafka-broker /bin/bash
 kafka-consumer-groups --bootstrap-server localhost:9092 --list
 ```
 
 As configurações do consume groups são :
 
-```
+```sh
 kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group aplicacao-lab
 
 ```
 
 Cancelando o consumidor e continuando produzindo mensgens
 
-```
+```sh
 //Veja a descrição dos consumidores sem ter consumindo as mensagem
 kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group aplicacao-lab
 
@@ -244,7 +244,7 @@ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group aplic
 
 Resentado o Offset Para o início (Voltando a posição inicial)
 
-```
+```sh
 kafka-consumer-groups --bootstrap-server localhost:9092 --group aplicacao-lab --topic alunos --reset-offsets --to-earliest --execute
 
 kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group aplicacao-lab
@@ -253,7 +253,7 @@ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group aplic
 
 Resentado o Offset Para o Final (Voltando a posição Final)
 
-```
+```sh
 kafka-consumer-groups --bootstrap-server localhost:9092 --group aplicacao-lab --topic alunos --reset-offsets --to-latest --execute
 
 kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group aplicacao-lab
@@ -263,7 +263,7 @@ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group aplic
 
 Para uma posição Específica
 
-```
+```sh
 kafka-consumer-groups --bootstrap-server localhost:9092 --group aplicacao-lab --topic alunos --reset-offsets --to-offset 4 --execute
 
 kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group aplicacao-lab
@@ -273,13 +273,13 @@ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group aplic
 
 Deletando os consumer groups
 
-```
+```sh
 kafka-consumer-groups --bootstrap-server localhost:9092 --delete --group aplicacao-lab
 ```
 
 Produzindo mensagem com a instrução Round Robin Partitioner
 
-```
+```sh
 kafka-console-producer --bootstrap-server localhost:9092 --producer-property partitioner.class=org.apache.kafka.clients.producer.RoundRobinPartitioner --topic alunos
 ```
 ---
@@ -301,7 +301,7 @@ O desafio terá a estrutura da imagem acima:
 
 # Remover os containers
 
-```
+```sh
 exit
 docker-compose down
 ```

@@ -23,39 +23,25 @@
 ### Realizando download dos plugins dos conectores
 
 
-Criando a imagem junto com o plugin do Debezium Postgres
+Criando a imagem junto com o plugin do Debezium PostgreSQL
 
 ![Exemplo Kafka Conect](../content/kafka-connect-imagem.png)
 
 
 
-```
-
-cd lab-kafka-connect
-
-docker image build -t <<usuario>>/kafka-connet-debezium-lab:v213  -f Dockerfile .
- 
-```
-
-OPCIONAL - Vamos enviar a imagem para o dockerhub ??
-https://hub.docker.com/
+```sh
+docker image build -t kafka-connet-debezium-lab:v213 -f 21.Ingestao-Dados-Kafka-Connect/Dockerfile 21.Ingestao-Dados-Kafka-Connect
 
 ```
-docker login
-docker image push <<usuario>>/kafka-connet-debezium-lab:v213
-```
-
-> As imagens customizadas encontra-se no https://hub.docker.com/
 
 
 Imagem criada? ...mas antes
 
-Altere o arquivo ambiente/docker-compose.yaml da imagem criada no serviço `connect`
+Altere o arquivo docker-compose.yaml da imagem criada no serviço `connect`
 
 
 
-```
-
+```sh
 docker compose up -d grafana prometheus jmx-kafka-broker zookeeper kafka-broker zoonavigator akhq connect postgres pgadmin minio mc
 
 docker container ls
@@ -63,14 +49,15 @@ docker container ls
 
 Listando os plugins existentes, os padrões da imagem e do debezium que foi inserido na imagem, via arquivo `Dockerfile`
 
-```
+```sh
 docker exec -it kafkaConect curl  http://localhost:8083/connector-plugins
 ```
 
-## Configurando o Conector Postgres
+## Configurando o Conector PostgreSQL
 
 
-### Provisionando Banco de dados Postgres e a ferramenta PgAdmin
+
+### Provisionando Banco de dados PostgreSQL e a ferramenta PgAdmin
 
 
 Acesso para o PgAdmin http://localhost:5433/
@@ -104,13 +91,25 @@ Acesso para o PgAdmin http://localhost:5433/
 https://docs.confluent.io/platform/current/connect/references/restapi.html
 
 
-Criando o conector PostGres
 
+> [!IMPORTANT]
+> Configuração do PostgreSql para replicação
+
+![Configuração PostGreSql](content/postgresql-replication.png)
+
+```sql
+SHOW config_file;
+SHOW wal_level;
+SHOW max_replication_slots;
 ```
 
- cd ../../lab-kafka-connect/
+Criando o conector PostGreSql
 
-curl -X PUT -d @conector-postgres.json http://localhost:8083/connectors/connector-postgres/config -H 'Content-Type: application/json' -H 'Accept: application/json'
+```sh
+
+docker exec -it kafkaConect bash
+
+curl -X PUT -d @/conectores/conector-postgres.json http://localhost:8083/connectors/connector-postgres/config -H 'Content-Type: application/json' -H 'Accept: application/json'
 
 
 ```
@@ -131,14 +130,14 @@ Algumas informações básicas sobre o connector:
 
 Listando os conectores
 
-```
-docker exec -it kafkaConect curl http://localhost:8083/connectors/
+```sh
+curl http://localhost:8083/connectors/
 ```
 
 Verificando o status dos conectores
 
-```
-docker exec -it kafkaConect curl http://localhost:8083/connectors/connector-postgres/status
+```sh
+curl http://localhost:8083/connectors/connector-postgres/status
 
 ```
 
@@ -146,8 +145,9 @@ docker exec -it kafkaConect curl http://localhost:8083/connectors/connector-post
 
 Vamos tirar o comentario do conector no serviço akhq do arquivo docker-compose caso ainda o tenha.
 
-```
-cd ../lab-eda/ambiente/
+```sh
+//Sair do container
+exit
 docker compose up -d akhq
 ```
 
@@ -165,7 +165,7 @@ Vamos inserir alguns registros nas tabelas e listar os tópicos do Kafka
 
 > Para entrar nos scripts, botão direito na tabela clica em `Query Tool`
 
-```
+```sql
 INSERT INTO inventory.products(	id, name, description, weight)
 VALUES (default, 'Lapis', 'O melhor', 1);
 ```
@@ -173,7 +173,7 @@ VALUES (default, 'Lapis', 'O melhor', 1);
 Listando os tópicos
 
 
-```
+```sh
 docker exec -it kafka-broker /bin/bash
 kafka-topics --bootstrap-server localhost:9092 --list 
 ```
@@ -182,7 +182,7 @@ kafka-topics --bootstrap-server localhost:9092 --list
 
 *Consumindo mensagem postgres.inventory.products Datasource Postgres*
 
-```
+```sh
 kafka-console-consumer --bootstrap-server localhost:9092 --topic postgres.inventory.products --from-beginning
 ```
 
@@ -190,7 +190,7 @@ kafka-console-consumer --bootstrap-server localhost:9092 --topic postgres.invent
 #### Api Rest Kafka Connect
 
 
-```
+```sh
 exit
 
 docker exec -it kafkaConect curl http://localhost:8083/connectors/connector-postgres/status
@@ -199,7 +199,7 @@ docker exec -it kafkaConect curl http://localhost:8083/connectors/connector-post
 
 Interagindo com os connetores
 
-```
+```sh
 Método PUT http://localhost:8083/connectors/connector-postgres/pause
 Método GET http://localhost:8083/connectors/connector-postgres/status
 Método PUT http://localhost:8083/connectors/connector-postgres/resume
@@ -219,31 +219,31 @@ Acesso para o MinIO http://localhost:9001/login
 
 ![MinIO](../content/minio-01.png)
 ![MinIO](../content/minio-02.png)
-![MinIO](../content/minio-04.png)
-![MinIO](../content/minio-05.png)
-![MinIO](../content/minio-06.png)
+
 
 
 Instalando o conector do MinIO
 
 > Não esqueçam de mudar os campos  `aws.access.key.id` e `aws.secret.access.key` do arquivo `conector-minio.json`
 
-```
-curl -X PUT -d @21.Ingestao-Dados-Kafka-Connect/conector-minio.json http://localhost:8083/connectors/connector-minio/config -H 'Content-Type: application/json' -H 'Accept: application/json'
+```sh
+docker exec -it kafkaConect bash
+
+curl -X PUT -d @/conectores/conector-minio.json http://localhost:8083/connectors/connector-minio/config -H 'Content-Type: application/json' -H 'Accept: application/json'
 
 ```
 
 Listando os conectores
 
-```
-docker exec -it kafkaConect curl http://localhost:8083/connectors/
+```sh
+curl http://localhost:8083/connectors/
 ```
 
 Será que deu certo??
 
-Vamos inserir um novo registro na tabela products no banco de dados do Postgres
+Vamos inserir um novo registro na tabela products no banco de dados do PostgreSQL
 
-```
+```sql
 INSERT INTO inventory.products(	id, name, description, weight)
 VALUES (112, 'Lapis', 'O melhor', 1);
 ```
@@ -252,7 +252,8 @@ VALUES (112, 'Lapis', 'O melhor', 1);
 Listando os tópicos
 
 
-```
+```sh
+exit
 docker exec -it kafka-broker /bin/bash
 kafka-topics --bootstrap-server localhost:9092 --list 
 ```
@@ -261,6 +262,8 @@ kafka-topics --bootstrap-server localhost:9092 --list
 
 *Consumindo mensagem sink-products Datasource MinIO*
 
-```
+```sh
 kafka-console-consumer --bootstrap-server localhost:9092 --topic sink-products --from-beginning
 ```
+
+![MinIO](../content/kafka-connect-minio02.png)

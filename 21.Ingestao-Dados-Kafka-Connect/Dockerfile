@@ -1,7 +1,7 @@
 ARG STRIMZI_VERSION=latest-kafka-3.7.0
 
 # Cria uma camada temporária para instalar unzip e extrair o arquivo usando uma imagem Debian
-FROM debian:latest as unzip-layer
+FROM debian:latest AS unzip-layer
 
 RUN apt-get update && apt-get install -y unzip curl
 
@@ -11,7 +11,7 @@ RUN curl -sfSL https://api.hub.confluent.io/api/plugins/confluentinc/kafka-conne
     unzip archive.zip 
 
 
-FROM quay.io/strimzi/kafka:${STRIMZI_VERSION} as imagemfinal
+FROM quay.io/strimzi/kafka:${STRIMZI_VERSION} AS imagemfinal
 
 ARG DEBEZIUM_CONNECTOR_VERSION=2.6.1.Final
 ENV KAFKA_CONNECT_PLUGIN_PATH=/tmp/connect-plugins/
