@@ -61,6 +61,10 @@ services:
     ports:
      - "2181:2181"
     container_name: zookeeper
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
       rede_fia:
 
@@ -86,8 +90,10 @@ services:
       CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'false'
-      KAFKA_HEAP_OPTS: ${KAFKA_BROKER_HEAP_OPTS}
-    mem_limit: ${KAFKA_BROKER_MEM_LIMIT}
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
       rede_fia:
 
