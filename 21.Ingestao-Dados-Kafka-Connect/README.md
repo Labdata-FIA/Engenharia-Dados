@@ -12,7 +12,7 @@
 
 # Instalação Kafka 
 
-[LAB KAFKA](../lab-kafka/README.md)
+[LAB KAFKA](../21.Ingestao-Dados-Kafka/README.md)
 
 
 ## Kafka Connect
@@ -95,7 +95,7 @@ https://docs.confluent.io/platform/current/connect/references/restapi.html
 > [!IMPORTANT]
 > Configuração do PostgreSql para replicação
 
-![Configuração PostGreSql](content/postgresql-replication.png)
+![Configuração PostGreSql](../content/postgresql-replication.png)
 
 ```sql
 SHOW config_file;
