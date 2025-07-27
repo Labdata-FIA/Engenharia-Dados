@@ -181,7 +181,7 @@ Na pasta 19.Data-Flow-Nifi\util tem o a arquivo usuarios.csv, copie e cole para 
 ## Criando Input e OutPut Port
 
 
-### Crie um Process Group
+### Crie os Process Group
 
 ![Lab](/content/nifi23.png)
 
@@ -206,6 +206,8 @@ Na pasta 19.Data-Flow-Nifi\util tem o a arquivo usuarios.csv, copie e cole para 
 O NiFi Registry é um serviço que permite versão, armazenamento e compartilhamento de fluxos de dados do Apache NiFi. Com ele, é possível salvar versões dos fluxos, acompanhar mudanças, restaurar versões anteriores e compartilhar pipelines entre diferentes ambientes (desenvolvimento, teste e produção).
 
 Isso facilita a governança dos fluxos, permitindo controle de mudanças, rollback e colaboração entre equipes.
+
+> ## Botão direito, Controller Service aba, Resgitry Clients
 
 ![Lab](/content/nifi-registry.png)
 
@@ -239,3 +241,8 @@ Isso facilita a governança dos fluxos, permitindo controle de mudanças, rollba
 ### Faça uma alteração dentro do process group
 
 ![Lab](/content/nifi-flow-git-2.png)
+
+
+## Importar do Registry
+
+![Lab](/content/nifi-flow-git-3.png)
