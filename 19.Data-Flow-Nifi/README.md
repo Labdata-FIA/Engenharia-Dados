@@ -172,7 +172,18 @@ Botão direito, Controller Services.
 
 ![Lab](/content/nifi22-4.png)
 
-Na pasta 19.Data-Flow-Nifi\util tem o a arquivo usuarios.csv, copie e cole para a pasta file
+
+> [!IMPORTANT]
+> De permissão na pasta `files`
+
+```bash
+
+sudo -s
+chmod -R 777 files
+
+```
+
+Na pasta 19.Data-Flow-Nifi\util tem o a arquivo usuarios.csv, copie e cole para a pasta files
 
 
 ![Lab](/content/nifi22-5.png)
