@@ -34,16 +34,6 @@ Acesso para o PgAdmin http://localhost:5433/
 * Username: postgres
 * password: postgres
 
-### Tela de login do PgAdmin
-![Exemplo Kafka Conect](../content/login-pgadmin.png)
-
-
-### Inserindo um server
-![Exemplo Kafka Conect](../content/add-server.png)
-
-### Configurando o server
-![Exemplo Kafka Conect](../content/conect-pgadmin.png)
-
 
 ## Criando estrutura para o banco de dados
 
@@ -295,13 +285,12 @@ Acesso para o MinIO http://localhost:9001/login
 > [!IMPORTANT]
 > Crie a camada Raw ou Bronze caso não tenha ainda
 
-![MinIO](../content/minio-04.png)
-![MinIO](../content/minio-05.png)
-![MinIO](../content/minio-06.png)
 
+> [!IMPORTANT]
+> Crie as credenciais `Access Key` e `Secret Key`
 
-![MinIO](../content/minio-07.png)
-
+* Access Key: curolab
+* Secret Key: curolab
 
 
 ---
