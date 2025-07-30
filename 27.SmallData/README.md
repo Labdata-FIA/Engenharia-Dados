@@ -84,6 +84,10 @@ CREATE TABLE usuarios (
 
 ![Small-Data](../content/small-data-0.png)
 
+
+> [!IMPORTANT]
+> Não esqueça de entrar no `Process Group`
+
 ## Criando o Processor para fazer requisição
 
 ![Small-Data](../content/small-data-00.png)
