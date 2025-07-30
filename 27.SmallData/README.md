@@ -157,7 +157,6 @@ Para o processor vamos criar dois `services` para as seguintes propriedades
 ![Small-Data](../content/small-data-05.png)
 
 
-## Crie uma propriedade Select
 
 ## Configurando Record Reader como `JsonTreeReader`
 
@@ -205,7 +204,7 @@ Com o botão direito na area do Group Process clique em `Controller Services` e 
 
 ## Ligando os Processor `JoltTransformJSON` com o `QueryRecord` com relacionamento de sucesso.
 
-> Não esqueça de mudar as configurações do Processor `QueryRecord`, aba RelationsShips como terminate, as opções failure e original.
+> Não esqueça de mudar as configurações do Processor `QueryRecord`, aba RelationsShips como terminate, as opções failure e original e ligar o select a um `Funnel`
 
 ![Small-Data](../content/small-data-11.png)
 
@@ -252,7 +251,7 @@ Com o botão direito na area do Group Process clique em `Controller Services` e 
 
 |Property|Value|
 |------------------|--------------|
-|Table Name|jdbc:postgresql://postgres:5432/dbdemo|
+|Table Name|usuarios|
 |Translate Field Names|false|
 
 ![Small-Data](../content/small-data-19.png)
@@ -262,7 +261,7 @@ Com o botão direito na area do Group Process clique em `Controller Services` e 
 ![Small-Data](../content/small-data-31.png)
 
 
-### Habilitando os relacionamentos de `failure`, `retry` e `sucsess`
+> ### Não esqueça de habilitar os relacionamentos de `failure`, `retry` e `sucsess` do `PutDatabaseRecord`
 
 ### Se tudo deu certo, vamos encontrar informações na tabela `usuarios`
 
@@ -289,8 +288,8 @@ Acesso para o MinIO http://localhost:9001/login
 > [!IMPORTANT]
 > Crie as credenciais `Access Key` e `Secret Key`
 
-* Access Key: curolab
-* Secret Key: curolab
+* Access Key: cursolab
+* Secret Key: cursolab
 
 
 ---
@@ -336,7 +335,7 @@ Botão direito, Controller Services.
 ![Lab](/content/nifi22-4.png)
 
 
-### Nâo esqueça de fazer o relacionamento com os Processor `JoltTransformJSON` e o `PutS3Object`, e os Relacionamentos de `failure` e `success` do `PutS3Object`.
+### Não esqueça de fazer o relacionamento com os Processor `JoltTransformJSON` e o `PutS3Object`, e os Relacionamentos de `failure` e `success` do `PutS3Object`.
 
 ![Lab](/content/small-data-32.png)
 
@@ -425,22 +424,12 @@ SELECT * FROM vendas LIMIT 5;
 ```sql
 COPY vendas TO 'data/vendas.parquet' (FORMAT 'parquet');
 
-SELECT * FROM read_parquet('vendas.parquet');
+SELECT * FROM read_parquet('data/vendas.parquet');
 
 SELECT * 
-FROM read_parquet('vendas.parquet')
+FROM read_parquet('data/vendas.parquet')
 WHERE Data_Venda > '2025-03-01';
 
-```
-
-## Executando Consultas no DuckDB
-
-DuckDB otimiza planos de execução utilizando operações vetorizadas.
-
-Verificando o plano de execução:
-
-```sql
-EXPLAIN SELECT * FROM vendas WHERE Total_Venda > 10;
 ```
 
 ### O que são Extensions no DuckDB?
@@ -490,6 +479,11 @@ COPY vendas TO 's3://raw/vendas.parquet' (FORMAT 'parquet');
 docker logs duckdb
 ```
 
+### Vai encontrar uma url parecida como:
+
+http://duckdb:8085/tree?token=2016ab600e79635cfc05ea869163f7ec44b74e236d7eb4ca
+
+
 ## Exemplo em Python (Jupyter Notebook)
 
 Para exemplos práticos com Python, veja o arquivo `notebook.ipynb` incluído neste material.
@@ -499,3 +493,5 @@ Para exemplos práticos com Python, veja o arquivo `notebook.ipynb` incluído ne
 ```bash
  docker compose up -d metabase
 ```
+
+> http://localhost:3000/
