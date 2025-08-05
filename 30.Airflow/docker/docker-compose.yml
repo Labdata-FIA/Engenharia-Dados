@@ -10,7 +10,7 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - laboratorio-airflow-tier
+      - rede_fia
 
   postgres_airflow:
     image: postgres:13
@@ -22,7 +22,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - laboratorio-airflow-tier
+      - rede_fia
 
   webserver:
     build: .
@@ -44,7 +44,7 @@ services:
     depends_on:
       - postgres_airflow
     networks:
-      - laboratorio-airflow-tier
+      - rede_fia
     command: >
       bash -c "pip install -r /requirements.txt && airflow db init && airflow webserver"
 
@@ -65,11 +65,11 @@ services:
     depends_on:
       - postgres_airflow
     networks:
-      - laboratorio-airflow-tier
+      - rede_fia
     command: >
       bash -c "pip install -r /requirements.txt && airflow scheduler"
 
 networks:
-  laboratorio-airflow-tier:
+  rede_fia:
     driver: bridge
 

@@ -467,7 +467,7 @@ services:
     image: grafana/loki:${LOKI_VERSION}
     container_name: loki
     command: -config.file=/etc/loki/local-config.yaml
-    volumes: 
+    volumes:
       - ./16.DevOps-CIDC/etc/loki/loki.yml:/etc/loki/local-config.yaml
       - ./16.DevOps-CIDC/loki:/data/loki
     restart: unless-stopped
@@ -516,7 +516,7 @@ services:
       NIFI_WEB_HTTPS_PORT: "9443"
       SINGLE_USER_CREDENTIALS_USERNAME: admin
       SINGLE_USER_CREDENTIALS_PASSWORD: fia@2024@ladata@laboratorio
-      TZ: "America/Sao_Paulo"     
+      TZ: "America/Sao_Paulo"
     depends_on:
       - kafka-broker
     ports:
@@ -800,8 +800,8 @@ services:
       AWS_SECRET_ACCESS_KEY: cursolab
       HIVE_CUSTOM_CONF_DIR: "/hive_custom_conf"
       SERVICE_NAME: hiveserver2
-      SERVICE_OPTS: "-Dhive.metastore.uris=thrift://metastore:9083"   
-      SERVICE_PRECONDITION: "metastore:9083"  
+      SERVICE_OPTS: "-Dhive.metastore.uris=thrift://metastore:9083"
+      SERVICE_PRECONDITION: "metastore:9083"
       IS_RESUME: "true"
       #HIVE_VERSION: "3.1.3"
     ports:
@@ -827,16 +827,16 @@ services:
       AWS_SECRET_ACCESS_KEY: cursolab
       HIVE_CUSTOM_CONF_DIR: "/hive_custom_conf"
       SERVICE_NAME: metastore
-      #SERVICE_OPTS: "-Dhive.metastore.uris=thrift://metastore:9083" 
+      #SERVICE_OPTS: "-Dhive.metastore.uris=thrift://metastore:9083"
       IS_RESUME: "true"
-      DB_DRIVER: postgres 
+      DB_DRIVER: postgres
       SERVICE_PRECONDITION: "namenode:9870 datanode:9864 db:5432"
-      SERVICE_OPTS: "-Djavax.jdo.option.ConnectionDriverName=org.postgresql.Driver -Djavax.jdo.option.ConnectionURL=jdbc:postgresql://db:5432/metastore -Djavax.jdo.option.ConnectionUserName=admin -Djavax.jdo.option.ConnectionPassword=admin" 
+      SERVICE_OPTS: "-Djavax.jdo.option.ConnectionDriverName=org.postgresql.Driver -Djavax.jdo.option.ConnectionURL=jdbc:postgresql://db:5432/metastore -Djavax.jdo.option.ConnectionUserName=admin -Djavax.jdo.option.ConnectionPassword=admin"
     ports:
        - "9083:9083"
     user: root
     volumes:
-       - ./23.Hive/meta:/opt/hive/data/warehouse 
+       - ./23.Hive/meta:/opt/hive/data/warehouse
        - ./23.Hive/config:/hive_custom_conf
        - ./23.Hive/util:/util
     depends_on:
@@ -858,7 +858,7 @@ services:
     ports:
       - 5442:5432
     volumes:
-      - ./postgresql/volume:/var/lib/postgresql/data   
+      - ./postgresql/volume:/var/lib/postgresql/data
     networks:
       - rede_fia
 
@@ -874,25 +874,25 @@ services:
       - rede_fia
 
   trino:
-    image: fjardim/mds-trino 
+    image: fjardim/mds-trino
     platform: linux/amd64
     container_name: trino
     hostname: trino
-    ports: 
-      - "8080:8080" 
+    ports:
+      - "8080:8080"
     depends_on:
       - postgres
       - hive
-    volumes: 
-      - ./trino/catalog:/etc/trino/catalog  
+    volumes:
+      - ./trino/catalog:/etc/trino/catalog
       - ./trino/conf:/conf
-      
+
   spark-master:
     platform: linux/amd64
     image: fjardim/mds-spark
     hostname: spark-master
     container_name: spark-master
-    command: 
+    command:
       - /bin/sh
       - -c
       - |
@@ -908,8 +908,8 @@ services:
       - 7077:7077
     volumes:
       - ./31.Spark-Databricks/apacheSpark/util:/util/
-      - ./31.Spark-Databricks/apacheSpark/work:/home/user 
-      - ./31.Spark-Databricks/apacheSpark/env:/env 
+      - ./31.Spark-Databricks/apacheSpark/work:/home/user
+      - ./31.Spark-Databricks/apacheSpark/env:/env
     #deploy:
     #  resources:
     #    limits:
@@ -920,12 +920,12 @@ services:
     image: fjardim/mds-spark
     hostname: spark-worker
     container_name: spark-worker
-    command: 
+    command:
       - /bin/sh
       - -c
       - |
         /usr/local/spark/sbin/start-worker.sh spark-master:7077
-        start-notebook.sh --NotebookApp.token='' 
+        start-notebook.sh --NotebookApp.token=''
     env_file:
       - ./31.Spark-Databricks/apacheSpark/env/jupyter.env
     ports:
@@ -937,7 +937,7 @@ services:
       - 36533:36533
     volumes:
       - ./31.Spark-Databricks/apacheSpark/util:/util/
-      - ./31.Spark-Databricks/apacheSpark/work:/home/user 
+      - ./31.Spark-Databricks/apacheSpark/work:/home/user
     environment:
       SPARK_MASTER: spark-master
     depends_on:
@@ -946,7 +946,73 @@ services:
     #  resources:
     #    limits:
     #      memory: 1g
-      
+
+  mysql_airflow:
+    image: library/mysql:8.0.31
+    container_name: mysql_airflow
+    environment:
+      MYSQL_ROOT_PASSWORD: airflow
+      MYSQL_DATABASE: airflow
+      MYSQL_USER: airflow
+      MYSQL_PASSWORD: airflow
+    ports:
+      - "3306:3306"
+    networks:
+      - rede_fia
+
+  postgres_airflow:
+    image: postgres:13
+    container_name: postgres_airflow
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    ports:
+      - "5432:5432"
+    networks:
+      - rede_fia
+
+  webserver:
+    build: ./30.Airflow/docker
+    container_name: webserver
+    restart: always
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
+      AIRFLOW__CORE__FERNET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA=}'
+      AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA2}'
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'True'
+    volumes:
+      - ./30.Airflow/dags:/opt/airflow/dags
+      - ./30.Airflow/requirements.txt:/requirements.txt
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres_airflow
+    networks:
+      - rede_fia
+    command: >
+      bash -c "pip install -r /requirements.txt && airflow db init && airflow webserver"
+
+  scheduler:
+    build: ./30.Airflow/docker
+    restart: always
+    container_name: scheduler
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
+      AIRFLOW__CORE__FERNET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA=}'
+      AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA2}'
+    volumes:
+      - ./30.Airflow/dags:/opt/airflow/dags
+      - ./30.Airflow/requirements.txt:/requirements.txt
+    depends_on:
+      - postgres_airflow
+    networks:
+      - rede_fia
+    command: >
+      bash -c "pip install -r /requirements.txt && airflow scheduler"
+
 networks:
   rede_fia:
 

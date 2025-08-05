@@ -12,7 +12,7 @@ Este repositório contém uma configuração do Apache Airflow utilizando Docker
 ## Estrutura do Projeto
 
 ```
-laboratorio-airflow/
+30.Airflow/
 ├── dags/
 │   └── __init__.py
 ├───── aula_airflow/
@@ -32,7 +32,7 @@ laboratorio-airflow/
 Para inicializar o serviço, utilize o comando:
 
 ```shell
-docker compose -f docker/docker-compose.yml up --build
+docker compose up --build mysql_airflow postgres_airflow webserver scheduler
 ```
 
 > *Caso não funcione o comando acima*, utilize `docker-compose` no lugar de `docker compose`
@@ -43,7 +43,7 @@ Usar `Ctrl+C` para parar a execução do ambiente
 
 Para parar todos os contêineres do ambiente, utilize o comando:
 ```shell
-docker compose -f docker/docker-compose.yml down
+docker compose down mysql_airflow postgres_airflow webserver scheduler
 ```
 
 ## Criar o Usuário para Fazer Login no Airflow
@@ -53,7 +53,7 @@ Após inicializar o serviço, crie um usuário admin para acessar a interface do
 - Executar o comando abaixo no terminal
 
 ```shell
-docker compose -f docker/docker-compose.yml exec webserver airflow users create \
+docker compose exec webserver airflow users create \
     --username admin \
     --firstname Firstname \
     --lastname Lastname \
@@ -72,7 +72,7 @@ docker compose -f docker/docker-compose.yml exec webserver airflow users create 
 
 - **Conn Id**: `mysql_default`
 - **Conn Type**: `MySQL`
-- **Host**: `mysql`
+- **Host**: `mysql_airflow`
 - **Schema**: `airflow`
 - **Login**: `airflow`
 - **Password**: `airflow`
@@ -81,10 +81,10 @@ docker compose -f docker/docker-compose.yml exec webserver airflow users create 
 ### Utilizando linha de comando
 
 ```shell
-docker compose -f docker/docker-compose.yml exec webserver \
+docker compose exec webserver \
     airflow connections delete 'mysql_default'
 
-docker compose -f docker/docker-compose.yml exec webserver \
+docker compose exec webserver \
     airflow connections add 'mysql_default' --conn-uri 'mysql://airflow:airflow@mysql_airflow:3306/airflow'
 ```
 
@@ -92,6 +92,4 @@ docker compose -f docker/docker-compose.yml exec webserver \
 
 Certifique-se de que a configuração acima esteja correta para evitar problemas de acesso aos logs.
 
-## Licença
 
-Este projeto é licenciado sob os termos da licença MIT.
