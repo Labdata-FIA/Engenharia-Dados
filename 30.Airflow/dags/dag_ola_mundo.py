@@ -7,7 +7,7 @@ from airflow.operators.bash import BashOperator
 # Uma DAG representa um workflow, um conjunto de task
 with DAG(
         dag_id="ola_mundo",  # nome da DAG
-        start_date=datetime(2024, 9, 1),  # A data em que o DAG deve começar a funcionar pela primeira vez
+        start_date=datetime(2025, 7, 1),  # A data em que o DAG deve começar a funcionar pela primeira vez
         schedule="0 0 * * *"  # definicao de quando a DAG será executada
 ) as dag:
     # As Tasks são representadas por operadores

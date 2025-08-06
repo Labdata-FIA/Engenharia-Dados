@@ -7,8 +7,8 @@ from airflow.operators.python import PythonOperator
 # Uma DAG representa um workflow, um conjunto de task
 with DAG(
         dag_id="ola_mundo_data_backfill",  # nome da DAG
-        start_date=datetime(2024, 9, 1),  # A data em que o DAG deve começar a funcionar pela primeira vez
-        end_date=datetime(2024, 9, 6),  # A data em que o DAG deve encerrar o funcionamento
+        start_date=datetime(2025, 8, 1),  # A data em que o DAG deve começar a funcionar pela primeira vez
+        end_date=datetime(2025, 8, 6),  # A data em que o DAG deve encerrar o funcionamento
         schedule_interval="@daily",  # timedelta oferece a capacidade de usar programações baseadas em frequência.
         catchup=False  # habilitar o backfill, True = será executado o passado nao execudado
 ) as dag:
