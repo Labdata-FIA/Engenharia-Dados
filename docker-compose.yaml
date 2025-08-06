@@ -973,7 +973,7 @@ services:
       - rede_fia
 
   webserver:
-    build: ./30.Airflow/docker/
+    image: apache/airflow:2.7.2-python3.11
     container_name: webserver
     restart: always
     environment:
@@ -997,7 +997,7 @@ services:
       bash -c "pip install -r /requirements.txt && airflow db init && airflow webserver"
 
   scheduler:
-    build: ./30.Airflow/docker
+    image: apache/airflow:2.7.2-python3.11
     restart: always
     container_name: scheduler
     environment:

@@ -3,7 +3,7 @@ FROM apache/airflow:2.7.2-python3.11
 # Instalar dependências do sistema
 USER root
 RUN apt-get update && apt-get install -y \
-    openjdk-11-jdk \
+    openjdk-17-jdk \
     build-essential \
     python3-dev \
     gcc \
@@ -20,4 +20,4 @@ USER airflow
 
 # Instalar dependências do Python
 RUN pip install --upgrade pip
-RUN pip install --upgrade apache-airflow-providers-openlineage>=1.8.0
+# RUN pip install --upgrade apache-airflow-providers-openlineage>=1.8.0

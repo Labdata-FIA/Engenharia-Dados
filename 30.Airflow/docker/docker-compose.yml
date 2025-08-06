@@ -25,13 +25,11 @@ services:
       - rede_fia
 
   webserver:
-    build: .
-#    image: apache/airflow:2.7.2-python3.11
+    image: apache/airflow:2.7.2-python3.11
     container_name: webserver
     restart: always
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-#      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
       AIRFLOW__CORE__FERNET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA=}'
       AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA2}'
@@ -49,13 +47,11 @@ services:
       bash -c "pip install -r /requirements.txt && airflow db init && airflow webserver"
 
   scheduler:
-    build: .
-#    image: apache/airflow:2.7.2-python3.11
+    image: apache/airflow:2.7.2-python3.11
     restart: always
     container_name: scheduler
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-#      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
       AIRFLOW__CORE__FERNET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA=}'
       AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA2}'
