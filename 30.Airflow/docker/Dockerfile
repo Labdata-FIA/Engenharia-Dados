@@ -15,10 +15,9 @@ RUN apt-get update && apt-get install -y \
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
 ENV PATH $JAVA_HOME/bin:$PATH
 
-# Instalar dependências do Python
+# Voltar para o usuário airflow
 USER airflow
-#COPY requirements.txt requirements.txt
+
+# Instalar dependências do Python
 RUN pip install --upgrade pip
 RUN pip install --upgrade apache-airflow-providers-openlineage>=1.8.0
-#RUN pip install -r requirements.txt
-

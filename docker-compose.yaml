@@ -973,7 +973,7 @@ services:
       - rede_fia
 
   webserver:
-    build: ./30.Airflow/docker
+    build: ./30.Airflow/docker/
     container_name: webserver
     restart: always
     environment:
@@ -984,6 +984,8 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: 'True'
     volumes:
       - ./30.Airflow/dags:/opt/airflow/dags
+      - ./30.Airflow/logs:/opt/airflow/logs
+      - ./30.Airflow/plugins:/opt/airflow/plugins
       - ./30.Airflow/requirements.txt:/requirements.txt
     ports:
       - "8080:8080"
@@ -1005,6 +1007,8 @@ services:
       AIRFLOW__WEBSERVER__SECRET_KEY: '${FERNET_KEY:-LBi3PfqopCGRKZlFz2mXEjOCgxBtYy7q_Q3vF3rcUeA2}'
     volumes:
       - ./30.Airflow/dags:/opt/airflow/dags
+      - ./30.Airflow/logs:/opt/airflow/logs
+      - ./30.Airflow/plugins:/opt/airflow/plugins
       - ./30.Airflow/requirements.txt:/requirements.txt
     depends_on:
       - postgres_airflow
