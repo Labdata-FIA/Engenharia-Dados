@@ -32,7 +32,7 @@ Este repositório contém uma configuração do Apache Airflow utilizando Docker
 Para inicializar o serviço, utilize o comando:
 
 ```shell
-docker compose up --build mysql_airflow postgres_airflow webserver scheduler
+docker compose up mysql_airflow postgres_airflow webserver scheduler
 ```
 
 > *Caso não funcione o comando acima*, utilize `docker-compose` no lugar de `docker compose`
