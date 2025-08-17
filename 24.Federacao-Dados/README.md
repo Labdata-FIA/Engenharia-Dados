@@ -46,11 +46,12 @@ SHOW SCHEMAS FROM hive;
 
 ```
 ## Navegação de metadados
-SHOW CATALOGS;                      -- catálogos disponíveis (hive, postgresql, system, memory...)
-SHOW SCHEMAS FROM hive;             -- schemas do catálogo hive
-SHOW TABLES  FROM hive.aula;        -- tabelas no schema aula
-DESCRIBE hive.aula.bf;              -- colunas e tipos
-SHOW COLUMNS FROM hive.aula.bf;     -- alternativa ao DESCRIBE
+
+* SHOW CATALOGS;                      -- catálogos disponíveis (hive, postgresql, system, memory...)
+* SHOW SCHEMAS FROM hive;             -- schemas do catálogo hive
+* SHOW TABLES  FROM hive.aula;        -- tabelas no schema aula
+* DESCRIBE hive.aula.bf;              -- colunas e tipos
+* SHOW COLUMNS FROM hive.aula.bf;     -- alternativa ao DESCRIBE
 
 ## Mudando de catálogo/esquema na sessão
 
