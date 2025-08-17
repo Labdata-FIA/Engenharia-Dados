@@ -34,6 +34,24 @@ O Presto tem dezenas de conectores oficiais: Hive, Iceberg, Delta Lake, Hudi, Po
 > https://prestodb.io/docs/current/connector.html
 
 
+## Configurando Minio
+
+Acesso para o MinIO http://localhost:9001/login
+
+* Senha : admin
+* password: minioadmin
+
+> [!IMPORTANT]
+> Crie as camadas no MinIO
+
+> raw//aula/bf/
+
+### Crie as Access Keys e Secret Key
+* datalake
+* datalake
+
+
+### Na pasta `23.Hive/util/` envie o arquivo `bf.csv` para a camada `raw//aula/bf/`
 
 ```sh
 docker exec -it presto bash
@@ -147,3 +165,13 @@ LIMIT 50;
 
 
 ```
+
+
+### Configurando conexão com metabase
+
+```sh
+docker compose up -d metabase
+```
+
+
+![Prestodb](../content/presto04.png)
