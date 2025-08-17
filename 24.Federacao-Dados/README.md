@@ -17,17 +17,23 @@ docker compose up -d datanode namenode hive metastore minio presto
 
 * http://localhost:18080/ui/
 
+
 ![Prestodb](../content/presto03.png)
 
 
-Federação de dados: consultar e combinar múltiplas fontes (lake + bancos) com SQL unificado e execução distribuída em memória (Presto MPP). O Hive Metastore funciona como catálogo de metadados: mapeia nome lógico da tabela para arquivos/partições no MinIO, com schema, formato e estatísticas. Sem ele, o Presto não sabe onde/como ler Parquet no S3/MinIO.
+Federação de dados: consultar e combinar múltiplas fontes (lake + bancos) com SQL unificado e execução distribuída em memória (Presto). O Hive Metastore funciona como catálogo de metadados: mapeia nome lógico da tabela para arquivos/partições no MinIO, com schema, formato e estatísticas. Sem ele, o Presto não sabe onde/como ler Parquet no S3/MinIO.
 
 ![Prestodb](../content/presto01.png)
 
+## Conectores
 
-## Configuração pode ser pelo `DBeaver` 
+Conectores são plugins que implementam o SPI do Presto para falar com uma fonte de dados (data lakes, bancos, streams, etc.).
 
-![Prestodb](../content/presto02.png)
+O Presto tem dezenas de conectores oficiais: Hive, Iceberg, Delta Lake, Hudi, PostgreSQL, MySQL, SQL Server, Oracle, Kafka, Elasticsearch, Cassandra, MongoDB, Druid, Pinot, BigQuery, Redshift, Redis, Google Sheets, ClickHouse e outros.
+
+> https://prestodb.io/docs/current/connector.html
+
+
 
 ```sh
 docker exec -it presto bash
@@ -60,6 +66,10 @@ USE postgresql.public;              -- agora usando o catálogo JDBC do Postgres
 ```sh
 ANALYZE hive.aula.bf; 
 ```
+
+## Configuração pode ser pelo `DBeaver` 
+
+![Prestodb](../content/presto02.png)
 
 ### Configurando e criando estrutura do Hive
 ```sql
