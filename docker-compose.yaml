@@ -1020,6 +1020,9 @@ services:
     container_name: presto
     ports:
       - 18080:8080
+    volumes: 
+      - ./24.Federacao-Dados/etc/config.properties:/opt/presto-server/etc/config.properties
+      - ./24.Federacao-Dados/catalog:/opt/presto-server/etc/catalog
     networks:
       - rede_fia
 
