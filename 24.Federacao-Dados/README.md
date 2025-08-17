@@ -29,18 +29,6 @@ Federação de dados: consultar e combinar múltiplas fontes (lake + bancos) com
 
 ![Prestodb](../content/presto02.png)
 
-
-24.Federacao-Dados 
-  │   └─ etc/
-  │       ├─ config.properties
-  │    └─ catalog/
-  │       ├─ hive.properties
-  │       ├─ postgresql.properties
-  │       └─ memory.properties  
-  └─ 
-
-
-
 ```sh
 docker exec -it presto bash
 
