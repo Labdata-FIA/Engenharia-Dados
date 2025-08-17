@@ -23,7 +23,7 @@ docker compose up -d datanode namenode hive metastore minio presto
 
 Federação de dados: consultar e combinar múltiplas fontes (lake + bancos) com SQL unificado e execução distribuída em memória (Presto). O Hive Metastore funciona como catálogo de metadados: mapeia nome lógico da tabela para arquivos/partições no MinIO, com schema, formato e estatísticas. Sem ele, o Presto não sabe onde/como ler Parquet no S3/MinIO.
 
-![Prestodb](../content/presto01.png)
+
 
 ## Conectores
 
@@ -68,6 +68,8 @@ ANALYZE hive.aula.bf;
 ```
 
 ## Configuração pode ser pelo `DBeaver` 
+
+![Prestodb](../content/presto01.png)
 
 ![Prestodb](../content/presto02.png)
 
