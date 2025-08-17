@@ -43,9 +43,7 @@ mkdir ./postgresql/volume/pg_stat_tmp
 
 ---
 
-* > http://localhost:9864/
-* > http://localhost:9870/
-* > http://localhost:10002/
+
 
 ```bash
 docker container rm $(docker ps -a -q) -f
@@ -57,6 +55,9 @@ docker exec -it namenode bash
 
 ```
 
+* > http://localhost:9864/
+* > http://localhost:9870/
+* > http://localhost:10002/
 
 ### 🔍 Verificar modo seguro (Safe Mode)
 

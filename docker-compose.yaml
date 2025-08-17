@@ -830,7 +830,7 @@ services:
       #SERVICE_OPTS: "-Dhive.metastore.uris=thrift://metastore:9083"
       IS_RESUME: "true"
       DB_DRIVER: postgres
-      SERVICE_PRECONDITION: "namenode:9870 datanode:9864 db:5432"
+      SERVICE_PRECONDITION: "namenode:9870 datanode:9864 db:5442"
       SERVICE_OPTS: "-Djavax.jdo.option.ConnectionDriverName=org.postgresql.Driver -Djavax.jdo.option.ConnectionURL=jdbc:postgresql://db:5432/metastore -Djavax.jdo.option.ConnectionUserName=admin -Djavax.jdo.option.ConnectionPassword=admin"
     ports:
        - "9083:9083"
@@ -1012,6 +1012,17 @@ services:
       - rede_fia
     command: >
       bash -c "pip install -r /requirements.txt && airflow scheduler"
+
+  presto:
+    platform: linux/amd64
+    image: prestodb/presto:${PRESTO_VERSION}
+    hostname: presto
+    container_name: presto
+    ports:
+      - 18080:8080
+    networks:
+      - rede_fia
+
 
 networks:
   rede_fia:
