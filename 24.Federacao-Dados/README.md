@@ -178,9 +178,8 @@ FROM postgresql.public.categoria;
 
 
 SELECT b.user_id,
-       u.gender,
-       u.age,
-        b.purchase
+       u.nome,     
+       b.purchase
 FROM hive.aula.bf b
 LEFT JOIN postgresql.public.usuario u
   ON b.user_id = u.user_id
@@ -188,7 +187,7 @@ LIMIT 50;
 
 SELECT b.user_id ,
 	   b.purchase ,
-	   u.gender 	   
+	   u.nome 	   
 FROM hive.aula.bf b
 INNER  JOIN postgresql.public.usuario u
   ON b.user_id = u.user_id
