@@ -96,7 +96,10 @@ ANALYZE hive.aula.bf;
 
 
 ### Configuração PostGreSQL
-![Prestodb](../content/presto-postgres)
+![Prestodb](../content/presto-postgres.png)
+
+* Usuário: admin
+* Senha: admin
 
 
 ### Configuração Prestodb
