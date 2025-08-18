@@ -205,5 +205,6 @@ LIMIT 50;
 docker compose up -d metabase
 ```
 
+> http://localhost:3000/
 
 ![Prestodb](../content/presto04.png)
