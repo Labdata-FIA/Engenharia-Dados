@@ -86,8 +86,20 @@ USE postgresql.public;              -- agora usando o catálogo JDBC do Postgres
 ANALYZE hive.aula.bf; 
 ```
 
-## Configuração pode ser pelo `DBeaver` 
+## Configurações pelo  `DBeaver` 
 
+### Configuração do Hive
+
+![Prestodb](../content/hive-01.png)
+
+![Prestodb](../content/hive-02.png)
+
+
+### Configuração PostGreSQL
+![Prestodb](../content/presto-postgres)
+
+
+### Configuração Prestodb
 ![Prestodb](../content/presto01.png)
 
 ![Prestodb](../content/presto02.png)
