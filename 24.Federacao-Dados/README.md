@@ -11,6 +11,24 @@
 
 # Iniciando o ambiente
 
+
+> [!IMPORTANT]
+> Criando as pastas para o container PostGreSql
+
+
+```bash
+
+mkdir ./postgresql/volume/pg_notify
+mkdir ./postgresql/volume/pg_tblspc
+mkdir ./postgresql/volume/pg_twophase
+mkdir ./postgresql/volume/pg_stat
+mkdir ./postgresql/volume/pg_logical/mappings
+mkdir ./postgresql/volume/pg_commit_ts
+mkdir ./postgresql/volume/pg_snapshots
+mkdir ./postgresql/volume/pg_stat_tmp
+```
+
+
 ```sh
 docker compose up -d datanode namenode hive metastore minio presto
 ```
