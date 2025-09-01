@@ -17,21 +17,23 @@ A seguir, um guia passo a passo para a criação de uma conta no Databricks Comm
 
 ![02-login.png](imagens%2Fnew-user%2F02-login.png)
 
-### 3. Preencher os Dados de Cadastro
+### 3. Informar o nome da organização
 
-- **Insira suas informações pessoais:**
-    - Preencha os campos obrigatórios e clique em `Continue`.
+- **Insira o próprio e-mail:**
 
-![03-try-databricks-free.png](imagens%2Fnew-user%2F03-try-databricks-free.png)
+![04-passo-organizacao.png](imagens/new-user/04-passo-organizacao.png)
 
-### 4. Escolha uma Opção
+### 4. Informar a localização
 
-- **Escolha a opção para a versão gratuita:**
-    - Na tela de escolha de provedor de nuvem, selecione `Get started with Community Edition`.
+- **Será apresentada a tela abaixo:**
 
-![04-choose-a-cloud-provider.png](imagens%2Fnew-user%2F04-choose-a-cloud-provider.png)
+![05-localizacao.png](imagens/new-user/05-localizacao.png)
 
-### 5. Validação Captcha
+- **Escolher a localização Brazil**
+
+![06-localizacao-brazil.png](imagens/new-user/06-localizacao-brazil.png)
+
+### 5. Iniciar o Desafio Captcha
 
 - **Validação para verificar se você não é um robô:**
     - Complete o desafio Captcha solicitado:
@@ -43,35 +45,22 @@ A seguir, um guia passo a passo para a criação de uma conta no Databricks Comm
 - **Ajuste o Captcha conforme instruído:**
     - Direcione o avião na mesma direção que a mão aponta.
 
-![07-protecting-account.png](imagens%2Fnew-user%2F07-protecting-account.png)
+(No meu caso foi este 😀)
 
-### 7. Confirmação por Email
+![07-desafio.png](imagens/new-user/07-desafio.png)
 
-- **Verifique seu email para o link de confirmação:**
-    - Você receberá um email de boas-vindas:
+![08-desafio.png](imagens/new-user/08-desafio.png)
 
-![08-email-welcome-to-databricks.png](imagens%2Fnew-user%2F08-email-welcome-to-databricks.png)
+- **Será apresentada a tela abaixo sinalizando que vc venceu o desafio:**
 
-### 8. Ativação da Conta
+![09-desafio.png](imagens/new-user/09-desafio.png)
 
-- **Clique em `this link` para ativar sua conta:**
-    - Ou copie e cole o link fornecido no navegador.
-
-![09-email-welcome-to-databricks.png](imagens%2Fnew-user%2F09-email-welcome-to-databricks.png)
-
-### 9. Definir Senha
-
-- **Escolha e defina uma senha segura para sua conta:**
-    - Preencha a senha e clique em `Reset password`.
-
-![10-reset-password.png](imagens%2Fnew-user%2F10-reset-password.png)
-
-### 10. Acesso ao Workspace
+### 7. Acesso ao Workspace
 
 - **Bem-vindo ao Databricks!**
     - Após definir a senha, você será redirecionado ao workspace principal:
 
-![12-workspace.png](imagens%2Fnew-user%2F12-workspace.png)
+![10-workspace-home.png](imagens/new-user/10-workspace-home.png)
 
 ## Navegação
 - [README](README.md)
