@@ -33,14 +33,7 @@ A seguir, um guia passo a passo para a criação de uma conta no Databricks Comm
 
 ![06-localizacao-brazil.png](imagens/new-user/06-localizacao-brazil.png)
 
-### 5. Iniciar o Desafio Captcha
-
-- **Validação para verificar se você não é um robô:**
-    - Complete o desafio Captcha solicitado:
-
-![06-protecting-account.png](imagens%2Fnew-user%2F06-protecting-account.png)
-
-### 6. Verificação de Segurança
+### 5. Verificação de Segurança
 
 - **Ajuste o Captcha conforme instruído:**
     - Direcione o avião na mesma direção que a mão aponta.
@@ -55,7 +48,7 @@ A seguir, um guia passo a passo para a criação de uma conta no Databricks Comm
 
 ![09-desafio.png](imagens/new-user/09-desafio.png)
 
-### 7. Acesso ao Workspace
+### 6. Acesso ao Workspace
 
 - **Bem-vindo ao Databricks!**
     - Após definir a senha, você será redirecionado ao workspace principal:
