@@ -52,7 +52,7 @@ get aluno-2
 O MSet Armazena multiplos de chave e valor, caso já exista, seu valor é atualizado
 
 ```sh
-mset mega-sena-dia-1 1,2,3, mega-sena-dia-2 3,4,5
+mset mega-sena-dia-1 1,2,3 mega-sena-dia-2 3,4,5
 
 mget mega-sena-dia-1  mega-sena-dia-2
 
