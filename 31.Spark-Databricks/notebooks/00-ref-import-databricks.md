@@ -60,4 +60,20 @@ https://raw.githubusercontent.com/Labdata-FIA/Engenharia-Dados/refs/heads/main/3
 ```
 https://raw.githubusercontent.com/Labdata-FIA/Engenharia-Dados/refs/heads/main/31.Spark-Databricks/notebooks/aula-01-spark/03.03-exercicio-analise-gasto-mensal-cliente.py
 ```
+- **Exercício - Spark stream contar**
+```
+https://raw.githubusercontent.com/Labdata-FIA/Engenharia-Dados/refs/heads/main/31.Spark-Databricks/notebooks/aula-02-spark/04.01-spark-stream-contar-palavras.ipynb
+```
+- **Exercício - Spark stream watermarking**
+```
+https://raw.githubusercontent.com/Labdata-FIA/Engenharia-Dados/refs/heads/main/31.Spark-Databricks/notebooks/aula-02-spark/04.02.spark-stream-watermarking.py
+```
 
+- **Exercício - Spark stream trigger**
+```
+https://raw.githubusercontent.com/Labdata-FIA/Engenharia-Dados/refs/heads/main/31.Spark-Databricks/notebooks/aula-02-spark/04.03.spark-stream-trigger.ipynb
+```
+- **Exercício - Spark stream exemplo pipeline dos dados**
+```
+https://raw.githubusercontent.com/Labdata-FIA/Engenharia-Dados/refs/heads/main/31.Spark-Databricks/notebooks/aula-02-spark/04.04.exemplo-pipeline-dos-dados.py
+```
