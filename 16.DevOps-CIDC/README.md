@@ -99,6 +99,9 @@ git log
 
 ```
 
+![Criando repositorio](../content/git-staging-area.png)
+
+
 > O git commit é usado para salvar o estado atual dos arquivos que foram preparados no staging area. Utilizando o parâmetro -m, é possível adicionar uma mensagem ao commit, que ajuda a identificar as alterações realizadas de forma clara e concisa.
 
 
