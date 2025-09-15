@@ -1,0 +1,116 @@
+name: Publish Docker image
+
+on:
+  push:
+    branches: main
+
+env:
+
+  VERSION: 1.2.${{ github.run_number }} 
+  DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/app-net-lab
+
+jobs:
+  analise_codigo:
+    name: Analisando codigo
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Check out repository
+      uses: actions/checkout@v4
+      
+       # Lint do Dockerfile (boas práticas)
+    - name: Lint Dockerfile with Hadolint
+      uses: hadolint/hadolint-action@v3.1.0
+      with:
+          dockerfile: Dockerfile
+
+  build_and_healthcheck:
+    name: Build image + Health check
+    runs-on: ubuntu-latest
+    needs: [analise_codigo]
+   
+    steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+       # Build local (sem push) com uma tag temporária
+      - name: Build image (local test)
+        run: |
+          docker build -t local/test-nginx:ci-${{ github.run_number }} .
+
+           # Sobe o container e aguarda HEALTHCHECK = healthy
+      - name: Run container and check health
+        run: |
+          docker rm -f test-nginx || true
+          docker run -d --name test-nginx -p 8080:80 local/test-nginx:ci-${{ github.run_number }}
+
+          echo "Aguardando ficar healthy..."
+          for i in {1..15}; do
+            STATUS=$(docker inspect --format='{{json .State.Health.Status}}' test-nginx | tr -d '"')
+            if [ "$STATUS" = "healthy" ]; then
+              echo "✅ Container saudável"
+              break
+            fi
+            sleep 3
+          done
+
+          STATUS=$(docker inspect --format='{{json .State.Health.Status}}' test-nginx | tr -d '"')
+          if [ "$STATUS" != "healthy" ]; then
+            echo "❌ Container não ficou healthy (status=$STATUS)"
+            docker logs test-nginx || true
+            exit 1
+          fi
+
+          # Teste simples de conteúdo
+          curl -fsS http://localhost:8080/ | tee /tmp/index.html
+          grep -qi "Oi Alunos da FIA" /tmp/index.html
+
+      - name: Stop test container
+        if: always()
+        run: docker rm -f test-nginx || true
+
+      # Metadados (gera tags e labels automaticamente)
+  push:
+    name: Docker meta + Build & Push
+    runs-on: ubuntu-latest
+    needs: [build_and_healthcheck]
+   
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 🔹 Docker meta: gera tags e labels automaticamente
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_IMAGE }}     
+          tags: |
+            type=raw,value=latest
+            type=raw,value=${{ env.VERSION }}
+            # type=sha,format=short
+          labels: |
+            org.opencontainers.image.version=${{ env.VERSION }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}           
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Build + Push usando as tags/labels do Docker meta
+      - name: Build & Push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
