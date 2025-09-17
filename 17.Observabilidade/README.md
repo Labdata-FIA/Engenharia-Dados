@@ -80,16 +80,12 @@ docker exec -it kafkaConect curl  http://localhost:8083/connector-plugins
 Executando os scripts
 
 ```
-
-export  SA_PASSWORD=Password!
-cat sql/init.sql | docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd -U sa -P $SA_PASSWORD -C
-
+cat sql/init.sql | docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd -U sa -P Password! -C
 ```
 
 
 ```
-
-curl -X PUT -d @connect/conector-sql.json http://localhost:8083/connectors/connector-sql/config -H 'Content-Type: application/json' -H 'Accept: application/json'
+curl.exe -X PUT -d @connect/conector-sql.json http://localhost:8083/connectors/connector-sql/config  -H "Content-Type: application/json"  -H "Accept: application/json"
 
 ```
 
@@ -111,9 +107,8 @@ docker compose up -d akhq
 
 
 ```
-export SA_PASSWORD=Password!
 
-docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd -U sa -P $SA_PASSWORD -d dbEcommerce  -Q "INSERT INTO produtos(nome,descricao)  VALUES ('Lapis','lapis de escrever');" -C
+docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd -U sa -P Password! -d dbEcommerce  -Q "INSERT INTO produtos(nome,descricao)  VALUES ('Lapis','lapis de escrever');" -C
 
 
 ```
@@ -187,6 +182,6 @@ Criando mais produtos
 
 ```
 
-docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd -U sa -P $SA_PASSWORD -d dbEcommerce  -Q "INSERT INTO produtos(nome,descricao)  VALUES ('Lapis','lapis de escrever');" -C
+docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd -U sa -P Password! -d dbEcommerce  -Q "INSERT INTO produtos(nome,descricao)  VALUES ('Lapis','lapis de escrever');" -C
 
 ```

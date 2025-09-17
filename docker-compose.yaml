@@ -490,13 +490,14 @@ services:
       - 4317:4317   # OTLP gRPC receiver
       - 9201:55679  # zpages
       - 13133:13133 # Health check
+    depends_on:
+      - jaeger-all-in-one
     networks:
-
       rede_fia:
 
   jaeger-all-in-one:
     container_name: jaeger
-
+    hostname: jaeger-all-in-one
     image: jaegertracing/all-in-one:${JAEGER_VERSION}
     ports:
       - "16686:16686"
