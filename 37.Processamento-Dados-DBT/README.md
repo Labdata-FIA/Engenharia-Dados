@@ -42,6 +42,65 @@ Usaremos o **Airbyte** para transferir dados do **PostgreSQL** para o **Snowflak
 ## Visualização de Dados  
 Os alunos utilizarão **Power BI** para criar dashboards ou relatórios visuais que forneçam insights sobre os dados. Requisitos específicos para as visualizações serão fornecidos nas diretrizes do projeto.
 
+## Uso do dbt para Processamento de Dados
+
+Este projeto utiliza o **dbt (Data Build Tool)** para realizar a modelagem e transformação dos dados de forma padronizada.
+
+### Comandos principais do dbt
+
+- `dbt debug`  
+  Verifica se a configuração do projeto e a conexão com o banco estão corretas.  
+
+- `dbt deps`  
+  Baixa as dependências do projeto (se houver pacotes externos).  
+
+- `dbt run`  
+  Executa os modelos definidos no projeto e cria/atualiza as tabelas e views no banco de dados.  
+
+- `dbt test`  
+  Executa os testes definidos no projeto (ex: verificar valores nulos, unicidade de chaves).  
+
+- `dbt docs generate`  
+  Gera a documentação do projeto em formato estático (HTML).  
+
+- `dbt docs serve`  
+  Sobe um servidor local para visualizar a documentação.  
+
+### Passo a passo para rodar o projeto
+
+1. Clonar este repositório:
+   ```bash
+   git clone https://github.com/Labdata-FIA/Engenharia-Dados.git
+   cd Engenharia-Dados/37.Processamento-Dados-DBT
+   ```
+
+2. Instalar dependências:
+   ```bash
+   pip install dbt-core dbt-snowflake
+   ```
+   *(ou substituir `dbt-snowflake` pelo adaptador do seu banco, como `dbt-postgres`, `dbt-bigquery` etc.)*
+
+3. Verificar a conexão:
+   ```bash
+   dbt debug
+   ```
+
+4. Executar os modelos:
+   ```bash
+   dbt run
+   ```
+
+5. Rodar os testes:
+   ```bash
+   dbt test
+   ```
+
+6. (Opcional) Gerar documentação:
+   ```bash
+   dbt docs generate
+   dbt docs serve
+   ```
+
 ## Contribuição  
 Os alunos são incentivados a contribuir com o projeto sugerindo melhorias ou identificando erros. As contribuições devem ser enviadas como *pull requests* para o repositório.
 
