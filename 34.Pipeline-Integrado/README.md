@@ -12,5 +12,8 @@
 # Iniciando o ambiente
 
 ```sh
-docker compose up -d spark-master minio kafka-broker zookeeper
+docker compose up -d spark minio kafka-broker zookeeper
 ```
+
+
+> http://localhost:8889/

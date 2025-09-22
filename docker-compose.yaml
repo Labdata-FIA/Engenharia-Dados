@@ -888,6 +888,32 @@ services:
       - ./trino/catalog:/etc/trino/catalog
       - ./trino/conf:/conf
 
+  spark:
+    platform: linux/amd64
+    image: fjardim/mds-spark
+    hostname: spark
+    container_name: spark
+    command:
+      - /bin/sh
+      - -c
+      - |
+        /usr/local/spark/sbin/start-master.sh
+        start-notebook.sh --NotebookApp.token=''
+    ports:
+      - 8889:8888
+      - 4040:4040
+      - 4041:4041
+      - 4042:4042
+      - 4043:4043
+      - 8180:8080
+      - 7077:7077
+    volumes:
+      - ./31.Spark-Databricks/apacheSpark/util:/util/
+      - ./34.Pipeline-Integrado/work:/home/user
+      - ./31.Spark-Databricks/apacheSpark/env:/env
+    networks:
+      - rede_fia
+
   spark-master:
     platform: linux/amd64
     image: fjardim/mds-spark
