@@ -100,7 +100,7 @@ ALTER WAREHOUSE meu_warehouse SET AUTO_SUSPEND = 60;
 
 ### 5.1 Warehouse (Recurso Computacional)
 
-![Cluster Showfloke](content/wharehouse.png)
+![Cluster Showfloke](../content/wharehouse.png)
 
 O **Warehouse** é o motor de processamento do Snowflake. Ele é um cluster de servidores virtuais que executa as queries SQL. O armazenamento e a computação são completamente separados, então você pode ter múltiplos warehouses acessando o mesmo dado simultaneamente.
 
@@ -136,7 +136,7 @@ Recursos de economia de custos. O **Auto-Suspend** desativa o warehouse automati
 
 ### 4. Multi-cluster (Concorrência)
 
-![Cluster Showfloke](content/wharehouse.png)
+![Cluster Showfloke](../content/wharehouse.png)
 
 Permite que o warehouse escale horizontalmente (*Scaling Out*). Em vez de aumentar o tamanho de um único cluster, o Snowflake adiciona clusters idênticos para processar queries de múltiplos usuários ao mesmo tempo, eliminando filas de espera em horários de pico.
 
@@ -156,7 +156,7 @@ Um serviço que atua como um "turbo" para consultas específicas que precisam le
 
 Dentro da interface do Snowflake, a secção de **Projects** agrupa ferramentas para desenvolvimento, visualização e automação. Abaixo estão os principais componentes:
 
-![Cluster Showfloke](content/projects.png)
+![Cluster Showfloke](../content/projects.png)
 
 
 ### 1. Workspaces
