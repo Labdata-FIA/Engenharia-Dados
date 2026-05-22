@@ -337,7 +337,7 @@ WHERE METADATA$ACTION = 'INSERT';
 -- Após este INSERT, o offset do stream avança
 ```
 
-## 8. Exercícios (readme.md)
+## 8. [Exercícios](readme.md)
 
 
 ---
