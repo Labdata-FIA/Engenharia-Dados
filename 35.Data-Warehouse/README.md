@@ -337,7 +337,9 @@ WHERE METADATA$ACTION = 'INSERT';
 -- Após este INSERT, o offset do stream avança
 ```
 
-## 8. Exercícios
+## 8. Exercícios (readme.md)
+
+
 ---
 
 ## 📚 Referências
@@ -349,3 +351,4 @@ WHERE METADATA$ACTION = 'INSERT';
 - [Time Travel & Fail-safe](https://docs.snowflake.com/en/user-guide/data-time-travel)
 
 ---
+
