@@ -13,9 +13,10 @@
 5. [Conceitos Fundamentais](#5-conceitos-fundamentais)
    - [Warehouse (Recurso Computacional)](#51-warehouse-recurso-computacional)
    - [Snowflake Projects: Guia de Funcionalidades](#52-snowflake-projects-guia-de-funcionalidades)   
-   - [Schema](#53-schema)
-   - [Tabela (Table)](#54-tabela-table-tabela-table)  
-   - [Views](#55-views)
+   - [Bando de dados](#53-banco-de-dados-database)
+   - [Schema](#54-schema)
+   - [Tabela (Table)](#55-tabela-table-tabela-table)  
+   - [Views](#56-views)
 6. [Tasks](#6-tasks)
 7. [Stream e CDC](#7-stream-e-cdc)
 8. [Exercícios](#8Exercícios)
@@ -45,7 +46,6 @@ Suas principais características são:
 | Lançamento em produção (AWS) | Outubro de **2014** |
 | Disponibilização no Azure | 2018 |
 | Disponibilização no Google Cloud | 2019 |
-| IPO (abertura de capital) | Setembro de **2020** — maior IPO de software da história até então |
 
 O Snowflake foi concebido com a premissa de **repensar o data warehouse** do zero para a era da nuvem, diferentemente de soluções tradicionais como Oracle ou SQL Server que foram adaptadas para a nuvem.
 
@@ -96,6 +96,8 @@ ALTER WAREHOUSE meu_warehouse SET AUTO_SUSPEND = 60;
 ---
 
 ## 5. Conceitos Fundamentais
+
+* https://signup.snowflake.com/
 
 ### 5.1 Warehouse (Recurso Computacional)
 
@@ -190,7 +192,7 @@ USE DATABASE lab_snowflake;
 
 ---
 
-### 5.3 Schema
+### 5.4 Schema
 
 O **Schema** é uma subdivisão dentro do banco de dados. Ele agrupa objetos relacionados como tabelas, views, stages e procedures.
 
@@ -208,7 +210,7 @@ USE SCHEMA lab_snowflake.raw;
 
 ---
 
-### 5.4 Tabela (Table)
+### 5.5 Tabela (Table)
 
 As **tabelas** no Snowflake são onde os dados ficam armazenados. Existem três tipos principais:
 
@@ -236,7 +238,7 @@ CREATE TRANSIENT TABLE lab_snowflake.staging.vendas_stg
 ---
 
 
-### 5.5 Views
+### 5.6 Views
 
 Uma **View** é uma consulta SQL salva que se comporta como uma tabela virtual. O Snowflake oferece dois tipos principais:
 
