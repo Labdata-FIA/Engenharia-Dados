@@ -11,15 +11,14 @@
 3. [Edições Disponíveis](#3-edições-disponíveis)
 4. [Modelo de Custo](#4-modelo-de-custo)
 5. [Conceitos Fundamentais](#5-conceitos-fundamentais)
-   - Warehouse (Recurso Computacional)
-   - Snowflake Projects: Guia de Funcionalidades
-   - [Banco de Dados (Database)](#51-banco-de-dados-database)
-   - [Schema](#52-schema)
-   - [Tabela (Table)](#53-tabela-table)  
-   - [Views](#56-views)
-6. [Tasks](#8-tasks)
-7. [Stream e CDC](#10-stream-e-cdc)
-8. Exercícios
+   - [Warehouse (Recurso Computacional)](5.1-Warehouse-Recurso-Computacional)
+   - [Snowflake Projects: Guia de Funcionalidades](#52-Snowflake-Projects-Guia-de0Funcionalidades)   
+   - [Schema](#53-schema)
+   - [Tabela (Table)](#54-tabela-table)  
+   - [Views](#55-views)
+6. [Tasks](#6-tasks)
+7. [Stream e CDC](#7-stream-e-cdc)
+8. [Exercícios](#8Exercícios)
 ---
 
 ## 1. O que é o Snowflake?
