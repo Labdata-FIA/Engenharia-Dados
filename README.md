@@ -7,4 +7,6 @@
 > 
 
 ---
-![Lab](/content/mba.png)
+
+<img width="1749" height="1242" alt="FIA_Verde Claro" src="https://github.com/user-attachments/assets/cf2fd22f-dcbd-477e-9af7-dcc572a3d1e6" />
+
