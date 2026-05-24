@@ -219,6 +219,9 @@ As **tabelas** no Snowflake são onde os dados ficam armazenados. Existem três 
 | **Permanent** | Dados persistentes com Time Travel e Fail-safe | Produção |
 | **Transient** | Sem Fail-safe, menor custo de armazenamento | Staging, dados temporários |
 | **Temporary** | Existem apenas durante a sessão atual | Queries intermediárias |
+| **External Table** | Aponta para dados armazenados fora do Snowflake (ex: S3, Azure Blob, GCS) | Dados externos |
+
+
 
 ```sql
 -- Tabela permanente
