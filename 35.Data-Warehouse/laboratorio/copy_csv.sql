@@ -3,6 +3,8 @@ USE DATABASE ecommerce_lab;
 -- Criar um estágio para armazenar o arquivo CSV
 CREATE OR REPLACE STAGE meu_estagio_csv;
 
+//https://docs.snowflake.com/en/sql-reference/sql/create-file-format
+
 CREATE OR REPLACE FILE FORMAT formato_csv_simples
   TYPE = 'CSV'
   FIELD_DELIMITER = ','

@@ -19,7 +19,7 @@
    - [Views](#56-views)
 6. [Tasks](#6-tasks)
 7. [Stream e CDC](#7-stream-e-cdc)
-8. [Exercícios](#8Exercícios)
+8. [Exercícios](#8-exercícios)
 ---
 
 ## 1. O que é o Snowflake?
