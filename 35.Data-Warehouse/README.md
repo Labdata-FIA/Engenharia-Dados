@@ -304,6 +304,17 @@ AS
 
 Um **Stream** no Snowflake é a implementação nativa de CDC. Ele é um objeto que **monitora as alterações** em uma tabela e expõe essas mudanças como um conjunto de linhas que pode ser consultado e consumido.
 
+
+```
+Tabela base sofre alterações
+         ↓
+Stream registra as mudanças (INSERT, UPDATE, DELETE)
+         ↓
+Você consome o Stream via INSERT ou MERGE
+         ↓
+Offset avança → próxima leitura traz apenas novas mudanças
+```
+
 Cada linha do Stream contém metadados especiais:
 
 | Coluna | Descrição |
@@ -340,6 +351,47 @@ FROM lab_snowflake.raw.stream_vendas
 WHERE METADATA$ACTION = 'INSERT';
 -- Após este INSERT, o offset do stream avança
 ```
+
+
+## Tipos de Stream
+
+| Tipo | INSERT | UPDATE | DELETE | Uso ideal |
+|---|---|---|---|---|
+| `STANDARD` (padrão) | ✅ | ✅ | ✅ | CDC completo |
+| `APPEND_ONLY` | ✅ | ❌ | ❌ | Logs, eventos, fatos imutáveis |
+| `INSERT_ONLY` | ✅ | ❌ | ❌ | External Tables |
+
+---
+
+
+## Consumindo o Stream com MERGE
+
+O padrão mais comum é combinar o Stream com `MERGE` para sincronizar uma tabela destino:
+
+```sql
+MERGE INTO pedidos_destino AS dest
+USING stream_pedidos AS src
+    ON dest.pedido_id = src.pedido_id
+
+-- Linha deletada na origem → deleta no destino
+WHEN MATCHED AND src.METADATA$ACTION = 'DELETE' AND src.METADATA$ISUPDATE = FALSE THEN
+    DELETE
+
+-- UPDATE: linha com INSERT + ISUPDATE = TRUE → atualiza no destino
+WHEN MATCHED AND src.METADATA$ACTION = 'INSERT' AND src.METADATA$ISUPDATE = TRUE THEN
+    UPDATE SET
+        dest.frete     = src.frete,
+        dest.cliente_id = src.cliente_id
+
+-- INSERT puro → insere no destino
+WHEN NOT MATCHED AND src.METADATA$ACTION = 'INSERT' THEN
+    INSERT (pedido_id, cliente_id, frete)
+    VALUES (src.pedido_id, src.cliente_id, src.frete);
+```
+
+## Ponto de atenção: Stale Stream
+
+Se o Stream **não for consumido** dentro do período de **Time Travel da tabela base** (padrão: 1 dia, máximo: 90 dias), ele fica **STALE** (obsoleto) e precisa ser recriado.
 
 ## 8. [Exercícios](laboratorio)
 
