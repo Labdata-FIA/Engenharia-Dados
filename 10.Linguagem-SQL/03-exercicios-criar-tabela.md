@@ -40,6 +40,10 @@ CREATE TABLE cliente (
 );
 ```
 
+> https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/Data-Types.html
+> https://dev.mysql.com/doc/refman/9.7/en/data-types.html
+> https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver17
+
 ### Inserindo clientes
 
 O comando `INSERT` é usado para cadastrar novos registros na tabela.
@@ -155,9 +159,7 @@ WHERE cidade = 'Santos';
 SELECT * FROM cliente;
 ```
 
-> https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/Data-Types.html
-> https://dev.mysql.com/doc/refman/9.7/en/data-types.html
-> https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver17
+
 
 ### Criar a tabela produto
 
