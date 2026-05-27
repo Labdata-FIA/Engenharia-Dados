@@ -210,13 +210,13 @@ CREATE TABLE tbpedido (
 ### Fiz errado
 
 ```sql
-drop TABLE tbpedido;
+DROP TABLE tbpedido;
 ```
 
 ### Criado novamente a tabela Pedido correta
 
 ```sql
-CREATE TABLE tbpedido (
+CREATE TABLE pedido (
     id INT AUTO_INCREMENT PRIMARY KEY,
     cliente_id INT NOT NULL,
     data_pedido DATE NOT NULL,
