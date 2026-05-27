@@ -172,8 +172,7 @@ CREATE TABLE produto (
 ```
 
 > [!IMPORTANT]
-> O que é uma constraint?
-> Uma constraint é uma regra aplicada em uma tabela ou coluna para garantir que os dados gravados estejam corretos.
+>Constraint é uma regra aplicada em uma tabela ou coluna para garantir que os dados gravados estejam corretos.
 
 ### Criar a tabela categoria
 
