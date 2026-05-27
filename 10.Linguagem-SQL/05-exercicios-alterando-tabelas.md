@@ -5,6 +5,12 @@
 ALTER TABLE pedido ADD COLUMN status VARCHAR(10) NOT NULL DEFAULT 'ativo';
 ```
 
+## Remover uma coluna status à tabela pedido
+```sql
+ALTER TABLE pedido DROP COLUMN status;
+ALTER TABLE pedido ADD COLUMN status VARCHAR(10) NOT NULL DEFAULT 'ativo';
+```
+
 ## Modificar a tabela item_pedido para incluir desconto
 ```sql
 ALTER TABLE item_pedido ADD COLUMN desconto DECIMAL(10, 2) DEFAULT 0;

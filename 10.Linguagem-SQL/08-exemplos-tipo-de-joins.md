@@ -38,17 +38,7 @@ RIGHT JOIN pedido p ON ic.pedido_id = p.id
 WHERE prd.id IS NULL;
 ```
 
-## 4. FULL OUTER JOIN
-**Contexto de Negócio:** Obter uma lista completa de todos os clientes e todos os pedidos, para uma visão completa do engajamento do cliente.
-
-**O FULL OUTER JOIN NÃO É SUPORTADO NO MYSQL**
-```sql
-SELECT c.nome AS ClienteNome, p.id AS PedidoID
-FROM cliente c
-FULL OUTER JOIN pedido p ON c.id = p.cliente_id;
-```
-
-## 5. CROSS JOIN
+## 4. CROSS JOIN
 **Contexto de Negócio:** Precisamos de um relatório que mostre todas as possíveis combinações de produtos e categorias para análise de potenciais novas linhas de produtos.
 
 ```sql
@@ -57,7 +47,7 @@ FROM produto prd
 CROSS JOIN categoria cat;
 ```
 
-## 6. SELF JOIN
+## 5. SELF JOIN
 **Contexto de Negócio:** Identificar produtos dentro da mesma categoria que poderiam ser promovidos juntos em pacotes ou ofertas especiais.
 
 ```sql
