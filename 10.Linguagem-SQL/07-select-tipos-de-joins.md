@@ -65,9 +65,7 @@ Joins são usados para combinar registros de duas ou mais tabelas em um banco de
 - **Descrição**: Um join de uma tabela com ela mesma, utilizado para comparar registros na mesma tabela.
 - **Uso comum**: Bom para encontrar registros relacionados ou duplicados dentro da mesma tabela.
 
-## 7. NATURAL JOIN
-- **Descrição**: Realiza um join usando colunas com o mesmo nome em ambas as tabelas.
-- **Uso comum**: Simplifica joins entre tabelas onde colunas com nomes idênticos devem ser combinadas.
+
 
 Cada tipo de join é escolhido com base nas necessidades específicas da consulta SQL e nos resultados desejados. A seleção adequada é essencial para a eficiência da consulta e precisão dos dados.
 
