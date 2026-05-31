@@ -5,10 +5,10 @@ Subquery é uma consulta dentro de outra consulta.
 
 Ela pode aparecer em vários pontos de um comando SQL:
 
-- no `SELECT`;
-- no `FROM`;
-- no `WHERE`;
-- no `HAVING`.
+- `SELECT`;
+- `FROM`;
+- `WHERE`;
+- `HAVING`.
 
 ## Para que serve?
 
