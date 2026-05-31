@@ -72,6 +72,34 @@ Ele não é zero, não é texto vazio e não é igual a outro `NULL`.
 ## Exemplo incorreto
 
 ```sql
+
+INSERT INTO cliente (
+    nome, 
+    cpf, 
+    telefone, 
+    email, 
+    logradouro, 
+    numero, 
+    complemento, 
+    bairro, 
+    cidade, 
+    estado, 
+    cep
+) 
+VALUES (
+    'João da Silva',
+    '12345678901',
+    '13999998888',
+    'joao@email.com',
+    'Rua das Flores',
+    '100',
+    NULL,
+    'Centro',
+    'Praia Grande',
+    'SP',
+    '11700000'
+);
+
 SELECT *
 FROM cliente
 WHERE complemento = NULL;
