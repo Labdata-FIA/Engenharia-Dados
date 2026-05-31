@@ -6,9 +6,9 @@ No SQL, o operador `UNION` é utilizado para combinar os resultados de duas ou m
 - **Descrição:** Combina os resultados de duas ou mais consultas e elimina quaisquer linhas duplicadas. Realiza uma operação de distinção automática nos resultados.
 - **Exemplo de Uso:**
   ```sql
-  SELECT email FROM Employees
-  UNION
-  SELECT email FROM Contractors;
+  SELECT estado  FROM cliente WHERE estado = 'SP'
+  UNION 
+  SELECT estado FROM cliente WHERE estado = 'RJ';
   ```
   Este comando retorna todos os emails únicos de ambas as tabelas.
 
@@ -16,9 +16,9 @@ No SQL, o operador `UNION` é utilizado para combinar os resultados de duas ou m
 - **Descrição:** Combina os resultados de duas ou mais consultas sem eliminar linhas duplicadas, sendo mais rápido do que o `UNION` por não necessitar de uma operação de distinção.
 - **Exemplo de Uso:**
   ```sql
-  SELECT email FROM Employees
+  SELECT estado  FROM cliente WHERE estado = 'SP'
   UNION ALL
-  SELECT email FROM Contractors;
+  SELECT estado FROM cliente WHERE estado = 'RJ';
   ```
   Este comando retorna todos os emails, incluindo duplicatas, de ambas as tabelas.
 
