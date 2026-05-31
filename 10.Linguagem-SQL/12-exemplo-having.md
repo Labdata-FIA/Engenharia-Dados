@@ -178,6 +178,26 @@ Consultar os dados:
 SELECT *
 FROM venda_cliente
 ORDER BY estado, valor_total DESC;
+
+
+```
+
+### Comparando group com Window Function
+
+```sql
+SELECT
+    estado,    
+    SUM(valor_total) AS total_vendido_estado
+FROM venda_cliente
+GROUP BY estado;
+
+SELECT
+    id,
+    cliente,
+    estado,
+    valor_total,
+    SUM(valor_total) OVER (PARTITION BY estado) AS total_vendido_estado
+FROM venda_cliente;
 ```
 
 ---
