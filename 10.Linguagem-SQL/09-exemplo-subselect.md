@@ -2,6 +2,44 @@
 
 ## Análise de Desempenho de Produtos Usando Subselect
 
+Subquery é uma consulta dentro de outra consulta.
+
+Ela pode aparecer em vários pontos de um comando SQL:
+
+- no `SELECT`;
+- no `FROM`;
+- no `WHERE`;
+- no `HAVING`.
+
+## Para que serve?
+
+Serve para quebrar uma consulta maior em partes menores.
+
+É útil quando precisamos calcular um resultado intermediário para depois usar em outra consulta.
+
+
+```sql
+SELECT
+    c.id AS cliente_id,
+    c.nome,
+    t.total_gasto
+FROM (
+    SELECT
+        p.cliente_id,
+        SUM(ip.quantidade * ip.preco_unitario) AS total_gasto
+    FROM pedido p
+    JOIN item_pedido ip
+        ON ip.pedido_id = p.id
+    GROUP BY
+        p.cliente_id
+) t
+JOIN cliente c
+    ON c.id = t.cliente_id
+ORDER BY
+    t.total_gasto DESC;
+```
+
+
 ### Contexto de Negócio
 **Desafio:** Identificar produtos que estão vendendo acima da média de preços dos produtos na mesma categoria. Isso ajuda a empresa a compreender quais produtos têm um desempenho excepcional de vendas, o que pode indicar uma alta percepção de valor por parte dos clientes ou popularidade elevada.
 
@@ -56,7 +94,52 @@ GROUP BY
 3. **Agregação de Vendas por Cliente:** A consulta usa SUM(ic.preco_unitario * ic.quantidade) para calcular o total de vendas por cliente.
 3. **Agrupamento de Resultados:** Os resultados são agrupados por nome do cliente para garantir que o total de vendas seja calculado por cliente.
 
+# EXISTS e NOT EXISTS
+
+## O que é EXISTS?
+
+`EXISTS` verifica se uma subquery retorna pelo menos uma linha.
+
+Ele responde a uma pergunta de existência.
+
+> Listar clientes que possuem pelo menos um pedido.
+
+
+```sql
+SELECT
+    c.id,
+    c.nome,
+    c.email
+FROM cliente c
+WHERE EXISTS (
+    SELECT 1
+    FROM pedido p
+    WHERE p.cliente_id = c.id
+);
+```
+
+
+## que é NOT EXISTS?
+
+`NOT EXISTS` verifica se uma subquery não retorna nenhuma linha.
+
+
+> Listar produtos nunca vendidos.
+
+
+```sql
+SELECT
+    pr.id,
+    pr.nome,
+    pr.preco
+FROM produto pr
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM item_pedido ip
+    WHERE ip.produto_id = pr.id
+);
+```
 
 ## Navegação
-- [Anterior](08-exemplos-tipo-de-joins.md)
+- [Anterior](08.1pitfall_not_in_null.md)
 - [Próximo](10-funcoes-de-agrupamento.md)

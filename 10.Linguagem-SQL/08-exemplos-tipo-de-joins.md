@@ -60,6 +60,42 @@ JOIN categoria cat ON pc1.categoria_id = cat.id;
 ```
 
 
+
+## 6. Cuidados com NULL
+
+### 6.1 O que é NULL?
+
+`NULL` representa ausência de valor.
+
+Ele não é zero, não é texto vazio e não é igual a outro `NULL`.
+
+## Exemplo incorreto
+
+```sql
+SELECT *
+FROM cliente
+WHERE complemento = NULL;
+```
+
+Essa consulta está errada, porque `NULL` não deve ser comparado com `=`.
+
+## Forma correta
+
+```sql
+SELECT *
+FROM cliente
+WHERE complemento IS NULL;
+```
+
+Para buscar valores preenchidos:
+
+```sql
+SELECT *
+FROM cliente
+WHERE complemento IS NOT NULL;
+```
+
+
 ## Navegação
 - [Anterior](07-select-tipos-de-joins.md)
-- [Próximo](09-exemplo-subselect.md)
+- [Próximo](08.1pitfall_not_in_null.md)

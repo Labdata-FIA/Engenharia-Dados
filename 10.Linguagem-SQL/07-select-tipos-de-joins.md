@@ -70,41 +70,6 @@ Joins são usados para combinar registros de duas ou mais tabelas em um banco de
 Cada tipo de join é escolhido com base nas necessidades específicas da consulta SQL e nos resultados desejados. A seleção adequada é essencial para a eficiência da consulta e precisão dos dados.
 
 
-
-## 7. Cuidados com NULL
-
-### 7.1 O que é NULL?
-
-`NULL` representa ausência de valor.
-
-Ele não é zero, não é texto vazio e não é igual a outro `NULL`.
-
-## Exemplo incorreto
-
-```sql
-SELECT *
-FROM cliente
-WHERE complemento = NULL;
-```
-
-Essa consulta está errada, porque `NULL` não deve ser comparado com `=`.
-
-## Forma correta
-
-```sql
-SELECT *
-FROM cliente
-WHERE complemento IS NULL;
-```
-
-Para buscar valores preenchidos:
-
-```sql
-SELECT *
-FROM cliente
-WHERE complemento IS NOT NULL;
-```
-
 ## Navegação
 - [Anterior](06-exercicios-criar-view.md)
-- [Próximo](07.1pitfall_not_in_null.md)
+- [Próximo](08-exemplos-tipo-de-joins.md)

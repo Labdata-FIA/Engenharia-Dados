@@ -33,6 +33,12 @@ LAB-EDA/KAFKA-NET/values.dev.yaml
 05.Armazenamento-Distribuido/hdfs/*
 postgresql/volume/*
 
+# CloudBeaver workspace
+10.Linguagem-SQL/docker/cloudbeaver_workspace/
+
+# Dados locais dos containers
+10.Linguagem-SQL/docker/data/
+
 __pycache__/
 *.py[cod]
 *$py.class
