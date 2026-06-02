@@ -495,7 +495,7 @@ UNION ALL
 SELECT 'ERP.ITENS_PEDIDO',   COUNT(*) FROM MODABR_TRANSACIONAL.ERP.ITENS_PEDIDO;
 ```
 
-Resultado esperado: `20 | 15 | 4 | 30 | 32`
+Resultado esperado: `20 | 15 | 4 | 30 | 31`
 
 ---
 
