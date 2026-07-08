@@ -1,4 +1,4 @@
-# Lab Armazenamento Distribuido
+# Lab Hive
 
 
 ## Disclaimer
@@ -92,7 +92,7 @@ hdfs dfs -mkdir -p /bronze/produtos/
 ### Deu certo ?
 > http://localhost:9870/
 
-> Se Precisar subir muitos arquivo - hdfs dfs -put /tmp/exercicio_vendas/* /user/hive/warehouse/exercicio_vendas/
+> Se Precisar subir muitos arquivos - hdfs dfs -put /tmp/exercicio_vendas/* /user/hive/warehouse/exercicio_vendas/
 ---
 
 ## 📂 Exercícios práticos
@@ -103,6 +103,10 @@ hdfs dfs -mkdir -p /bronze/produtos/
 ```bash
 hdfs dfs -put /util/alunos.csv /bronze/alunos/
 hdfs dfs -put /util/produtos.csv /bronze/produtos/
+
+hdfs dfs -ls /                    # lista a raiz,  deve mostrar /bronze
+hdfs dfs -ls /bronze              # alunos e produtos
+hdfs dfs -ls -R /bronze           # recursivo: tudo abaixo de /bronze de uma vez
 ```
 
 ### Visualização dos dados
@@ -117,6 +121,12 @@ hdfs dfs -cat /bronze/produtos/produtos.csv
 
 ```bash
 beeline -u jdbc:hive2://localhost:10000
+
+!tables  
+
+SHOW TABLES;
+
+
 ```
 
 > Se pedir login, use qualquer usuário (ex: `hive`) e pressione Enter para senha vazia.
@@ -158,6 +168,9 @@ SELECT current_database();
 > /opt/hive/data/warehouse
 > No arquivo  `23.Hive/config/hive-site.xml`tem a propriedade `metastore.warehouse.dir`definindo esse diretorio
 
+```bash
+docker exec -it hive hdfs dfs -ls /opt/hive/data/warehouse
+```
 
 ```sql
 CREATE DATABASE IF NOT EXISTS dbhive location '/fia/aula';
@@ -224,7 +237,10 @@ select * from "COLUMNS_V2" where "CD_ID" = <<pegar o id da tabela do resultada d
 
 ### Carregando dados do HFDS
 
+No banco do Hive banco de dados aula_hive
+
 ```sql
+USE aula_hive;
 
 CREATE TABLE alunos (
   id INT,

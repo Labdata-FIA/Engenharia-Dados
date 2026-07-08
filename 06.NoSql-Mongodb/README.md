@@ -385,6 +385,140 @@ db.currentOp();
 
 ```
 
+
+# Pipelines no MongoDB
+
+![Mongo db](/content/mongodb-agregacao.png)
+
+
+No MongoDB, um pipeline de agregação é uma sequência de estágios que processam documentos em uma coleção, permitindo transformar, filtrar, agrupar e analisar dados de forma eficiente. Cada estágio recebe os documentos processados do estágio anterior e pode aplicar diversas operações.
+
+Principais Estágios do Pipeline
+* $match – Filtra documentos (equivalente ao WHERE no SQL).
+* $group – Agrupa documentos (similar ao GROUP BY).
+* $sort – Ordena os resultados.
+* $project – Modifica o formato dos documentos retornados.
+* $lookup – Realiza um join entre coleções.
+* $unwind – Desnormaliza arrays, criando um documento para cada elemento.
+* $limit – Restringe o número de documentos retornados.
+* $skip – Pula um número específico de documentos.
+* $addFields – Adiciona novos campos calculados.
+
+
+## Filtrar os documentos
+
+```JavaScript
+db.produtos.aggregate([
+  { $match: { idProduto: { $gt: 10, $lt: 50 } } }
+])
+
+```
+
+## Contar o número total de SKUs por produto ($size)
+
+```JavaScript
+db.produtos.aggregate([
+  { "$project": { "nomeProduto": 1, "quantidadeSkus": { "$size": "$skus" } } }
+])
+
+```
+
+
+## Agrupar produtos por marca e contar quantos existem ($group)
+
+```JavaScript
+db.produtos.aggregate([
+  { "$unwind": "$marcas" },
+  { "$group": { "_id": "$marcas.nome", "totalProdutos": { "$sum": 1 } } }
+])
+```
+
+## Calcular o preço médio dos produtos por categoria ($group)
+
+```JavaScript
+db.produtos.aggregate([
+  { "$unwind": "$categorias" },
+  { "$group": { "_id": "$categorias.nome", "precoMedio": { "$avg": "$valorProduto" } } }
+])
+```
+
+## Criar um novo campo com $set para mostrar o preço final com desconto
+
+```JavaScript
+db.produtos.aggregate([
+  { "$set": { "valorComDesconto": { "$multiply": ["$valorProduto", 0.9] } } }
+])
+```
+
+
+## Transformar SKUs em documentos individuais ($unwind)
+
+```JavaScript
+db.produtos.aggregate([
+  { "$unwind": "$skus" },
+  { "$project": { "nomeProduto": 1, "idSku": "$skus.idSku", "nomeSku": "$skus.nome", "valor": "$skus.valor" } }
+])
+```
+
+
+## Filtrar apenas produtos com SKUs acima de R$5000 ($match)
+
+```JavaScript
+db.produtos.aggregate([
+  { "$unwind": "$skus" },
+  { "$match": { "skus.valor": { "$gt": 5000 } } }
+])
+```
+
+
+## Ordenar produtos pelo número de SKUs ($sort)
+
+```JavaScript
+db.produtos.aggregate([
+  { "$project": { "nomeProduto": 1, "quantidadeSkus": { "$size": "$skus" } } },
+  { "$sort": { "quantidadeSkus": -1 } }
+])
+
+```
+
+## Criar um relatório consolidado dos produtos ($group e $push)
+
+```JavaScript
+ db.produtos.aggregate([
+  { "$group": {
+      "_id": null,
+      "totalProdutos": { "$sum": 1 },
+      "mediaValorProduto": { "$avg": "$valorProduto" },
+      "produtos": { "$push": "$nomeProduto" }
+  }}
+])
+
+```
+
+
+## Salvar o resultado da consulta em outra collection
+
+```JavaScript
+db.produtos.aggregate([
+  { "$project": { "nomeProduto": 1, "quantidadeSkus": { "$size": "$skus" } } },
+  {  $out: "skus" }
+])
+
+ show collections;
+
+
+ db.skus.findOne();
+
+```
+
+
+# PyMongoArrow
+O Pymongoarrow é uma extensão do PyMongo que melhora a eficiência ao converter grandes volumes de dados do MongoDB para formatos compatíveis com Apache Arrow. Isso permite análises rápidas e eficientes em Pandas, NumPy e outras ferramentas de Data Science.
+
+> [!IMPORTANT] 
+> Apache Arrow é um framework de computação em colunas otimizado para processamento de dados em memória. Ele fornece um formato padronizado para representação de dados tabulares, permitindo operações eficientes entre diferentes linguagens e sistemas, como Pandas, Spark e Parquet. Seu design melhora a performance ao minimizar cópias de dados e maximizar o uso de CPU e cache.
+
+
 # Instalando um ferramenta gráfica para o Mongodb
 https://studio3t.com/download-studio3t-free/
 

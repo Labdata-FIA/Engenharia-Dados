@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageName": {
-            "value": "storageiac"
+            "value": "storageiacnew"
         },
         "storageSKU": {
             "value": "Standard_LRS"
