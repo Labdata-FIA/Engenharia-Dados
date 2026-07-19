@@ -1,0 +1,9 @@
+pymongo[srv]
+python-dotenv
+pymongoarrow
+pandas
+numpy<2
+pyarrow
+
+deltalake
+duckdb

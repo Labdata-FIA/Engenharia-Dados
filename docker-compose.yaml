@@ -1053,6 +1053,24 @@ services:
     networks:
       - rede_fia
 
+  jupyter_service:
+    container_name: jupyter
+    build: ./06.NoSql-Mongodb
+    user: root
+    #entrypoint: "/jupyter/docker-entrypoint.sh"
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    ports:
+      - 8085:8085   
+    volumes:
+      - ./06.NoSql-Mongodb/docker-entrypoint.sh:/jupyter/docker-entrypoint.sh
+      - ./06.NoSql-Mongodb/pyMongoArrow.ipynb:/home/src/pyMongoArrow.ipynb
+      - ./06.NoSql-Mongodb/duckdb.ipynb:/home/src/duckdb.ipynb
+    command: jupyter notebook --ip 0.0.0.0 --port 8085 --allow-root
+    networks:
+      - rede_fia
 
 networks:
   rede_fia:
