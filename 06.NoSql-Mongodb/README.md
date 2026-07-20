@@ -518,6 +518,12 @@ O Pymongoarrow é uma extensão do PyMongo que melhora a eficiência ao converte
 > [!IMPORTANT] 
 > Apache Arrow é um framework de computação em colunas otimizado para processamento de dados em memória. Ele fornece um formato padronizado para representação de dados tabulares, permitindo operações eficientes entre diferentes linguagens e sistemas, como Pandas, Spark e Parquet. Seu design melhora a performance ao minimizar cópias de dados e maximizar o uso de CPU e cache.
 
+### Subindo o ambiente do Jypyter
+
+```bash
+docker compose up -d jupyter_service
+
+```
 
 # Instalando um ferramenta gráfica para o Mongodb
 https://studio3t.com/download-studio3t-free/
