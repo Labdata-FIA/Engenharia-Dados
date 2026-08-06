@@ -214,9 +214,12 @@ db.produtos.find({Produto: /Melhor$/}); // Like '%Melhor'
 
 ## Importando arquivos CSV 
 
+
 O Arquivo `mongo-import.sh`  vai ler os arquivos csv e importar para o mongodb utilizando a ferramenta `mongoimport`
 
 https://www.mongodb.com/docs/database-tools/mongoimport/
+
+![Cluster Mongo db](../content/mongodb-utf-file.png)
 
 
 ```JavaScript
@@ -227,6 +230,9 @@ exit
 cd import
 
 //Executar o arquivo ./mongo-import.sh para importar os dados dos arquivos csv para o Mongodb
+
+sed -i 's/\r$//' mongo-import.sh
+
 ./mongo-import.sh
 
 //Entrar no cluster novamente
