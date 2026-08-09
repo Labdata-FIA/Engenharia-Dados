@@ -219,6 +219,9 @@ O Arquivo `mongo-import.sh`  vai ler os arquivos csv e importar para o mongodb u
 
 https://www.mongodb.com/docs/database-tools/mongoimport/
 
+> [!IMPORTANT]
+> Validando a quebra de linha do arquivo `\06.NoSql-Mongodb\import\mongo-import.sh`
+
 ![Cluster Mongo db](../content/mongodb-utf-file.png)
 
 
