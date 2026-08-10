@@ -1072,6 +1072,49 @@ services:
     networks:
       - rede_fia
 
+
+  pgvector:
+    container_name: pgvector
+    image: pgvector/pgvector:${PGVECTOR_VERSION}
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    networks:
+      - rede_fia
+    ports:
+      - "5432:5432"
+    restart: always
+
+  notebook_pgvector:
+    build: ./Database-Vector
+    user: root
+    container_name: notebook_pgvector
+    hostname: notebook_pgvector
+    stdin_open: true
+    tty: true
+    ports:
+      - 8085:8085
+      - 8501:8501
+    volumes:      
+      - ./Database-Vector:/home/src/
+    command: jupyter notebook --ip 0.0.0.0 --port 8085 --allow-root
+    networks:
+      rede_fia:
+
+  pgadmin_vector:
+    container_name: pgadmin_vector
+    image: dpage/pgadmin4:${PAGADMIN_VERSION}
+    environment:
+      PGADMIN_DEFAULT_EMAIL: lab-pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - "5433:80"
+    depends_on:
+      - pgvector
+    networks:
+      rede_fia:
+      
 networks:
   rede_fia:
     driver: bridge
