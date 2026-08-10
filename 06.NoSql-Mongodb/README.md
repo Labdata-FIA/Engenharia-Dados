@@ -264,29 +264,6 @@ db.orders.find({"CustomerID" :"BONAP"}).explain();
 
 Mais informações em: https://www.mongodb.com/docs/manual/reference/explain-results/
 
-## Collection Capped
-
-Verifiando se a collection é do tipo Capped
-```JavaScript
-use dbcursofia
-db.produtosCa.insert( {_id: 1,  Produto: "Celular", Preco: 10 } )
-db.produtosCa.isCapped()
-```
-
-Convertendo uma collection para Capped
-
-```JavaScript
-db.runCommand({"convertToCapped": "produtosCa", size: 100000});
-db.produtosCa.isCapped()
-```
-
-Criando uma collection
-
-```JavaScript
-db.createCollection("colecaonova", { capped : true, size : 5242880, max : 5000 } )
-db.colecaonova.isCapped()
-```
-
 ## Criando índice
 
 db.collection.ensureIndex(
@@ -310,6 +287,31 @@ Remover um índice criado
 ```JavaScript
 db.orders.dropIndex("<<nome do indice>");
 ```
+
+
+## Collection Capped
+
+Verifiando se a collection é do tipo Capped
+```JavaScript
+use dbcursofia
+db.produtosCa.insert( {_id: 1,  Produto: "Celular", Preco: 10 } )
+db.produtosCa.isCapped()
+```
+
+Convertendo uma collection para Capped
+
+```JavaScript
+db.runCommand({"convertToCapped": "produtosCa", size: 100000});
+db.produtosCa.isCapped()
+```
+
+Criando uma collection
+
+```JavaScript
+db.createCollection("colecaonova", { capped : true, size : 5242880, max : 5000 } )
+db.colecaonova.isCapped()
+```
+
 
 ## Alterando documentos
 
