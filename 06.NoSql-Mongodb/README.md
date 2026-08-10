@@ -538,10 +538,6 @@ O Pymongoarrow é uma extensão do PyMongo que melhora a eficiência ao converte
 
 ### Subindo o ambiente do Jypyter
 
-```bash
-docker compose up -d jupyter_service
-
-```
 
 # Instalando um ferramenta gráfica para o Mongodb
 https://studio3t.com/download-studio3t-free/
@@ -584,7 +580,161 @@ Produtos:
 
 Com base nessas entidades, a equipe de desenvolvimento projetou as seguintes coleções no MongoDB:
 
-<{Documentos json}>
+
+# LoSil — Modelagem MongoDB
+
+## Coleção `clientes`
+
+```json
+{
+  "_id": ObjectId("66b1f0a4c3d2e10001a1b201"),
+  "nome": "Marina Alves de Souza",
+  "email": "marina.souza@email.com",
+  "documento": { "tipo": "CPF", "numero": "12345678909" },
+  "contatos": {
+    "telefonePrincipal": "+5511987654321",
+    "telefoneAlternativo": null
+  },
+  "enderecos": [
+    {
+      "_id": ObjectId("66b1f0a4c3d2e10001a1b301"),
+      "apelido": "Casa",
+      "principal": true,
+      "logradouro": "Rua das Acácias",
+      "numero": "182",
+      "complemento": "Apto 74B",
+      "bairro": "Pinheiros",
+      "cidade": "São Paulo",
+      "uf": "SP",
+      "cep": "05422030",
+      "pais": "BR"
+    }
+  ],
+  "ativo": true,
+  "criadoEm": ISODate("2026-03-11T14:02:11Z"),
+  "atualizadoEm": ISODate("2026-08-01T09:15:00Z")
+}
+```
+
+## Coleção `produtos`
+
+```json
+{
+  "_id": ObjectId("66b1f0a4c3d2e10001a1b101"),
+  "sku": "TEC-MEC-K87-BLK",
+  "nome": "Teclado Mecânico K87 RGB",
+  "descricao": "Teclado mecânico 87 teclas, switch brown, retroiluminação RGB.",
+  "categorias": ["periféricos", "teclados"],
+  "preco": NumberDecimal("349.90"),
+  "moeda": "BRL",
+  "estoque": {
+    "disponivel": 120,
+    "reservado": 8,
+    "minimo": 15
+  },
+  "ativo": true,
+  "criadoEm": ISODate("2026-01-20T10:00:00Z"),
+  "atualizadoEm": ISODate("2026-08-05T18:44:02Z")
+}
+```
+
+## Coleção `pedidos`
+
+```json
+{
+  "_id": ObjectId("66b1f0a4c3d2e10001a1b401"),
+  "numero": "LS-2026-000184",
+  "dataPedido": ISODate("2026-08-09T13:27:45Z"),
+  "status": "em_processamento",
+
+  "cliente": {
+    "_id": ObjectId("66b1f0a4c3d2e10001a1b201"),
+    "nome": "Marina Alves de Souza",
+    "email": "marina.souza@email.com"
+  },
+
+  "enderecoEntrega": {
+    "logradouro": "Rua das Acácias",
+    "numero": "182",
+    "complemento": "Apto 74B",
+    "bairro": "Pinheiros",
+    "cidade": "São Paulo",
+    "uf": "SP",
+    "cep": "05422030",
+    "pais": "BR"
+  },
+
+  "itens": [
+    {
+      "produtoId": ObjectId("66b1f0a4c3d2e10001a1b101"),
+      "sku": "TEC-MEC-K87-BLK",
+      "nome": "Teclado Mecânico K87 RGB",
+      "quantidade": 2,
+      "precoUnitario": NumberDecimal("349.90"),
+      "desconto": NumberDecimal("0.00"),
+      "subtotal": NumberDecimal("699.80")
+    },
+    {
+      "produtoId": ObjectId("66b1f0a4c3d2e10001a1b102"),
+      "sku": "MOU-LOG-G305",
+      "nome": "Mouse Sem Fio G305",
+      "quantidade": 1,
+      "precoUnitario": NumberDecimal("189.00"),
+      "desconto": NumberDecimal("19.00"),
+      "subtotal": NumberDecimal("170.00")
+    }
+  ],
+
+  "valores": {
+    "subtotal": NumberDecimal("869.80"),
+    "desconto": NumberDecimal("19.00"),
+    "frete": NumberDecimal("24.50"),
+    "total": NumberDecimal("894.30"),
+    "moeda": "BRL"
+  },
+
+  "pagamento": {
+    "metodo": "cartao_credito",
+    "parcelas": 3,
+    "status": "aprovado",
+    "bandeira": "visa",
+    "ultimosDigitos": "4417",
+    "transacaoId": "tx_9f3a11c8",
+    "aprovadoEm": ISODate("2026-08-09T13:28:10Z")
+  },
+
+  "entrega": {
+    "transportadora": "Correios",
+    "servico": "PAC",
+    "codigoRastreio": null,
+    "previsaoEntrega": ISODate("2026-08-18T00:00:00Z")
+  },
+
+  "historicoStatus": [
+    { "status": "pendente",         "em": ISODate("2026-08-09T13:27:45Z") },
+    { "status": "em_processamento", "em": ISODate("2026-08-09T13:28:12Z") }
+  ],
+
+  "criadoEm": ISODate("2026-08-09T13:27:45Z"),
+  "atualizadoEm": ISODate("2026-08-09T13:28:12Z")
+}
+```
+
+## Índices
+
+```javascript
+db.clientes.createIndex({ "email": 1 }, { unique: true })
+db.clientes.createIndex({ "documento.numero": 1 }, { unique: true })
+
+db.produtos.createIndex({ "sku": 1 }, { unique: true })
+db.produtos.createIndex({ "categorias": 1, "ativo": 1 })
+db.produtos.createIndex({ "nome": "text", "descricao": "text" })
+
+db.pedidos.createIndex({ "numero": 1 }, { unique: true })
+db.pedidos.createIndex({ "cliente._id": 1, "dataPedido": -1 })
+db.pedidos.createIndex({ "status": 1, "dataPedido": -1 })
+db.pedidos.createIndex({ "itens.produtoId": 1 })
+```
 
 Com o banco de dados MongoDB, a equipe da LoSil terá uma solução escalável e flexível para lidar com o crescimento do e-commerce, fornecendo uma base sólida para o gerenciamento eficiente das operações relacionadas aos pedidos, ordens e clientes.
 
