@@ -419,6 +419,13 @@ Principais Estágios do Pipeline
 ## Filtrar os documentos
 
 ```JavaScript
+
+use loja
+
+load("/scripts/importProdutos.js")
+
+db.produtos.findOne()
+
 db.produtos.aggregate([
   { $match: { idProduto: { $gt: 10, $lt: 50 } } }
 ])
