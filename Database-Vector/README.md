@@ -41,7 +41,7 @@ Acesso para o PgAdmin http://localhost:5433/
 * Senha : postgres    
 
 * Nome do server: postgres
-* Nome do Host Name: postgres
+* Nome do Host Name: pgvector
 * database: postgres
 * Username: postgres
 * password: postgres
