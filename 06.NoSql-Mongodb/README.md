@@ -538,6 +538,9 @@ O Pymongoarrow é uma extensão do PyMongo que melhora a eficiência ao converte
 
 ### Subindo o ambiente do Jypyter
 
+```bash
+docker compose up -d jupyter_service
+```
 
 # Instalando um ferramenta gráfica para o Mongodb
 https://studio3t.com/download-studio3t-free/
