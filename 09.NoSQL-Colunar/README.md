@@ -42,7 +42,6 @@ cqlsh 127.0.0.1 9042
 ```bash
 help
 help DESCRIBE
-help CREATE_KEYSPACE
 ```
 
 Exemplos:
