@@ -1116,7 +1116,7 @@ services:
     networks:
       rede_fia:
 
- neo4j:
+  neo4j:
     image: neo4j:${NEO4J_VERSION}
     container_name: neo4j
     restart: unless-stopped
