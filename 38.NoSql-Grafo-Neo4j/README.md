@@ -594,7 +594,7 @@ MATCH (a:Pessoa {email: v[0] + '@fia.com'}), (b:Pessoa {email: v[1] + '@fia.com'
 CREATE (a)-[:AMIGO_DE {desde: v[2], forca: v[3]}]->(b);
 ```
 
-🔎 `forca` de 1 a 5 é a intensidade da amizade — uma **aresta valorada**, exatamente o conceito do slide sobre valoração. Vamos usá-la no item 6.5. Repare que não há `rand()` em nenhum lugar: o dataset é reproduzível, e todos na turma verão os mesmos números.
+🔎 `forca` de 1 a 5 é a intensidade da amizade — uma **aresta valorada**.
 
 ```cypher
 UNWIND [
