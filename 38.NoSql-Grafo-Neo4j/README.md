@@ -437,6 +437,8 @@ UNWIND [
   ['Initech','Tecnologia']
 ] AS e
 CREATE (:Empresa {nome:e[0], setor:e[1]});
+
+
 ```
 
 ```cypher
@@ -474,7 +476,13 @@ MATCH (c:Cidade   {nome: v[1]})
 MATCH (e:Empresa  {nome: v[2]})
 CREATE (p)-[:MORA_EM]->(c)
 CREATE (p)-[:TRABALHA_EM]->(e);
+
+MATCH caminho = (p:Pessoa {email:'ana@fia.com'})-[:MORA_EM|TRABALHA_EM]->()
+RETURN caminho;
+
 ```
+
+> O pipe | significa `ou`: percorre os dois tipos de aresta numa única expressão. Retornando o caminho em vez de propriedades, o Browser desenha o grafo na aba Graph:
 
 🔎 Três `MATCH` seguidos, sem vírgula, equivalem a um `MATCH` com padrões separados por vírgula — mas ficam bem mais legíveis quando são muitos. Cada `MATCH` que não casar **descarta a linha em silêncio**, sem erro. É por isso que a conferência do item 5.8 não é opcional.
 
