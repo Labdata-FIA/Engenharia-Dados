@@ -69,7 +69,7 @@ Abra **<http://localhost:7474>** e conecte com:
 Alternativa por linha de comando:
 
 ```bash
-docker exec -it neo4j-lab cypher-shell -u neo4j -p labdata2026
+docker exec -it neo4j cypher-shell -u neo4j -p labdata2026
 ```
 
 ###  Validar a instalação
