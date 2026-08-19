@@ -100,9 +100,7 @@ RETURN gds.version() AS gds;
 
 🔎 Um `RETURN` sozinho, sem `MATCH`, é válido: devolve uma linha calculada. É o
 equivalente ao `SELECT 1` do SQL. Se qualquer uma das duas der
-`There is no procedure with the name...`, os plugins não baixaram — veja o
-troubleshooting.
-
+`There is no procedure with the name...`, os plugins não baixaram 
 ---
 
 ## CRUD em Cypher 
@@ -123,7 +121,6 @@ CREATE (c:Cliente {nome: 'Ana Souza', cpf: '111', uf: 'SP'});
 * `:Cliente` — o **rótulo**. Classifica o nó e é a âncora dos índices.
 * `{ }` — o mapa de **propriedades**, em pares chave-valor.
 
-🖼️ **O grafo depois**
 
 
 ![Neo4j](../content/neo4j-1.png)
@@ -345,9 +342,7 @@ MATCH (n) DETACH DELETE n;
 
 ---
 
-## Caso de Uso — A massa de dados: uma rede social profissional (6 min)
-
-### 📋 O cenário que atravessa todo o laboratório
+## Caso de Uso — Rede social
 
 > Você entrou no time de dados de uma **rede social profissional** com 20 usuários ativos na base de testes. A diretoria quer três coisas para o próximo trimestre:
 >
