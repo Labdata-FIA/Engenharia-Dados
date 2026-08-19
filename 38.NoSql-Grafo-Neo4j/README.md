@@ -724,7 +724,7 @@ Confira a propriedade do slide sobre grau — a soma de todos os graus é **60**
 > **Pergunta de negócio:** que perfis sugerir para a Ana, e com que justificativa na tela?
 
 ```cypher
-MATCH (eu:Pessoa {email:'ana@fia.com'})-[:AMIGO_DE]-(amigo)-[:AMIGO_DE]-(sugestao)
+MATCH (eu:Pessoa {email:'ana@fia.com'})-[:AMIGO_DE]-(amigo:Pessoa)-[:AMIGO_DE]-(sugestao:Pessoa)
 WHERE eu <> sugestao
   AND NOT (eu)-[:AMIGO_DE]-(sugestao)
 RETURN sugestao.nome  AS sugestao,
