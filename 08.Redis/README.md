@@ -32,7 +32,7 @@ Acessando o client que está no container do Redis para acessar o cluster
 ```sh
 docker exec -it redis /bin/bash
 
-redis-cli -h 127.0.0.1 -p 6379 -a "labdata"
+redis-cli -h 127.0.0.1 -p 6379 
 ```
 
 Set Armazena a chave e seu valor, caso já exista, seu valor é atualizado
@@ -318,7 +318,7 @@ set produto-2024 produto-alterado
 
 docker exec -it redis /bin/bash
 
-redis-cli -h 127.0.0.1 -p 6379 -a "labdata"
+redis-cli -h 127.0.0.1 -p 6379 
 
 get  produto-2024
 
@@ -376,7 +376,7 @@ publish ConcessionariaBMW-A-TemX1 sim
 //No terminal 1
 
 //Caso tenha saido do redis
-redis-cli -h 127.0.0.1 -p 6379 -a "labdata"
+redis-cli -h 127.0.0.1 -p 6379 
 
 psubscribe ConcessionariaBMW*
 
@@ -387,7 +387,7 @@ publish ConcessionariaBMW-A-TemX1 sim
 
 docker exec -it redis /bin/bash
 
-redis-cli -h 127.0.0.1 -p 6379 -a "labdata"
+redis-cli -h 127.0.0.1 -p 6379 
 
 publish ConcessionariaBMW-B-TemX1 nao
 
