@@ -659,7 +659,7 @@ Por trás disso, o Elasticsearch usa o algoritmo de Levenshtein Distance (distâ
 | ---------------- | ------------------ | --------- |
 | `sucesso`        | `sucesoo`          | 1         |
 | `geracao`        | `geracap`          | 1         |
-| `automatica`     | `automattica`      | 2         |
+| `automatica`     | `atomatika`        | 2         |
 
 
 ### 🚩 Observação prática:
