@@ -26,6 +26,8 @@ docker compose up -d elasticsearch  kibana
 * Elastic: http://localhost:9200/
 * kibana: http://localhost:5601/
 
+---
+
 > [!IMPORTANT]
 > Para comandos executado via PowerShell utilize `curl.exe`
 
