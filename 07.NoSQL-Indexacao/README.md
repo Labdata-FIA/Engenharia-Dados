@@ -187,7 +187,7 @@ curl -X DELETE http://localhost:9200/alunos/_doc/1
 | Deleção                | `DELETE`       | Exclui o documento               |
 
 ```bash
-curl -X POST http://localhost:9200/_bulk -H "Content-Type: application/json" --data-binary @07.NoSQL-Indexacao/alunos-bulk.json
+curl -X POST http://localhost:9200/_bulk -H "Content-Type: application/json" --data-binary @/lab/alunos-bulk.json
 
 ```
 
