@@ -19,6 +19,9 @@ Para subir o ambiente local com Elasticsearch:
 
 ```bash
 docker compose up -d elasticsearch  kibana
+
+docker exec -it elasticsearch /bin/bash
+
 ```
 
 ### Acesse:
@@ -27,15 +30,6 @@ docker compose up -d elasticsearch  kibana
 * kibana: http://localhost:5601/
 
 ---
-
-> [!IMPORTANT]
-> Para comandos executado via PowerShell utilize `curl.exe` ou...
-
-```powershell
-# Windows / PowerShell - executar uma vez antes de iniciar o lab
-if (Test-Path Alias:curl) { Remove-Item Alias:curl -Force }
-Set-Alias curl curl.exe
-```
 
 ## 📁 Índices
 
