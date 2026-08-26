@@ -29,7 +29,13 @@ docker compose up -d elasticsearch  kibana
 ---
 
 > [!IMPORTANT]
-> Para comandos executado via PowerShell utilize `curl.exe`
+> Para comandos executado via PowerShell utilize `curl.exe` ou...
+
+```powershell
+# Windows / PowerShell - executar uma vez antes de iniciar o lab
+if (Test-Path Alias:curl) { Remove-Item Alias:curl -Force }
+Set-Alias curl curl.exe
+```
 
 ## 📁 Índices
 
