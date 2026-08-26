@@ -506,6 +506,16 @@ curl -XPOST "localhost:9200/cursos/_search?pretty" -H "Content-Type: application
   }
 }'
 
+
+curl -XGET "localhost:9200/cursos/_search?pretty" -H "Content-Type: application/json" -d '{
+  "query": { "match": { "nomeCurso": "Administração" } }
+}'
+
+# Busca por sinônimo - o teste de verdade
+curl -XGET "localhost:9200/cursos/_search?pretty" -H "Content-Type: application/json" -d '{
+  "query": { "match": { "nomeCurso": "Gestão" } }
+}'
+
 ```
 ---
 
