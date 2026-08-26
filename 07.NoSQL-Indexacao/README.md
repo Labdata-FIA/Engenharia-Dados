@@ -450,7 +450,7 @@ curl -XPUT "localhost:9200/cursos?pretty" -H "Content-Type: application/json" -d
       "analyzer": {
         "analisador_com_sinonimos": {
           "tokenizer": "standard",
-          "filter": ["lowercase", "asciifolding", "sinonimos_cursos"]
+          "filter": ["lowercase", "sinonimos_cursos", "asciifolding"]
         }
       }
     }
