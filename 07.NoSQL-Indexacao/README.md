@@ -139,6 +139,18 @@ curl -XGET  "http://localhost:9200/alunos/_doc/1"
 
 ```
 
+### Metadados de versionamento
+
+Toda resposta de leitura ou escrita traz três contadores de controle:
+
+- **`_version`** — quantas vezes o documento foi escrito. É apenas um contador:
+  versões anteriores **não ficam armazenadas** e não existe rollback.
+- **`_seq_no`** — número sequencial da operação **no shard** (conta escritas de
+  todos os documentos, não só deste). Define a ordem das operações.
+- **`_primary_term`** — incrementa a cada troca de shard primário (failover).
+  Em cluster estável, permanece `1`.
+
+
 ### 🔄 Atualizar documento
 
 > #### Substitui TODO o documento — se esquecer algum campo, o campo será apagado.
@@ -202,13 +214,33 @@ curl -X POST http://localhost:9200/_bulk -H "Content-Type: application/json" --d
 curl -XGET "localhost:9200/alunos/_search?q=silva&pretty"
 ```
 
+### Lendo a resposta de uma busca
 
-###  Busca com várias palavras (AND implícito)
+| Campo | Significado |
+|---|---|
+| `took` | tempo em ms **dentro do cluster** (não inclui rede até o cliente) |
+| `_shards.total` | quantos shards foram consultados (fan-out) |
+| `_shards.failed` | **sempre conferir**: `200 OK` com falhas = resultado parcial |
+| `hits.total.value` | número de documentos que casaram |
+| `hits.total.relation` | `eq` = exato · `gte` = parou de contar em 10.000 |
+| `max_score` | maior `_score` do resultado |
+| `_score` | relevância BM25 — **relativa ao conjunto**, não fixa no documento |
+
+O `_score` cai se mais documentos passarem a conter o mesmo termo (IDF).
+Use `?explain=true` para ver a conta aberta.
+
+### Busca com várias palavras
 
 ```bash
 curl -XGET "localhost:9200/alunos/_search?q=pedro+silva&pretty"
 ```
 >Busca documentos que contenham ambos os termos: joao E silva.
+
+### Forçando AND
+
+```bash
+curl -XGET "localhost:9200/alunos/_search?q=pedro%20AND%20silva&pretty"
+```
 
 ###  Busca com OR explícito
 
