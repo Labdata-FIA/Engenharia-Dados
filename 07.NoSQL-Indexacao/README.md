@@ -47,10 +47,7 @@ curl -X PUT http://localhost:9200/aulas -H "Content-Type: application/json"
 
 ### O que aconteceu ?
 ```bash
-docker exec -it elasticsearch /bin/bash
 ls data/indices/
-
-exit
 ```
 
 ### 🔹 Consultar índice
