@@ -19,6 +19,9 @@ Para subir o ambiente local com Elasticsearch:
 
 ```bash
 docker compose up -d elasticsearch  kibana
+
+docker exec -it elasticsearch /bin/bash
+
 ```
 
 ### Acesse:
@@ -26,6 +29,7 @@ docker compose up -d elasticsearch  kibana
 * Elastic: http://localhost:9200/
 * kibana: http://localhost:5601/
 
+---
 
 ## 📁 Índices
 
