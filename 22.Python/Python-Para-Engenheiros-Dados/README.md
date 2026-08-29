@@ -1,4 +1,4 @@
-# Laboratório Python
+# Aula Python
 
 Este repositório reúne o material do curso de Python aplicado a engenharia de dados.
 
