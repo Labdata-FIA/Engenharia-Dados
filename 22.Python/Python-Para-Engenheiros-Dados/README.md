@@ -21,7 +21,7 @@ Python é uma linguagem de programação de alto nível, interpretada e de prop�
 
 Python é uma linguagem de programação poderosa e versátil, que oferece uma série de características que a tornam única e popular entre programadores de todos os níveis de experiência.
 
-## Curso — Python para Engenheiros de Dados
+## Python para Engenheiros de Dados
 
 
 * [Aula 1 — Contexto e tipos de dados](Python-Para-Engenheiros-Dados%2Faula_01_contexto.ipynb)
