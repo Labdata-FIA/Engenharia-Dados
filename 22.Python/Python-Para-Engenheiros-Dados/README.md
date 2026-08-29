@@ -2,6 +2,25 @@
 
 Este repositório reúne o material do curso de Python aplicado a engenharia de dados.
 
+
+## História do Python
+
+Python é uma linguagem de programação de alto nível, interpretada e de propósito geral, conhecida por sua simplicidade e legibilidade. Ela foi criada por Guido van Rossum e foi lançada pela primeira vez em 1991.
+
+### Linha do tempo
+
+* **Final dos anos 1980** — Guido van Rossum começou a trabalhar no Python no Centro de Pesquisa para Matemática e Informática (CWI) em Amsterdã, Holanda. Ele queria desenvolver uma linguagem de programação que pudesse ser usada por programadores iniciantes e experientes, que fosse simples de ler e escrever, e que tivesse uma sintaxe clara.
+* **1989** — Guido van Rossum começou o desenvolvimento do Python como um projeto de hobby durante as férias de Natal. Ele se inspirou em várias linguagens, como ABC, C, C++, Algol-68, Modula-3 e Smalltalk.
+* **1991** — A primeira versão do Python (versão 0.9.0) foi lançada publicamente. Esta versão já incluía muitas das principais funcionalidades do Python moderno, como exceções, funções e os tipos de dados centrais (`str`, `list`, `dict`).
+* **1994** — Foi lançada a versão 1.0 do Python. Esta versão introduziu recursos como o sistema de módulos, que permitia a reutilização de código entre programas.
+* **2000** — A Python Software Foundation (PSF) foi criada para gerenciar o desenvolvimento do Python e proteger a linguagem. Neste ano, foi lançada a versão 2.0, que trouxe várias melhorias, como o garbage collection e a compreensão de listas.
+* **2008** — Foi lançada a versão 3.0 do Python (também conhecida como Python 3000 ou Py3k). Esta versão não era compatível retroativamente com a série 2.x, introduzindo muitas mudanças significativas para corrigir falhas de design da linguagem e melhorar sua consistência. Algumas das mudanças incluem a mudança na sintaxe do `print` de uma declaração para uma função e a alteração na maneira como a divisão de inteiros funciona.
+* **Atualmente** — Python continua a evoluir, com novas versões sendo lançadas regularmente, adicionando novos recursos, melhorias de desempenho e correções de bugs. A comunidade Python é ativa e vibrante, contribuindo com uma vasta gama de bibliotecas e frameworks que tornam Python uma escolha popular para muitas áreas da computação, incluindo desenvolvimento web, ciência de dados, automação, e muito mais.
+
+## Características do Python
+
+Python é uma linguagem de programação poderosa e versátil, que oferece uma série de características que a tornam única e popular entre programadores de todos os níveis de experiência.
+
 ## Curso — Python para Engenheiros de Dados
 
 

@@ -1,23 +1,43 @@
-# Laboratório Python
+# Aula Python
 
-Este reponsitório tem como objetivo congregar o conhecimento técnico Python e respectivos laboratórios 
+Este repositório reúne o material do curso de Python aplicado a engenharia de dados.
 
-## Sumário sobre _Introdução ao Python_
 
-* [Introdução](01.introducao-ao-python%2F01%2C02.introducao.md)
-* [Variáveis, tipos de dados, estruturas de controle](01.introducao-ao-python%2F03.variaveis%2Ctipo-de-dados%2Cestruturas-de-controle.md)
-* [Estrutura de dados](01.introducao-ao-python%2F04.estrutura-de-dados.md)
-* [Estruturas de repeticao](01.introducao-ao-python%2F07.estrutura-de-repeticao.md)
-* [Funções](01.introducao-ao-python%2F08.funcoes.md)
-* [Tratamento de exceções](01.introducao-ao-python%2F09-tratamento-excecoes.md)
-* [Exercícios para manipulação de strings](01.introducao-ao-python%2F10.01.manipulacao-strings.md)
-* [Exercícios para manipulacao de listas](01.introducao-ao-python%2F10.02.manipulacao-list.md)
-* [Exercícios para manipulacao de conjuntos](01.introducao-ao-python%2F10.03.manipulacao-set.md)
-* [Exercícios para manipulacao de dicionários](01.introducao-ao-python%2F10.04.manipulacao-dict.md)
-* [Exercícios para trabalhar com operadores](01.introducao-ao-python%2F10.05-trabalhando-com-operadores.md)
-* [Exercícios para trabalhar com funções](01.introducao-ao-python%2F10.06-trabalhando-com-funcoes.md)
-* [Referências](01.introducao-ao-python%2F11-referencias.md)
+## História do Python
 
-## Sumário sobre _Conhecimentos Extras_
-* [Palavra reservada yield](99.extras%2F99.01-yield.md)
-* [Código Pythônico: Princípios e Práticas](99.extras%2F99.02-bonus-ser-pythonico.md)
+Python é uma linguagem de programação de alto nível, interpretada e de propósito geral, conhecida por sua simplicidade e legibilidade. Ela foi criada por Guido van Rossum e foi lançada pela primeira vez em 1991.
+
+### Linha do tempo
+
+* **Final dos anos 1980** — Guido van Rossum começou a trabalhar no Python no Centro de Pesquisa para Matemática e Informática (CWI) em Amsterdã, Holanda. Ele queria desenvolver uma linguagem de programação que pudesse ser usada por programadores iniciantes e experientes, que fosse simples de ler e escrever, e que tivesse uma sintaxe clara.
+* **1989** — Guido van Rossum começou o desenvolvimento do Python como um projeto de hobby durante as férias de Natal. Ele se inspirou em várias linguagens, como ABC, C, C++, Algol-68, Modula-3 e Smalltalk.
+* **1991** — A primeira versão do Python (versão 0.9.0) foi lançada publicamente. Esta versão já incluía muitas das principais funcionalidades do Python moderno, como exceções, funções e os tipos de dados centrais (`str`, `list`, `dict`).
+* **1994** — Foi lançada a versão 1.0 do Python. Esta versão introduziu recursos como o sistema de módulos, que permitia a reutilização de código entre programas.
+* **2000** — A Python Software Foundation (PSF) foi criada para gerenciar o desenvolvimento do Python e proteger a linguagem. Neste ano, foi lançada a versão 2.0, que trouxe várias melhorias, como o garbage collection e a compreensão de listas.
+* **2008** — Foi lançada a versão 3.0 do Python (também conhecida como Python 3000 ou Py3k). Esta versão não era compatível retroativamente com a série 2.x, introduzindo muitas mudanças significativas para corrigir falhas de design da linguagem e melhorar sua consistência. Algumas das mudanças incluem a mudança na sintaxe do `print` de uma declaração para uma função e a alteração na maneira como a divisão de inteiros funciona.
+* **Atualmente** — Python continua a evoluir, com novas versões sendo lançadas regularmente, adicionando novos recursos, melhorias de desempenho e correções de bugs. A comunidade Python é ativa e vibrante, contribuindo com uma vasta gama de bibliotecas e frameworks que tornam Python uma escolha popular para muitas áreas da computação, incluindo desenvolvimento web, ciência de dados, automação, e muito mais.
+
+## Características do Python
+
+Python é uma linguagem de programação poderosa e versátil, que oferece uma série de características que a tornam única e popular entre programadores de todos os níveis de experiência.
+
+## Curso — Python para Engenheiros de Dados
+
+
+* [Aula 1 — Contexto e tipos de dados](Python-Para-Engenheiros-Dados%2Faula_01_contexto.ipynb)
+* [Aula 2 — Coleções de dados](Python-Para-Engenheiros-Dados%2Faula_02_colecoes.ipynb)
+* [Aula 3 — Lógica e condições](Python-Para-Engenheiros-Dados%2Faula_03_logica_.ipynb)
+* [Aula 4 — Funções](Python-Para-Engenheiros-Dados%2Faula_04_funcoes.ipynb)
+* [Aula 5 — Arquivos e formatos](Python-Para-Engenheiros-Dados%2Faula_05_arquivos.ipynb)
+* [Aula 6 — Mini-pipeline ETL](Python-Para-Engenheiros-Dados%2Faula_06_pipeline.ipynb)
+
+* [Aula 7 — Lakehouse com DuckDB](Python-Para-Engenheiros-Dados%2Faula_07_lakehouse_duckdb.ipynb)
+
+## Ambiente
+
+O curso roda no **Google Colab** — não é preciso instalar nada. Abra o notebook da aula e execute as células com `Shift + Enter`.
+
+Para rodar localmente (opcional):
+
+* [Instalação do Poetry no Windows](00.instrucoes-ambiente%2Ftutorial-instalacao-poetry-windows.md)
+* [Instalação do Poetry no Linux](00.instrucoes-ambiente%2Ftutorial-instalacao-poetry-linux.md)sss
