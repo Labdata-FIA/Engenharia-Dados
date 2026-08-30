@@ -56,4 +56,4 @@ O curso roda no **Google Colab** — não é preciso instalar nada. Abra o noteb
 Para rodar localmente (opcional):
 
 * [Instalação do Poetry no Windows](00.instrucoes-ambiente%2Ftutorial-instalacao-poetry-windows.md)
-* [Instalação do Poetry no Linux](00.instrucoes-ambiente%2Ftutorial-instalacao-poetry-linux.md)sss
+* [Instalação do Poetry no Linux](00.instrucoes-ambiente%2Ftutorial-instalacao-poetry-linux.md)
