@@ -1158,7 +1158,24 @@ services:
       start_period: 60s
     networks:
       rede_fia:
-      
+  python-lab:
+    image: quay.io/jupyter/minimal-notebook:python-3.11
+    container_name: python-lab
+    hostname: python-lab
+    user: root
+    working_dir: /home/src
+    ports:
+      - "8890:8890"
+    volumes:
+      - ./22.Python/Python-Para-Engenheiros-Dados:/home/src
+      - ./22.Python/requirements.txt:/requirements.txt
+    command: >
+      bash -c "pip install --no-cache-dir -r /requirements.txt &&
+      jupyter lab --ip 0.0.0.0 --port 8890 --allow-root --no-browser
+      --ServerApp.token='' --ServerApp.password='' --notebook-dir=/home/src"
+    networks:
+      rede_fia:
+
 networks:
   rede_fia:
     driver: bridge

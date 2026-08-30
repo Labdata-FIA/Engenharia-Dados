@@ -21,6 +21,22 @@ Python é uma linguagem de programação de alto nível, interpretada e de prop�
 
 Python é uma linguagem de programação poderosa e versátil, que oferece uma série de características que a tornam única e popular entre programadores de todos os níveis de experiência.
 
+## Ambiente
+
+Suba o ambiente com Docker Compose:
+
+```sh
+docker compose up -d python-lab
+```
+
+Acesse o Jupyter em **http://localhost:8890** — não há senha nem token.
+
+Para parar o ambiente:
+
+```sh
+docker compose down python-lab
+```
+
 ## Python para Engenheiros de Dados
 
 
