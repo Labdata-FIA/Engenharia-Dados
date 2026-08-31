@@ -47,7 +47,6 @@ docker compose down python-lab
 * [Aula 5 — Arquivos e formatos](Python-Para-Engenheiros-Dados%2Faula_05_arquivos.ipynb)
 * [Aula 6 — Mini-pipeline ETL](Python-Para-Engenheiros-Dados%2Faula_06_pipeline.ipynb)
 
-* [Aula 7 — Lakehouse com DuckDB](Python-Para-Engenheiros-Dados%2Faula_07_lakehouse_duckdb.ipynb)
 
 ## Ambiente
 
