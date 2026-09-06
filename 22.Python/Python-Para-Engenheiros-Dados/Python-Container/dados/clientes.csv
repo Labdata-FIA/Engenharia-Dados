@@ -1,0 +1,11 @@
+id,nome,email,cidade,estado,valor_compra
+1,Ana Souza,ana.souza@email.com,São Paulo,SP,1250.90
+2,Bruno Lima,bruno.lima@email.com,Campinas,SP,340.00
+3,Carla Mendes,carla.mendes@email.com,Rio de Janeiro,RJ,890.50
+4,Diego Ferreira,diego.ferreira@email.com,Belo Horizonte,MG,2100.00
+5,Elisa Nogueira,elisa.nogueira@email.com,Curitiba,PR,75.25
+6,Felipe Ramos,felipe.ramos@email.com,Porto Alegre,RS,1580.40
+7,Gabriela Costa,gabriela.costa@email.com,Salvador,BA,430.00
+8,Henrique Alves,henrique.alves@email.com,Recife,PE,999.99
+9,Isabela Martins,isabela.martins@email.com,Fortaleza,CE,260.70
+10,João Pereira,joao.pereira@email.com,Santos,SP,1875.00
