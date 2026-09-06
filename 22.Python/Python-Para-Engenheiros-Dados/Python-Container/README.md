@@ -67,10 +67,6 @@ Uma linha, uma biblioteca. O `==0.9.0` **trava a versão**: todo mundo que rodar
 
 Se quiser testar na sua máquina antes de dockerizar:
 
-```sh
-pip install -r requirements.txt
-python main.py
-```
 
 ## `Dockerfile`
 

@@ -1,9 +1,0 @@
-services:
-  clientes:
-    build: .
-    image: meu-python
-    container_name: meu-python
-    command: sh -c "python main.py; sleep infinity"
-    volumes:
-      # pasta local dados/  ->  /app/dados dentro do container (somente leitura)
-      - ./dados:/app/dados:ro

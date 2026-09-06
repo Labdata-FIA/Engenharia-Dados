@@ -1176,6 +1176,17 @@ services:
     networks:
       rede_fia:
 
+  clientes:
+    build: .
+    image: meu-python
+    container_name: meu-python
+    command: sh -c "python main.py; sleep infinity"
+    volumes:
+      # pasta local dados/  ->  /app/dados dentro do container (somente leitura)
+      - ./22.Python/Python-Para-Engenheiros-Dados/Python-Container/dados:/app/dados:ro
+    networks:
+      rede_fia:
+
 networks:
   rede_fia:
     driver: bridge
