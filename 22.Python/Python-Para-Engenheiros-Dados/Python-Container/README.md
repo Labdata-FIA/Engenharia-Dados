@@ -131,7 +131,7 @@ O `:ro` no final significa *read only*: o container consegue **ler** o arquivo, 
 ##  Subir o container
 
 ```sh
-docker compose up -d clientes
+ docker compose up -d clientes --build
 
 docker logs meu-python
 ```
