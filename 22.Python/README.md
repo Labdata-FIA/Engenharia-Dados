@@ -40,7 +40,7 @@ docker compose down python-lab
 ## Python para Engenheiros de Dados
 
 
-* [Aula 1 — Contexto e tipos de dados](Python-Para-Engenheiros-Dados/aula_01_contexto.ipynbFaula_01_contexto.ipynb)
+* [Aula 1 — Contexto e tipos de dados](aula_01_contexto.ipynb)
 * [Aula 2 — Coleções de dados](Python-Para-Engenheiros-Dados/aula_02_colecoes.ipynb)
 * [Aula 3 — Lógica e condições](Python-Para-Engenheiros-Dados/aula_03_logica_.ipynb)
 * [Aula 4 — Funções](Python-Para-Engenheiros-Dados/aula_04_funcoes.ipynb)
@@ -54,5 +54,5 @@ O curso roda no **Google Colab** — não é preciso instalar nada. Abra o noteb
 
 Para rodar localmente (opcional):
 
-* [Instalação do Poetry no Windows](00.instrucoes-ambiente/tutorial-instalacao-poetry-windows.md)
-* [Instalação do Poetry no Linux](00.instrucoes-ambiente/tutorial-instalacao-poetry-linux.md)
+* [Instalação do Poetry no Windows](../00.instrucoes-ambiente/tutorial-instalacao-poetry-windows.md)
+* [Instalação do Poetry no Linux](../00.instrucoes-ambiente/tutorial-instalacao-poetry-linux.md)
