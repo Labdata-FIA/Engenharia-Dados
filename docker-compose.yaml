@@ -1177,7 +1177,7 @@ services:
       rede_fia:
 
   clientes:
-    build: .
+    build: ./22.Python/Python-Para-Engenheiros-Dados/Python-Container
     image: meu-python
     container_name: meu-python
     command: sh -c "python main.py; sleep infinity"
