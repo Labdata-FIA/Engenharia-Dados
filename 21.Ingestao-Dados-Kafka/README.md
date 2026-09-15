@@ -6,69 +6,37 @@
 > **Esta configuração é puramente para fins de desenvolvimento local e estudos**
 > 
 
----
-
-
-## Pré-requisitos?
+## Pré-requisitos
 * Docker
 * Docker-Compose
 
----
 
-## Criando o ambiente Kafka com o docker compose
-
-
-```
-docker compose up -d grafana prometheus jmx-kafka-broker zookeeper kafka-broker zoonavigator akhq
+## Prática 01
+Criando o ambiente Kafka com o docker compose e executando os principais comandos
 
 ```
-
-## O que acontenceu ?
-
-
-## Acesso WebUI dos componentes
-
-
-* AKHQ http://localhost:8080/ui
-* ZooNavigator http://localhost:8000/
-* Prometeus http://localhost:9090/
-* jmx-prometheus-exporter http://localhost:5556/
-* Grafana http://localhost:3000/login
-
-## Acessos
-
-ZooNavigator
-
-```
-zookeeper:2181
+docker compose up -d kafka-broker akhq
 ```
 
-Grafana
-
-* user : `admin`
-* password : `kafka`
-
-Verificando se os containers foram criados com sucesso
+1. Acesse para validar a execução da interface: AKHQ -  http://localhost:8080/ui
+2. Verificando se os containers foram criados com sucesso
 
 ```sh
  docker container ls
 ```
-Verificando as imagens que foram feitas download do docker-hub
+3. Verificando as imagens que foram feitas download do docker-hub
 ```sh
  docker image ls
 ```
-
----
-
-Vamos executar alguns comandos de dentro do container kafka-broker
-
-Acessar o Shell do container kafka-broker
+4. Para o restante do exercício, acesse o Shell do container kafka-broker
 
 ```sh
 docker exec -it kafka-broker /bin/bash
 ```
 
-# Criando nosso Primeiro tópico
+### Criando nosso Primeiro tópico
+
+
 ```sh
 kafka-topics --bootstrap-server localhost:9092 --topic alunos --create
 ```
@@ -112,14 +80,14 @@ kafka-configs --bootstrap-server localhost:9092 --entity-type topics --entity-na
 kafka-topics --bootstrap-server localhost:9092 --describe --topic topico-config
 ```
 
-# Deletando um tópico
+### Deletando um tópico
 
 ```sh
 kafka-topics --bootstrap-server localhost:9092 --topic alunos-novos-factor --delete
 kafka-topics --bootstrap-server localhost:9092 --topic alunos-novos-factor --describe
 ```
 
-# Produzinho mensagens
+### Produzinho mensagens
 
 ```sh
 kafka-console-producer --bootstrap-server localhost:9092 --topic alunos
@@ -159,7 +127,7 @@ kafka-console-producer --bootstrap-server localhost:9092 --topic alunos --proper
 >aluno:fernando
 ```
 
-# Consumindo mensagens
+### Consumindo mensagens
 
 ```sh
 kafka-console-consumer --bootstrap-server localhost:9092 --topic alunos
@@ -201,7 +169,7 @@ kafka-console-consumer --bootstrap-server localhost:9092 --topic alunos  --prope
 
 ```
 
-# Consumer group
+### Consumer group
 
 Criando um consumer group
 
@@ -282,24 +250,27 @@ Produzindo mensagem com a instrução Round Robin Partitioner
 ```sh
 kafka-console-producer --bootstrap-server localhost:9092 --producer-property partitioner.class=org.apache.kafka.clients.producer.RoundRobinPartitioner --topic alunos
 ```
----
 
-## Praticando mais - Desafio
+## Prática 02
+
+Demonstrando o rebalance
 
 ![Cluster Mongo db](img/desafio.png)
 
 
-O desafio terá a estrutura da imagem acima:
+Cria a estrutura da imagem acima:
 
 - Um tópico com nome preco-alterado com 3 partições
 - Um consumer group com 3 consumidores
+- Mate um dos três terminais
+- Reabra o terceiro
 
 
 > Crie o tópico  e com a opção `RoundRobinPartitioner` para produizar as mensagens em cada consumidor
 
 
 
-# Remover os containers
+### Remover os containers
 
 ```sh
 exit
