@@ -113,12 +113,6 @@ kafka-console-producer --bootstrap-server localhost:9092 --topic professor
 kafka-topics --bootstrap-server localhost:9092 --topic professor --describe
 ```
 
-> A Criação do tópico foi possivel pois a propriedade auto.create.topics.enable está com true.
-
-O tópico foi criado com configurações default
-
-Ver as configurações na pasta cat /etc/kafka/server.properties
-
 Produzir mensagens habilitando a Key
 
 ```sh
@@ -244,13 +238,6 @@ Deletando os consumer groups
 ```sh
 kafka-consumer-groups --bootstrap-server localhost:9092 --delete --group aplicacao-lab
 ```
-
-Produzindo mensagem com a instrução Round Robin Partitioner
-
-```sh
-kafka-console-producer --bootstrap-server localhost:9092 --producer-property partitioner.class=org.apache.kafka.clients.producer.RoundRobinPartitioner --topic alunos
-```
-
 ## Prática 02
 
 Demonstrando o rebalance
@@ -267,7 +254,9 @@ Cria a estrutura da imagem acima:
 
 
 > Crie o tópico  e com a opção `RoundRobinPartitioner` para produizar as mensagens em cada consumidor
-
+```sh
+kafka-console-producer --bootstrap-server localhost:9092 --producer-property partitioner.class=org.apache.kafka.clients.producer.RoundRobinPartitioner --topic alunos
+```
 
 
 ### Remover os containers
