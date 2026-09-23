@@ -400,7 +400,7 @@ services:
        rede_fia:
 
   mc:
-    image: minio/mc:${MINIO_MC_VERSION}
+    image: quay.io/minio/mc:${MINIO_MC_VERSION}
     container_name: mc
     depends_on:
       - minio
