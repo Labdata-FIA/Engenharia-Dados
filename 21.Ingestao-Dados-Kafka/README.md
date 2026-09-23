@@ -359,3 +359,52 @@ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group consu
 ```
 
 **O que acontece:** um novo membro entrou no grupo, então ocorre **outro rebalance** e a distribuição volta a ser **1 partição por consumidor**. É assim que uma aplicação escala horizontalmente: basta subir mais instâncias com o mesmo `group.id`.
+
+### Passo 7 — Repetir o rebalance usando key
+
+Agora o producer envia mensagens com **key** no formato `chave:valor`. O objetivo é ver que a key define a partição e que isso não muda com o rebalance.
+
+**Terminais 2, 3 e 4** — suba (ou reinicie) os consumidores mostrando também a key:
+
+```sh
+kafka-console-consumer --bootstrap-server localhost:9092 --topic preco-alterado --group consumer-group-app-1 --property print.key=true --property print.partition=true --property print.offset=true
+```
+
+**Terminal 1** — encerre o producer anterior (`Ctrl + C`) e abra um novo com key. O `RoundRobinPartitioner` sai: agora quem escolhe a partição é o hash da key.
+
+```sh
+kafka-console-producer --bootstrap-server localhost:9092 --topic preco-alterado --property parse.key=true --property key.separator=:
+```
+
+Digite algumas mensagens:
+
+```
+>produto-1:10.90
+>produto-2:25.00
+>produto-3:7.50
+>produto-1:11.50
+>produto-2:24.00
+>produto-1:12.00
+```
+
+**O que acontece:** todas as mensagens da mesma key (ex.: `produto-1`) caem **sempre na mesma partição**, pois a partição é calculada como `hash(key) % número de partições`. Com isso, a **ordem dos preços de cada produto é garantida**. Keys diferentes podem cair na mesma partição, e isso é normal.
+
+**Derrube um consumidor:** no **terminal 4**, pressione `Ctrl + C` e confira o grupo no **terminal 5**:
+
+```sh
+kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group consumer-group-app-1
+```
+
+Volte ao **terminal 1** e produza novamente as mesmas keys:
+
+```
+>produto-1:13.00
+>produto-2:23.00
+>produto-3:8.00
+```
+
+**O que acontece:** a **partição de cada key continua a mesma**. O que muda é **qual consumidor** lê essa partição: o consumidor que "herdou" a partição passa a receber aquela key, a partir do último offset confirmado.
+
+> 💡 O rebalance altera a relação **consumidor ↔ partição**, nunca a relação **key ↔ partição**.
+
+> ⚠️ Essa relação só quebra se o número de partições mudar (`kafka-topics --alter --partitions 4`): o cálculo `hash(key) % partições` muda e a mesma key pode passar a ir para outra partição.
