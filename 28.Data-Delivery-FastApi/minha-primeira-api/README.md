@@ -22,7 +22,15 @@ touch app/main.py
 touch Dockerfile
 touch requirements.txt
 ```
- 
+
+```powershell
+### Terminal PowerShell
+New-Item -ItemType Directory -Path app
+New-Item -ItemType File -Path app/main.py
+New-Item -ItemType File -Path Dockerfile
+New-Item -ItemType File -Path requirements.txt
+```
+
 > [!IMPORTANT]
 >Após a criação da estrutura das pastas o Visual Studio Code deve ficar assim
 
