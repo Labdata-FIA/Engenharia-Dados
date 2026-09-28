@@ -23,8 +23,9 @@ touch Dockerfile
 touch requirements.txt
 ```
 
-```powershell
 ### Terminal PowerShell
+
+```powershell
 New-Item -ItemType Directory -Path app
 New-Item -ItemType File -Path app/main.py
 New-Item -ItemType File -Path Dockerfile
