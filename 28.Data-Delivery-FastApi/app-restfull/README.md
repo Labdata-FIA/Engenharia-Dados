@@ -26,6 +26,12 @@ touch setup.py
 touch docker-compose.yaml
 ```
 
+### Terminal do PowerShell
+```powershell
+New-Item -ItemType File -Path setup.py
+New-Item -ItemType File -Path docker-compose.yaml
+```
+
 ### Editando o arquivo `setup.py` 
 
 
