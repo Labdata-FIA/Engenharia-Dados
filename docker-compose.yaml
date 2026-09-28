@@ -58,6 +58,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_INIT_LIMIT: 5
       ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_4LW_COMMANDS_WHITELIST: "*"
     ports:
      - "2181:2181"
     container_name: zookeeper
@@ -399,7 +400,7 @@ services:
        rede_fia:
 
   mc:
-    image: minio/mc:${MINIO_MC_VERSION}
+    image: quay.io/minio/mc:${MINIO_MC_VERSION}
     container_name: mc
     depends_on:
       - minio
