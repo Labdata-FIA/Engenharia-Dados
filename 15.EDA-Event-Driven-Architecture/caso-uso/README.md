@@ -65,7 +65,7 @@ Dois detalhes que importam para a aula:
 ### Subindo
 
 ```sh
-docker compose up -d zookeeper kafka-broker connect-ksqldb akhq postgres pgadmin minio ksqldb-server ksqldb-cli  python-lab
+docker compose up -d zookeeper kafka-broker connectksqldb akhq postgres pgadmin minio ksqldb-server ksqldb-cli  python-lab
 
 docker container ls
 ```
