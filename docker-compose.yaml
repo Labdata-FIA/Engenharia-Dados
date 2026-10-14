@@ -1160,7 +1160,7 @@ services:
     networks:
       rede_fia:
 
-  connect-ksqldb:
+  connectksqldb:
     image: fernandos/kafka-connet-debezium-lab:v215
     container_name: kafkaConect
     ports:
