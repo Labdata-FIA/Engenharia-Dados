@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("worker-demo-kafka")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+47f310f7b803cc7b612fe8c2d8233b79cf9ac4db")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8a53d23fe9bb97978d621894bde0e58b8a2746cc")]
 [assembly: System.Reflection.AssemblyProductAttribute("worker-demo-kafka")]
 [assembly: System.Reflection.AssemblyTitleAttribute("worker-demo-kafka")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -10,4 +10,5 @@
 * Docker-Compose
 
 * [LAB EDA - Microcks](microcks/README.md)
+* [LAB Caso de Uso - Ksqldb](caso-uso/README.md)
 * [LAB EDA - Ksqldb](ksqldb/README.md)
