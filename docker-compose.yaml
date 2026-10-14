@@ -1162,7 +1162,7 @@ services:
 
   connectksqldb:
     image: fernandos/kafka-connet-debezium-lab:v215
-    container_name: kafkaConect
+    container_name: kafkaConect2
     ports:
       - "8083:8083"
     depends_on:
