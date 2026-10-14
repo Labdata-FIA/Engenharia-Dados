@@ -10,8 +10,6 @@
 * Docker
 * Docker Compose
 * Ter visto os labs [Kafka](../../21.Ingestao-Dados-Kafka/README.md), [Kafka Connect](../../21.Ingestao-Dados-Kafka-Connect/README.md) e [ksqlDB](../ksqldb/README.md). Nesta aula juntamos os três em um único caso de uso.
-* Pelo menos **6 GB de memória** liberados para o Docker
-* Esta pasta inteira (o lab tem `docker-compose.yaml` próprio, veja a Parte 0)
 
 ---
 
