@@ -1169,7 +1169,7 @@ services:
       - kafka-broker
     volumes:
       # AJUSTE: os JSONs dos conectores ficam na pasta "conectores" desta aula
-      - ./conectores:/conectores
+      - ./15.EDA-Event-Driven-Architecture/caso-uso/conectores:/conectores
     environment:
       - KAFKA_LOG4J_OPTS=-Dlog4j.configuration=file:/opt/kafka/config/connect-log4j.properties
       - KAFKA_CONNECT_BOOTSTRAP_SERVERS=kafka-broker:29092
