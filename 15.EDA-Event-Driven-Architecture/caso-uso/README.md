@@ -188,7 +188,21 @@ Deixe esse terminal aberto: vamos usá-lo para criar os conectores.
 
 ### O banco do pronto-socorro
 
+Acesse o pgAdmin em http://localhost:5433
+
+* Login: `lab-pgadmin4@pgadmin.org`
+* Senha: `postgres`
+
+
 O banco **já subiu pronto**: o compose monta `sql/hospital.sql` em `/docker-entrypoint-initdb.d/`, e o PostgreSQL executa os scripts dessa pasta na primeira vez que o container é criado.
+
+| Campo | Valor |
+|---|---|
+| Name (aba General) | `postgres` |
+| Host name/address (aba Connection) | `postgres` |
+| Maintenance database | `postgres` |
+| Username | `postgres` |
+| Password | `postgres` |
 
 No pgAdmin (http://localhost:5433, login `lab-pgadmin4@pgadmin.org` / senha `postgres`), o server **`postgres-hospital`** já está na lista. Clique nele e informe a senha `postgres`.
 
