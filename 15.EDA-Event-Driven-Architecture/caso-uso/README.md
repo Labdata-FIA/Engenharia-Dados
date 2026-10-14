@@ -459,7 +459,7 @@ VALUES ('Pedro Teste', '666.666.666-66', '2000-01-01', 'SUS');
 
 UPDATE prontosocorro.pacientes SET convenio = 'Amil' WHERE nome = 'Pedro Teste';
 
-DELETE FROM prontosocorro.pacientes WHERE nome = 'Pedro Teste';
+
 ```
 
 Cada comando SQL no banco virou **uma linha nova** na query do ksqlDB, quase instantaneamente. No `UPDATE`, repare em `convenio_antes = SUS` e `convenio_depois = Amil` (graças ao `REPLICA IDENTITY FULL`).
