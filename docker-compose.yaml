@@ -394,7 +394,7 @@ services:
 
 
   minio-nifi:
-    image:  quay.io/minio/minio:${MINIO_VERSION}
+    image:  fernandos/minio:${MINIO_VERSION}
     container_name: minio
     ports:
       - "9000:9000"
@@ -407,7 +407,7 @@ services:
       rede_fia:
 
   minio:
-    image:  quay.io/minio/minio:${MINIO_VERSION}
+    image:  fernandos/minio:${MINIO_VERSION}
     container_name: minio
     ports:
       - "9000:9000"
