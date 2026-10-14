@@ -59,13 +59,13 @@ Esta aula tem o **próprio `docker-compose.yaml`**, montado a partir do compose 
 
 Dois detalhes que importam para a aula:
 
-* O serviço `connect` monta a pasta `./15.EDA-Event-Driven-Architecture/conectores` em `/conectores`. **Todo JSON de conector que você colocar nessa pasta fica visível dentro do container do Connect.**
+* O serviço `connect` monta a pasta `./15.EDA-Event-Driven-Architecture/caso-uso/conectores` em `/conectores`. **Todo JSON de conector que você colocar nessa pasta fica visível dentro do container do Connect.**
 * O Connect usa `JsonConverter` com `schemas.enable=false`: as mensagens chegam no Kafka como **JSON puro**, que é exatamente o formato que o ksqlDB vai ler com `VALUE_FORMAT='JSON'`.
 
 ### Subindo
 
 ```sh
-docker compose up -d zookeeper kafka-broker connect akhq postgres pgadmin minio ksqldb-server ksqldb-cli
+docker compose up -d zookeeper kafka-broker connect akhq postgres pgadmin minio ksqldb-server ksqldb-cli  python-lab
 
 docker container ls
 ```
