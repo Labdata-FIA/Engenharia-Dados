@@ -138,6 +138,33 @@ services:
     networks:
       rede_fia:
 
+  akhq2:
+      image: tchiotludo/akhq:${AKHQ_VERSION}
+      container_name: akhq
+      environment:
+        AKHQ_CONFIGURATION: |
+          akhq:
+            connections:
+              docker-kafka-server:
+                properties:
+                  bootstrap.servers: "kafka-broker:29092"       
+                connect:
+                  - name: "connect"
+                    url: "http://connect:8083"
+              docker-kafka-server-prd:
+                properties:
+                  bootstrap.servers: "kafka-broker:29092"       
+                connect:
+                  - name: "connect"
+                    url: "http://connect:8083"
+      ports:
+        - "8080:8080"
+      depends_on:
+        - kafka-broker
+        - connectksqldb 
+      networks:
+        rede_fia:
+
   kafka-net:
       image: fernandos/kafka-net:v0
       container_name: kafkanet
