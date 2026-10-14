@@ -55,7 +55,7 @@ Esta aula tem o **próprio `docker-compose.yaml`**, montado a partir do compose 
 > [!IMPORTANT]
 > Todos os comandos `docker compose` desta aula são executados **dentro desta pasta**.
 >
-> Os nomes dos containers são os mesmos do compose do curso (`kafka-broker`, `kafkaConect`, `postgres`...). Se o ambiente do curso estiver rodando, derrube antes (na raiz do repositório: `docker compose down`), senão dá conflito de nome e de porta.
+> Os nomes dos containers são os mesmos do compose do curso (`kafka-broker`, `kafkaConect2`, `postgres`...). Se o ambiente do curso estiver rodando, derrube antes (na raiz do repositório: `docker compose down`), senão dá conflito de nome e de porta.
 
 Dois detalhes que importam para a aula:
 
@@ -73,7 +73,7 @@ docker container ls
 | Serviço | Papel na aula | Acesso |
 |---|---|---|
 | `zookeeper` / `kafka-broker` | Cluster Kafka | `localhost:9092` |
-| `connect` (container `kafkaConect`) | Kafka Connect: move dados para dentro e para fora do Kafka | API REST: http://localhost:8083 |
+| `connect` (container `kafkaConect2`) | Kafka Connect: move dados para dentro e para fora do Kafka | API REST: http://localhost:8083 |
 | `postgres` | Banco do hospital, já com o schema `prontosocorro` | `localhost:5432` |
 | `pgadmin` | Interface do PostgreSQL | http://localhost:5433 (`lab-pgadmin4@pgadmin.org` / `postgres`) |
 | `ksqldb-server` / `ksqldb-cli` | Processamento de streams com SQL | http://localhost:8088 |
@@ -87,7 +87,7 @@ Durante a aula vamos usar **3 terminais**, cada um "dentro" de um container. Sem
 
 | Terminal | Para que serve | Como entrar |
 |---|---|---|
-| **Terminal do Connect** | Criar e gerenciar conectores (API REST) | `docker exec -it kafkaConect bash` |
+| **Terminal do Connect** | Criar e gerenciar conectores (API REST) | `docker exec -it kafkaConect2 bash` |
 | **Terminal do Kafka** | Listar tópicos, consumir mensagens | `docker exec -it kafka-broker bash` |
 | **Terminal do ksqlDB** | Escrever SQL de streaming | `docker compose exec ksqldb-cli ksql http://ksqldb-server:8088` |
 
@@ -126,7 +126,7 @@ Pense no Connect como uma **tomada universal** do Kafka:
 
 | Peça | Analogia | No nosso lab |
 |---|---|---|
-| **Worker** | A tomada na parede: o processo que fica rodando | Container `kafkaConect`, porta `8083` |
+| **Worker** | A tomada na parede: o processo que fica rodando | Container `kafkaConect2`, porta `8083` |
 | **Plugin** | O adaptador para cada tipo de aparelho (um `.jar`) | Debezium PostgreSQL e Confluent S3 Sink, já instalados na imagem |
 | **Connector** | O aparelho ligado na tomada, com sua configuração | `connector-hospital`, `connector-minio-bronze` |
 | **Task** | Quem realmente trabalha (uma *thread*) | `tasks.max: 1` |
@@ -152,7 +152,7 @@ O Connect **não tem tela própria**. Tudo é feito por HTTP na porta `8083` (o 
 Entre no container do Kafka Connect:
 
 ```sh
-docker exec -it kafkaConect bash
+docker exec -it kafkaConect2 bash
 ```
 
 Dentro do container, veja quais "adaptadores" temos instalados:
@@ -315,7 +315,7 @@ Lendo o JSON em voz alta: *"Use o plugin Debezium PostgreSQL, conecte no host `p
 Se você saiu do container do Connect, entre de novo:
 
 ```sh
-docker exec -it kafkaConect bash
+docker exec -it kafkaConect2 bash
 ```
 
 Dentro do container, crie o conector e confira o status:
@@ -531,7 +531,7 @@ Veja o arquivo **`conectores/connector-hospital.json`**:
 Entre no container do Kafka Connect (se ainda não estiver nele):
 
 ```sh
-docker exec -it kafkaConect bash
+docker exec -it kafkaConect2 bash
 ```
 
 Dentro do container, crie o conector:
@@ -797,7 +797,7 @@ Veja o arquivo **`conectores/connector-minio-bronze.json`**:
 Entre no container do Kafka Connect:
 
 ```sh
-docker exec -it kafkaConect bash
+docker exec -it kafkaConect2 bash
 ```
 
 Dentro do container, crie o Sink:
@@ -978,7 +978,7 @@ DROP STREAM IF EXISTS pacientes_cdc;
 Entre no container do Kafka Connect:
 
 ```sh
-docker exec -it kafkaConect bash
+docker exec -it kafkaConect2 bash
 ```
 
 Dentro do container, apague os conectores:
