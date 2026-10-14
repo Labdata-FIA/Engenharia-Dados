@@ -1159,6 +1159,39 @@ services:
       start_period: 60s
     networks:
       rede_fia:
+
+  connect-ksqldb:
+    image: fernandos/kafka-connet-debezium-lab:v215
+    container_name: kafkaConect
+    ports:
+      - "8083:8083"
+    depends_on:
+      - kafka-broker
+    volumes:
+      # AJUSTE: os JSONs dos conectores ficam na pasta "conectores" desta aula
+      - ./conectores:/conectores
+    environment:
+      - KAFKA_LOG4J_OPTS=-Dlog4j.configuration=file:/opt/kafka/config/connect-log4j.properties
+      - KAFKA_CONNECT_BOOTSTRAP_SERVERS=kafka-broker:29092
+      # AJUSTE: removidos o interceptor de tracing e as variáveis OTEL_*
+      # (dependem do otel-collector da aula de Observabilidade, que não sobe aqui)
+      - |
+        KAFKA_CONNECT_CONFIGURATION=
+        key.converter=org.apache.kafka.connect.json.JsonConverter
+        value.converter=org.apache.kafka.connect.json.JsonConverter
+        key.converter.schemas.enable=false
+        value.converter.schemas.enable=false
+        group.id=connect
+        offset.storage.topic=connect-offsets
+        offset.storage.replication.factor=1
+        config.storage.topic=connect-configs
+        config.storage.replication.factor=1
+        status.storage.topic=connect-status
+        status.storage.replication.factor=1
+    command: /opt/kafka/kafka_connect_run.sh
+    networks:
+      rede_fia:
+
   python-lab:
     image: quay.io/jupyter/minimal-notebook:python-3.11
     container_name: python-lab
