@@ -2,7 +2,7 @@
   "connector.class": "io.confluent.connect.s3.S3SinkConnector",
   "tasks.max": "1",
   "topics": "atendimentos-enriquecidos",
-  "s3.bucket.name": "silver",
+  "s3.bucket.name": "bronze",
   "store.url": "http://minio:9000",
   "flush.size": 3,
   "storage.class": "io.confluent.connect.s3.storage.S3Storage",
