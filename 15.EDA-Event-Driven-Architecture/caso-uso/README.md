@@ -563,6 +563,9 @@ curl -s http://localhost:8083/connectors/connector-hospital/status
 Agora, no terminal do Kafka (`docker exec -it kafka-broker bash`), compare as duas versões da **mesma** linha:
 
 ```sh
+
+ docker exec -it kafka-broker bash
+ 
 # Antes (envelope)
 kafka-console-consumer --bootstrap-server localhost:9092 --topic cdc.prontosocorro.atendimentos \
   --from-beginning --property print.key=true --max-messages 1
