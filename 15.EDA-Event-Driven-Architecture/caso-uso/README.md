@@ -565,7 +565,7 @@ Agora, no terminal do Kafka (`docker exec -it kafka-broker bash`), compare as du
 ```sh
 
  docker exec -it kafka-broker bash
- 
+
 # Antes (envelope)
 kafka-console-consumer --bootstrap-server localhost:9092 --topic cdc.prontosocorro.atendimentos \
   --from-beginning --property print.key=true --max-messages 1
@@ -653,7 +653,7 @@ UPDATE prontosocorro.pacientes SET convenio = 'Unimed' WHERE id = 1;
 INSERT INTO prontosocorro.pacientes (nome, cpf, data_nascimento, convenio)
 VALUES ('Paciente Cadastro Errado', '000.000.000-00', '2000-01-01', 'SUS');
 
-DELETE FROM prontosocorro.pacientes WHERE nome = 'Paciente Cadastro Errado';
+
 ```
 
 O `UPDATE` aparece como uma **nova versão do id 1** (UPSERT). O cadastro errado aparece com o `INSERT` e, no `DELETE`, chega um *tombstone* (graças à SMT) que **remove** a linha da tabela.
