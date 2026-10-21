@@ -27,7 +27,7 @@ Abra o terminal (PowerShell no Windows, Terminal no Mac/Linux), vá até a pasta
 
 ```bash
 cd "engenharia-dados"
-cd "2. Aula complementar"
+cd "02. Aula complementar"
 cd "1. Revisao-Docker-git"
 ```
 
