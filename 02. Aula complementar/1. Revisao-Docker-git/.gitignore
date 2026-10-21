@@ -1,0 +1,15 @@
+# Senhas e configurações locais: nunca vão para o GitHub
+.env
+
+# Arquivos gerados pelo Python
+__pycache__/
+*.py[cod]
+
+# Ambientes virtuais
+.venv/
+venv/
+
+# Sistema operacional / editor
+.DS_Store
+.vscode/
+.idea/
