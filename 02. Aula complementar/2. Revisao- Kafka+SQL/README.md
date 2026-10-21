@@ -18,7 +18,7 @@ Abra o terminal (PowerShell no Windows, Terminal no Mac/Linux), vá até a pasta
 
 ```sh
 cd "engenharia-dados"
-cd "2. Aula complementar"
+cd "02. Aula complementar"
 cd "2. Revisao-Kafka+SQL"
 ```
 
