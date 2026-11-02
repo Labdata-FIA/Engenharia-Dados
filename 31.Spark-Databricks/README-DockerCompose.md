@@ -1,4 +1,4 @@
-Como instalar um Cluster do Apache Spark no Docker Desktop utilizando Compose
+# Como instalar um Cluster do Apache Spark no Docker Desktop utilizando Compose
 
 O Apache Spark é um mecanismo analítico unificado para processamento de dados em larga escala. Ele fornece APIs de alto nível em Java, Scala, Python e R, além de um mecanismo otimizado que suporta gráficos de execução gerais. Ele também suporta um amplo conjunto de ferramentas de alto nível, incluindo Spark SQL para SQL e processamento de dados estruturados, API Pandas no Spark para cargas de trabalho Pandas, MLlib para aprendizado de máquina, GraphX ​​para processamento de gráficos e Structured Streaming para computação incremental e processamento de fluxo.
 
