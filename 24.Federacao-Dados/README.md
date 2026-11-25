@@ -16,6 +16,7 @@
 > Criando as pastas para o container PostGreSql
 
 
+## Script para terminal Linux
 ```bash
 
 mkdir ./postgresql/volume/pg_notify
@@ -26,6 +27,22 @@ mkdir ./postgresql/volume/pg_logical/mappings
 mkdir ./postgresql/volume/pg_commit_ts
 mkdir ./postgresql/volume/pg_snapshots
 mkdir ./postgresql/volume/pg_stat_tmp
+```
+
+## Script para terminal PowerShell
+```powershell
+$directories = @(
+    "./postgresql/volume/pg_notify",
+    "./postgresql/volume/pg_tblspc",
+    "./postgresql/volume/pg_twophase",
+    "./postgresql/volume/pg_stat",
+    "./postgresql/volume/pg_logical/mappings",
+    "./postgresql/volume/pg_commit_ts",
+    "./postgresql/volume/pg_snapshots",
+    "./postgresql/volume/pg_stat_tmp"
+)
+
+New-Item -ItemType Directory -Force -Path $directories | Out-Null
 ```
 
 
@@ -64,45 +81,14 @@ Acesso para o MinIO http://localhost:9001/login
 
 > raw//aula/bf/
 
+### Na pasta `23.Hive/util/` envie o arquivo `bf.csv` para a camada `raw//aula/bf/`
+
+
 ### Crie as Access Keys e Secret Key
 * datalake
 * datalake
 
 
-### Na pasta `23.Hive/util/` envie o arquivo `bf.csv` para a camada `raw//aula/bf/`
-
-```sh
-docker exec -it presto bash
-
-presto-cli
-
-SHOW CATALOGS;  
-
-SHOW SCHEMAS FROM hive;   
-
-```
-## Navegação de metadados
-
-* SHOW CATALOGS;                      -- catálogos disponíveis (hive, postgresql, system, memory...)
-* SHOW SCHEMAS FROM hive;             -- schemas do catálogo hive
-* SHOW TABLES  FROM hive.aula;        -- tabelas no schema aula
-* DESCRIBE hive.aula.bf;              -- colunas e tipos
-* SHOW COLUMNS FROM hive.aula.bf;     -- alternativa ao DESCRIBE
-
-## Mudando de catálogo/esquema na sessão
-
-```sh
-USE hive.aula;                      -- define catálogo+schema
-SELECT * FROM bf LIMIT 5;           -- já encontra a tabela no schema atual
-USE postgresql.public;              -- agora usando o catálogo JDBC do Postgres
-
-```
-
-
-### Coleta de estatísticas (se habilitado no conector)
-```sh
-ANALYZE hive.aula.bf; 
-```
 
 ## Configurações pelo  `DBeaver` 
 
@@ -199,12 +185,35 @@ LIMIT 50;
 ```
 
 
-### Configurando conexão com metabase
+```sh
+docker exec -it presto bash
+
+presto-cli
+
+SHOW CATALOGS;  
+
+SHOW SCHEMAS FROM hive;   
+
+```
+## Navegação de metadados
+
+* SHOW CATALOGS;                      -- catálogos disponíveis (hive, postgresql, system, memory...)
+* SHOW SCHEMAS FROM hive;             -- schemas do catálogo hive
+* SHOW TABLES  FROM hive.aula;        -- tabelas no schema aula
+* DESCRIBE hive.aula.bf;              -- colunas e tipos
+* SHOW COLUMNS FROM hive.aula.bf;     -- alternativa ao DESCRIBE
+
+## Mudando de catálogo/esquema na sessão
 
 ```sh
-docker compose up -d metabase
+USE hive.aula;                      -- define catálogo+schema
+SELECT * FROM bf LIMIT 5;           -- já encontra a tabela no schema atual
+USE postgresql.public;              -- agora usando o catálogo JDBC do Postgres
+
 ```
 
-> http://localhost:3000/
 
-![Prestodb](../content/presto04.png)
+### Coleta de estatísticas (se habilitado no conector)
+```sh
+ANALYZE hive.aula.bf; 
+```
