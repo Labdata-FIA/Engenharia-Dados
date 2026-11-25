@@ -1,0 +1,18 @@
+{
+  "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+  "tasks.max": "1",
+  "database.hostname": "postgres",
+  "database.port": "5432",
+  "database.user": "postgres",
+  "database.password": "postgres",
+  "database.dbname": "postgres",
+  "topic.prefix": "hospital",
+  "slot.name": "debezium_hospital",
+  "schema.include.list": "prontosocorro",
+  "transforms": "unwrap,extractKey",
+  "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+  "transforms.unwrap.add.fields": "op,source.ts_ms",
+  "transforms.unwrap.delete.tombstone.handling.mode": "tombstone",
+  "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+  "transforms.extractKey.field": "id"
+}

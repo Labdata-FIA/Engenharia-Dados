@@ -1,0 +1,128 @@
+services:
+
+  postgres:
+    image: quay.io/debezium/example-postgres:${POSTGRES_DEBEZIUM}
+    container_name: postgres
+    ports:
+     - 5432:5432
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+    networks:
+      rede_fia:
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:${PAGADMIN_VERSION}
+    environment:
+      PGADMIN_DEFAULT_EMAIL: lab-pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - "5433:80"
+    depends_on:
+      - postgres
+    networks:
+      rede_fia:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:${CONFLUENT_VERSION}
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_4LW_COMMANDS_WHITELIST: "*"
+    ports:
+     - "2181:2181"
+    container_name: zookeeper
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      rede_fia:
+
+  kafka-broker:
+    image: confluentinc/cp-kafka:${CONFLUENT_VERSION}
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    container_name: kafka-broker
+    environment:
+      KAFKA_BROKER_ID: 101
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      CONFLUENT_METRICS_ENABLE: 'false'
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      rede_fia:
+
+  connect:
+        image: fernandos/kafka-connet-debezium-lab:v215
+        container_name: kafkaConect
+        ports:
+        - 8083:8083
+        depends_on:
+         - kafka-broker
+        restart: on-failure
+        volumes:
+          - "./conectores:/conectores"
+        environment:
+        - KAFKA_LOG4J_OPTS=-Dlog4j.configuration=file:/opt/kafka/config/connect-log4j.properties
+        - KAFKA_CONNECT_BOOTSTRAP_SERVERS=kafka-broker:29092
+        - |
+            KAFKA_CONNECT_CONFIGURATION=
+            key.converter=org.apache.kafka.connect.json.JsonConverter
+            value.converter=org.apache.kafka.connect.json.JsonConverter
+            key.converter.schemas.enable=false
+            value.converter.schemas.enable=false
+            group.id=connect
+            offset.storage.topic=connect-offsets
+            offset.storage.replication.factor=1
+            config.storage.topic=connect-configs
+            config.storage.replication.factor=1
+            status.storage.topic=connect-status
+            status.storage.replication.factor=1
+        command: /opt/kafka/kafka_connect_run.sh
+        networks:
+          rede_fia:
+
+  minio:
+    image: cgr.dev/chainguard/minio:latest
+    container_name: minio
+    user: root
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_storage:/data
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_NOTIFY_KAFKA_ENABLE_EventKafka: "on"
+      MINIO_NOTIFY_KAFKA_BROKERS_EventKafka: "kafka-broker:29092"
+      MINIO_NOTIFY_KAFKA_TOPIC_EventKafka: "sink-products"
+      MINIO_NOTIFY_KAFKA_QUEUE_LIMIT_EventKafka: "10000"
+      MINIO_NOTIFY_KAFKA_TLS_EventKafka: "off"
+    command: server --console-address ":9001" /data
+    depends_on:
+      - kafka-broker
+    networks:
+       rede_fia:
+
+
+networks:
+  rede_fia:
+    driver: bridge
+
+volumes:
+  minio_storage: {}
